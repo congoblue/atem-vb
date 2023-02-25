@@ -1688,7 +1688,7 @@ Public Class MainForm
             mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
         End If
         If ad <> 7 Then
-            If CamIris(ad) > 0 Then CamIris(ad) = CamIris(ad) - 1
+            If CamIris(ad) > 10 Then CamIris(ad) = CamIris(ad) - 10 : Else CamIris(ad) = 0
             TextBox4.Text = CamIris(ad)
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
         Else
@@ -1712,7 +1712,7 @@ Public Class MainForm
             mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
         End If
         If ad <> 7 Then
-            If CamIris(ad) < &H3FF Then CamIris(ad) = CamIris(ad) + 1
+            If CamIris(ad) < (&H3FF - 10) Then CamIris(ad) = CamIris(ad) + 10 Else CamIris(ad) = &H3FF
             TextBox4.Text = CamIris(ad)
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
         Else
@@ -2516,6 +2516,20 @@ Public Class MainForm
 
     'End Sub
 
+    Function jsonValue(ByVal json As String, name As String)
+        Dim p As Integer, v As Integer
+        jsonValue = ""
+        p = InStr(json, name)
+        If p = 0 Then Exit Function
+        json = Mid(json, p + Len(name))
+        v = InStr(json, ":")
+        If p = 0 Then Exit Function
+        json = Mid(json, v + 1)
+        p = InStr(json, ",") : If (p = 0) Then p = InStr(json, "}") : If p = 0 Then p = Len(json)
+        jsonValue = Mid(json, 1, p - 1)
+    End Function
+
+
     Sub socketMessage(ByVal s As Object, ByVal e As WebSocket4Net.MessageReceivedEventArgs)
         Dim RecState As String = ""
         Dim StreamState As String = ""
@@ -2525,19 +2539,15 @@ Public Class MainForm
         OBSResponse = e.Message
 
         If InStr(OBSResponse, "OBSSTATE") <> 0 Then 'if this is a response to obs rec/stream status message
-            If InStr(OBSResponse, "recording") <> 0 Then
-                RecState = Mid(OBSResponse, InStr(OBSResponse, "recording") + 12, 4)
-                If RecState = "fals" Then OBSRecState = False Else OBSRecState = True
-            End If
+            RecState = jsonValue(OBSResponse, """recording""")
+            If RecState = "" Or RecState = "false" Then OBSRecState = False Else OBSRecState = True
             If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
             If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
-            If InStr(OBSResponse, "streaming") <> 0 Then
-                StreamState = Mid(OBSResponse, InStr(OBSResponse, "streaming") + 12, 4)
-                If StreamState = "fals" Then OBSStreamState = False Else OBSStreamState = True
-            End If
+            StreamState = jsonValue(OBSResponse, """streaming""")
+            If StreamState = "" Or StreamState = "false" Then OBSStreamState = False Else OBSStreamState = True
             If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
             If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
-            If InStr(OBSResponse, "stream-timecode") <> 0 Then
+            If jsonValue(OBSResponse, """stream-timecode""") <> "" Then
                 'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
                 Dim t As Integer = Now.TimeOfDay.TotalSeconds - StreamStartTime
                 Dim hr As Integer = Math.Floor(t / 3600)
@@ -2548,7 +2558,7 @@ Public Class MainForm
                 OBSStreamTime = "..."
             End If
             TextBoxOBSBroadcastTime.Text = OBSStreamTime
-            If InStr(OBSResponse, "rec-timecode") <> 0 Then
+            If jsonValue(OBSResponse, """rec-timecode""") <> "" Then
                 'OBSRecTime = Mid(OBSResponse, InStr(OBSResponse, "rec-timecode") + 16, 8)
                 Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
                 Dim hr As Integer = Math.Floor(t / 3600)
@@ -2560,9 +2570,9 @@ Public Class MainForm
             End If
             TextBoxOBSRecTime.Text = OBSRecTime
             'End If
-        ElseIf InStr(OBSResponse, "OBSSCENE") <> 0 Then 'response as we are playing a clip. Watch out for it ending.
-            If InStr(OBSResponse, "name") <> 0 Then
-                SceneState = Mid(OBSResponse, InStr(OBSResponse, "name") + 8, 3)
+        ElseIf jsonValue(OBSResponse, """OBSSCENE""") <> "" Then 'response as we are playing a clip. Watch out for it ending.
+            If jsonValue(OBSResponse, """name""") <> "" Then
+                SceneState = jsonValue(OBSResponse, """name""")
             End If
         ElseIf InStr(OBSResponse, "PreviewSceneChanged") Then 'user has changed the preview scene on OBS
             'Dim scenename As String
@@ -2571,17 +2581,18 @@ Public Class MainForm
             'If (scenename = "Cam1") Then addr = 1 : setactive()
             'If (scenename = "Cam2") Then addr = 2 : setactive()
             'If (scenename = "Cam3") Then addr = 3 : setactive()
-        ElseIf InStr(OBSResponse, "GETSCENE") <> 0 Then 'response to get scene list, used to populate media list
-            SceneState = Mid(OBSResponse, InStr(OBSResponse, "Mediaplayer1") + 12)
+        ElseIf jsonValue(OBSResponse, """GETSCENE""") <> "" Then 'response to get scene list, used to populate media list
+            SceneState = Mid(OBSResponse, InStr(OBSResponse, "Mediaplayer1"))
             SceneState = Mid(SceneState, InStr(SceneState, """sources"":") + 10)
             If InStr(SceneState, """sources"":") <> 0 Then SceneState = Mid(SceneState, 1, InStr(SceneState, """sources"":") - 40) 'if other scenes after this one, remove them
             Debug.Print(SceneState)
             p = 1 : ct = 0
             While p <> 0
-                p = InStr(p, SceneState, """name""")
-                q = InStr(p + 9, SceneState, """")
+                p = InStr(SceneState, """name""")
                 If p <> 0 Then
-                    litem = Mid(SceneState, p + 9, q - p - 9)
+                    litem = jsonValue(SceneState, """name""") 'Mid(SceneState, p + 9, q - p - 9)
+                    litem = Replace(litem, """", "")
+                    SceneState = Mid(SceneState, p + 9)
                     If ct = 0 Then
                         websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":true,""message-id"":""TEST1""}")
                         litem = litem & "*"
@@ -2589,11 +2600,10 @@ Public Class MainForm
                         websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":false,""message-id"":""TEST1""}")
                     End If
                     ListBoxMedia.Invoke(Sub() ListBoxMedia.Items.Add(litem))
-                    p = q
                     ct = ct + 1
                 End If
             End While
-        ElseIf InStr(OBSResponse, "WS" & WebsocketID) Then
+        ElseIf jsonValue(OBSResponse, """WS" & WebsocketID & """") <> "" Then
             Websocketwait = False
             WebsocketID = WebsocketID + 1
         Else

@@ -121,6 +121,8 @@ Partial Class MainForm
         Me.Label28 = New System.Windows.Forms.Label()
         Me.ListBoxMedia = New System.Windows.Forms.ListBox()
         Me.Button9 = New System.Windows.Forms.Button()
+        Me.LabelCap3 = New System.Windows.Forms.Label()
+        Me.TextCaptionOther = New System.Windows.Forms.TextBox()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnInp5 = New AtemController.MyButton()
         Me.AuxSel12 = New AtemController.MyButton()
@@ -212,8 +214,6 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
-        Me.LabelCap3 = New System.Windows.Forms.Label()
-        Me.TextCaptionOther = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -868,7 +868,7 @@ Partial Class MainForm
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(35, 16)
         Me.Label13.TabIndex = 215
-        Me.Label13.Text = "v14.0"
+        Me.Label13.Text = "v14.1"
         '
         'Button2
         '
@@ -1249,6 +1249,30 @@ Partial Class MainForm
         Me.Button9.TabIndex = 315
         Me.Button9.Text = "Retry OBS"
         Me.Button9.UseVisualStyleBackColor = True
+        '
+        'LabelCap3
+        '
+        Me.LabelCap3.AutoSize = True
+        Me.LabelCap3.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelCap3.ForeColor = System.Drawing.Color.Yellow
+        Me.LabelCap3.Location = New System.Drawing.Point(641, 318)
+        Me.LabelCap3.Name = "LabelCap3"
+        Me.LabelCap3.Size = New System.Drawing.Size(37, 16)
+        Me.LabelCap3.TabIndex = 317
+        Me.LabelCap3.Text = "Other"
+        '
+        'TextCaptionOther
+        '
+        Me.TextCaptionOther.BackColor = System.Drawing.Color.Black
+        Me.TextCaptionOther.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextCaptionOther.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextCaptionOther.ForeColor = System.Drawing.Color.Yellow
+        Me.TextCaptionOther.Location = New System.Drawing.Point(690, 314)
+        Me.TextCaptionOther.Name = "TextCaptionOther"
+        Me.TextCaptionOther.Size = New System.Drawing.Size(162, 26)
+        Me.TextCaptionOther.TabIndex = 316
+        Me.TextCaptionOther.Text = "..."
+        Me.TextCaptionOther.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'BtnMNext
         '
@@ -2276,30 +2300,6 @@ Partial Class MainForm
         Me.Aux3Btn6.Text = "CAM2"
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
-        '
-        'LabelCap3
-        '
-        Me.LabelCap3.AutoSize = True
-        Me.LabelCap3.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelCap3.ForeColor = System.Drawing.Color.Yellow
-        Me.LabelCap3.Location = New System.Drawing.Point(641, 318)
-        Me.LabelCap3.Name = "LabelCap3"
-        Me.LabelCap3.Size = New System.Drawing.Size(37, 16)
-        Me.LabelCap3.TabIndex = 317
-        Me.LabelCap3.Text = "Other"
-        '
-        'TextCaptionOther
-        '
-        Me.TextCaptionOther.BackColor = System.Drawing.Color.Black
-        Me.TextCaptionOther.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextCaptionOther.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextCaptionOther.ForeColor = System.Drawing.Color.Yellow
-        Me.TextCaptionOther.Location = New System.Drawing.Point(690, 314)
-        Me.TextCaptionOther.Name = "TextCaptionOther"
-        Me.TextCaptionOther.Size = New System.Drawing.Size(162, 26)
-        Me.TextCaptionOther.TabIndex = 316
-        Me.TextCaptionOther.Text = "..."
-        Me.TextCaptionOther.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'MainForm
         '

@@ -6,50 +6,60 @@ AtemController
 </name>
 </assembly>
 <members>
+<member name="T:AtemController.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
 <member name="P:AtemController.My.Resources.Resources.ResourceManager">
-	<summary>
+<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.Culture">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.Culture">
+<summary>
   Overrides the current thread's CurrentUICulture property for all
   resource lookups using this strongly typed resource class.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.greenBtn">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.greenBtn">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.greenBtnpush">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.greenBtnpush">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.redBtn">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.redBtn">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.redBtnpush">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.redBtnpush">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.RedGrnBtn">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.RedGrnBtn">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.WhiteBtn">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.WhiteBtn">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.WhiteBtnPush">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.WhiteBtnPush">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AtemController.My.Resources.Resources.yellowBtn">
-	<summary>
+</member>
+<member name="P:AtemController.My.Resources.Resources.yellowBtn">
+<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
-</summary>
-</member><member name="T:AtemController.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
 </member>
 </members>
