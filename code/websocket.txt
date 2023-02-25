@@ -1,0 +1,44 @@
+        Dim websocket As New WebSocket("ws://localhost:4444/")
+        'websocket.Opened += new EventHandler(websocket_Opened);'
+        'websocket.Error += new EventHandler<ErrorEventArgs>(websocket_Error);
+        'websocket.Closed += new EventHandler(websocket_Closed);
+        'websocket.MessageReceived += new EventHandler(websocket_MessageReceived);
+        websocket.Open()
+
+        'websocket.Send("{""request-type"":""GetVersion"",""message-id"":""TEST1""}")
+        websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Scene1"",""message-id"":""TEST1""}")
+
+		
+Private websocket As WebSocket4Net.WebSocket
+Private Sub Button1_Click(sender As Object, ev As EventArgs) Handles Button1.Click
+    websocket = New WebSocket4Net.WebSocket("wss://ws.binaryws.com/websockets/v3")
+    AddHandler websocket.Opened, Sub(s, e) socketOpened(s, e)
+    AddHandler websocket.Error, Sub(s, e) socketError(s, e)
+    AddHandler websocket.Closed, Sub(s, e) socketClosed(s, e)
+    AddHandler websocket.MessageReceived, Sub(s, e) socketMessage(s, e)
+    AddHandler websocket.DataReceived, Sub(s, e) socketDataReceived(s, e)
+
+    websocket.Open()
+
+End Sub
+
+Sub socketOpened(s As Object, e As EventArgs)
+    websocket.Send("{""ticks_history"":""R_50"",""end"":""latest"",""count"":10}")
+End Sub
+
+Sub socketClosed(s As Object, e As EventArgs)
+
+End Sub
+
+Sub socketError(s As Object, e As SuperSocket.ClientEngine.ErrorEventArgs)
+
+End Sub
+
+Sub socketMessage(s As Object, e As WebSocket4Net.MessageReceivedEventArgs)
+    MsgBox(e.Message)
+End Sub
+
+
+Sub socketDataReceived(ss As Object, e As WebSocket4Net.DataReceivedEventArgs)
+
+End Sub
