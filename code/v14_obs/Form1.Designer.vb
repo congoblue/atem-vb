@@ -123,6 +123,7 @@ Partial Class MainForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.LabelCap3 = New System.Windows.Forms.Label()
         Me.TextCaptionOther = New System.Windows.Forms.TextBox()
+        Me.BtnMovePreset = New System.Windows.Forms.Button()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnInp5 = New AtemController.MyButton()
         Me.AuxSel12 = New AtemController.MyButton()
@@ -868,7 +869,7 @@ Partial Class MainForm
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(35, 16)
         Me.Label13.TabIndex = 215
-        Me.Label13.Text = "v14.1"
+        Me.Label13.Text = "v14.2"
         '
         'Button2
         '
@@ -1273,6 +1274,16 @@ Partial Class MainForm
         Me.TextCaptionOther.TabIndex = 316
         Me.TextCaptionOther.Text = "..."
         Me.TextCaptionOther.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'BtnMovePreset
+        '
+        Me.BtnMovePreset.Font = New System.Drawing.Font("Webdings", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.BtnMovePreset.Location = New System.Drawing.Point(1072, 413)
+        Me.BtnMovePreset.Name = "BtnMovePreset"
+        Me.BtnMovePreset.Size = New System.Drawing.Size(50, 50)
+        Me.BtnMovePreset.TabIndex = 318
+        Me.BtnMovePreset.Text = "q"
+        Me.BtnMovePreset.UseVisualStyleBackColor = True
         '
         'BtnMNext
         '
@@ -2307,6 +2318,7 @@ Partial Class MainForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1280, 1024)
+        Me.Controls.Add(Me.BtnMovePreset)
         Me.Controls.Add(Me.LabelCap3)
         Me.Controls.Add(Me.TextCaptionOther)
         Me.Controls.Add(Me.Button9)
@@ -2681,5 +2693,5 @@ Partial Class MainForm
     Private WithEvents LineShape11 As Microsoft.VisualBasic.PowerPacks.LineShape
     Friend WithEvents LabelCap3 As System.Windows.Forms.Label
     Friend WithEvents TextCaptionOther As System.Windows.Forms.TextBox
-
+    Friend WithEvents BtnMovePreset As Button
 End Class

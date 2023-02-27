@@ -98,6 +98,8 @@ Public Class MainForm
     Dim WebsocketID As Integer
     Dim Websocketwait As Boolean
     Dim WebsocketReinitTimer As Integer = 0
+    Dim MovePresetMode As Integer = 0
+    Dim MovePresetFrom As Integer = 0
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -725,6 +727,42 @@ Public Class MainForm
         Dim xt, yt
         Dim i As Integer
         index = Val(Mid(sender.name, 10))
+
+        If MovePresetMode <> 0 Then 'we are moving a preset
+            If MovePresetMode = 1 Then 'select preset to move
+                MovePresetFrom = index
+                MovePresetMode = 2
+                CType(Me.Controls.Find("BtnPreset" & MovePresetFrom, False)(0), AtemController.MyButton).BackColor = Color.Orange
+                For i = 1 To 16
+                    If i <> index Then CType(Me.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Red
+                Next
+                Exit Sub
+            End If
+            If MovePresetMode = 2 Then 'select where its going
+                If PresetLive = False Then ad = addr Else ad = liveaddr
+                'swap caption
+                Dim tmp
+                tmp = PresetCaption((ad - 1) * 16 + (MovePresetFrom - 1)) : PresetCaption((ad - 1) * 16 + (MovePresetFrom - 1)) = PresetCaption((ad - 1) * 16 + (index - 1)) : PresetCaption((ad - 1) * 16 + (index - 1)) = tmp
+                tmp = PresetContent((ad - 1) * 16 + MovePresetFrom - 1) : PresetContent((ad - 1) * 16 + MovePresetFrom - 1) = PresetContent((ad - 1) * 16 + index - 1) : PresetContent((ad - 1) * 16 + index - 1) = tmp
+                tmp = PresetSize((ad - 1) * 16 + MovePresetFrom - 1) : PresetSize((ad - 1) * 16 + MovePresetFrom - 1) = PresetSize((ad - 1) * 16 + index - 1) : PresetSize((ad - 1) * 16 + index - 1) = tmp
+                tmp = PresetAuto((ad - 1) * 16 + MovePresetFrom - 1) : PresetAuto((ad - 1) * 16 + MovePresetFrom - 1) = PresetAuto((ad - 1) * 16 + index - 1) : PresetAuto((ad - 1) * 16 + index - 1) = tmp
+                'swap positions
+                tmp = PresetZPos((ad - 1) * 16 + MovePresetFrom - 1) : PresetZPos((ad - 1) * 16 + MovePresetFrom - 1) = PresetZPos((ad - 1) * 16 + index - 1) : PresetZPos((ad - 1) * 16 + index - 1) = tmp
+                tmp = PresetXPos((ad - 1) * 16 + MovePresetFrom - 1) : PresetXPos((ad - 1) * 16 + MovePresetFrom - 1) = PresetXPos((ad - 1) * 16 + index - 1) : PresetXPos((ad - 1) * 16 + index - 1) = tmp
+                tmp = PresetYPos((ad - 1) * 16 + MovePresetFrom - 1) : PresetYPos((ad - 1) * 16 + MovePresetFrom - 1) = PresetYPos((ad - 1) * 16 + index - 1) : PresetYPos((ad - 1) * 16 + index - 1) = tmp
+                tmp = PresetFocusAuto((ad - 1) * 16 + MovePresetFrom - 1) : PresetFocusAuto((ad - 1) * 16 + MovePresetFrom - 1) = PresetFocusAuto((ad - 1) * 16 + index - 1) : PresetFocusAuto((ad - 1) * 16 + index - 1) = tmp
+                WritePresetFile()
+                MovePresetMode = 0
+                BtnMovePreset.ForeColor = Color.Black
+                For i = 1 To 16
+                    CType(Me.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Black
+                Next
+                UpdatePresets()
+                Exit Sub
+            End If
+
+        End If
+
         If savemode = False Then
             If legendmode = False Then
                 'If AutoSongPreload = True And AutoPreset = 0 Then 'if in autosongmode and it has picked a preload, but user is picking a different preset, cancel the preload
@@ -1225,6 +1263,16 @@ Public Class MainForm
         Else
             BtnPresetSave.ForeColor = Color.Black
             savemode = False
+        End If
+    End Sub
+
+    Private Sub BtnMovePreset_Click(sender As Object, e As EventArgs) Handles BtnMovePreset.Click
+        If (MovePresetMode = 0) Then
+            MovePresetMode = 1
+            BtnMovePreset.ForeColor = Color.Red
+        Else
+            MovePresetMode = 0
+            BtnMovePreset.ForeColor = Color.Black
         End If
     End Sub
 
@@ -3270,6 +3318,8 @@ Public Class MainForm
     Private Sub Label26_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LabelCap2.Click
 
     End Sub
+
+
 
     Private Sub ShapeContainer1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShapeContainer1.Load
 
