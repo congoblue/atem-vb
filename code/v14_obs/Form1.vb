@@ -472,17 +472,24 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim i As Integer
 
+        'hold down ctrl key on boot to skip camera connections 
         If My.Computer.Keyboard.CtrlKeyDown Then 'Or My.Computer.Keyboard.ShiftKeyDown Then
             ctrlkey = True
         Else
             ctrlkey = False
         End If
 
+        'attempt to open app on the 1024x600 usb touch screen. If not found, open on the main screen as a sizeable window
+        Dim scrfound = False
         If Screen.AllScreens.Count > 1 Then
-            Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
+            For Each scr In Screen.AllScreens
+                If scr.Bounds.Width = 1024 And scr.Bounds.Height = 600 Then Me.Bounds = scr.WorkingArea : scrfound = True
+            Next
+            'Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
             'Windows.Forms.Cursor.Hide()
             Me.Cursor = Cursors.Cross
-        Else
+        End If
+        If scrfound = False Then
             Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
         End If
 
