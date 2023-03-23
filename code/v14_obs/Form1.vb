@@ -45,8 +45,10 @@ Public Class MainForm
     Dim DelayAddr As Integer
     Dim nextpreview As Integer
     Dim transitionwait As Integer
-    Dim SerialInBuf(16) As Byte
+    Dim SerialInBuf(32) As Byte
     Dim SerialInBufPtr As Byte
+    Dim ControlKeyState As Integer
+    Dim ControlLedState(16) As Integer
     Dim presetstate(8) As Integer
     Dim CamIris(8) As Integer
     Dim CamAgc(8) As Integer
@@ -109,6 +111,8 @@ Public Class MainForm
     Dim PrevJoyZ As Byte
     Dim Key(3) As Byte
     Dim REncode As Byte
+    Dim EncoderA As Integer
+    Dim EncoderB As Integer
     Dim JoystickActive As Boolean
     Dim PrevZoom As Byte
     Dim PrevEncode As Byte
@@ -2672,11 +2676,41 @@ Public Class MainForm
     '#########################################################################################################################################################################
 
     Private Sub SerialPort1_DataReceived(ByVal sender As Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        Dim x As Byte, k As Byte
+        Dim x As Byte, k As Byte, newserial As Byte
         Dim ad As Integer
         Dim op As String
         CheckForIllegalCrossThreadCalls = False
         If SerialPort1.IsOpen = False Then Exit Sub
+
+        newserial = 0
+        While SerialPort1.BytesToRead > 0
+            x = SerialPort1.ReadByte
+            If (x = 2) Then
+                SerialInBufPtr = 0
+            ElseIf (x = 3) Then
+                newserial = 1
+                Exit While
+            Else
+                If (SerialInBufPtr < 32) Then
+                    SerialInBuf(SerialInBufPtr) = x And 127
+                    SerialInBufPtr = SerialInBufPtr + 1
+                End If
+            End If
+        End While
+
+        If newserial = 1 Then
+            ControlKeyState = SerialInBuf(0) + (SerialInBuf(1) * 128) + (SerialInBuf(2) * 512)
+            EncoderA = SerialInBuf(3) + (SerialInBuf(4) * 128) + (SerialInBuf(5) * 512)
+            EncoderB = SerialInBuf(6) + (SerialInBuf(7) * 128) + (SerialInBuf(8) * 512)
+            JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
+            JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
+            JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
+
+            TextBox3.Text = ControlKeyState
+        End If
+
+        Exit Sub
+
         While SerialPort1.BytesToRead > 0
             x = SerialPort1.ReadByte
             If (x = 255) Then

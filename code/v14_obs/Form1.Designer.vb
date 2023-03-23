@@ -215,6 +215,7 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -2312,12 +2313,21 @@ Partial Class MainForm
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
         '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(308, 394)
+        Me.TextBox3.Multiline = True
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(198, 89)
+        Me.TextBox3.TabIndex = 319
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1280, 1024)
+        Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.BtnMovePreset)
         Me.Controls.Add(Me.LabelCap3)
         Me.Controls.Add(Me.TextCaptionOther)
@@ -2694,4 +2704,5 @@ Partial Class MainForm
     Friend WithEvents LabelCap3 As System.Windows.Forms.Label
     Friend WithEvents TextCaptionOther As System.Windows.Forms.TextBox
     Friend WithEvents BtnMovePreset As Button
+    Friend WithEvents TextBox3 As TextBox
 End Class
