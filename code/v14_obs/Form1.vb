@@ -1,11 +1,15 @@
 ﻿Imports System.Net.Sockets
 Imports System.Net
 Imports System.Text
+Imports System.IO
 Imports System.IO.Ports
 Imports System.Threading
 Imports System.ComponentModel
 Imports System.Web.Script.Serialization
 Imports WebSocket4Net
+
+
+
 
 Public Class MainForm
 
@@ -45,10 +49,6 @@ Public Class MainForm
     Dim DelayAddr As Integer
     Dim nextpreview As Integer
     Dim transitionwait As Integer
-    Dim SerialInBuf(32) As Byte
-    Dim SerialInBufPtr As Byte
-    Dim ControlKeyState As Integer
-    Dim ControlLedState(16) As Integer
     Dim presetstate(8) As Integer
     Dim CamIris(8) As Integer
     Dim CamAgc(8) As Integer
@@ -122,6 +122,12 @@ Public Class MainForm
     Dim LastKey As Byte
     Dim serialcount As Byte = 0
 
+    Dim SerialInBuf(32) As Byte
+    Dim ControllerLedState(16) As Byte
+    Dim SerialInBufPtr As Byte
+    Dim ControlKeyState As Integer
+    Dim PrevControlKeyState As Integer = 0
+
     Dim prevmdir As Integer
     Dim prevxspeed As Integer
     Dim prevyspeed As Integer
@@ -190,6 +196,17 @@ Public Class MainForm
             Application.DoEvents()
         End While
     End Sub
+
+    Private Function GetWebRequest(url As String)
+        Dim request As WebRequest = WebRequest.Create(url)
+        request.Timeout = 200
+        Dim resp As WebResponse = request.GetResponse()
+        Dim T As String
+        Using r As StreamReader = New StreamReader(resp.GetResponseStream(), Encoding.ASCII)
+            T = r.ReadToEnd()
+        End Using
+        GetWebRequest = T
+    End Function
 
     Private Sub ReadMediaSources()
         ListBoxMedia.Items.Clear
@@ -273,7 +290,7 @@ Public Class MainForm
     End Sub
 
     Private Function SendCamCmd(ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
+        'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
         If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
         'If CamCmdPending = True Then Return ""
@@ -282,18 +299,19 @@ Public Class MainForm
         result = ""
         Try
             'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            'result = webClient.DownloadString(url)
+            result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
             If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
     End Function
 
     Private Function SendCamCmdNoHash(ByVal cmd As String, ByVal typ As String)
-        Dim webClient As New System.Net.WebClient
+        'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
         If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
         'If CamCmdPending = True Then Return ""
@@ -303,18 +321,19 @@ Public Class MainForm
         result = ""
         Try
             'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            'result = webClient.DownloadString(url)
+            result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
             If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
     End Function
 
     Private Function SendCamCmdAddr(ByVal caddr As Integer, ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
+        'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
         If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
         'If CamCmdPending = True Then Return ""
@@ -323,17 +342,19 @@ Public Class MainForm
         result = ""
         Try
             'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            'result = webClient.DownloadString(url)
+            result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
             If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
     End Function
     Private Function SendCamCmdAddrNoHash(ByVal caddr As Integer, ByVal cmd As String, ByVal typ As String)
-        Dim webClient As New System.Net.WebClient
+        'Dim webClient As New System.Net.WebClient
+        'Dim webClient As New WebClientEx
         Dim url As String, result As String
         If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
         'If CamCmdPending = True Then Return ""
@@ -342,20 +363,22 @@ Public Class MainForm
         If (typ = "") Then typ = "aw_ptz" 'aw_ptz for position, aw_cam for cam settings
         url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & typ & "?cmd=" & cmd & "&res=1"
         result = ""
+        'webClient.Timeout = 500
         Try
             'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            'result = webClient.DownloadString(url)
+            result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
             If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
     End Function
 
     Function SendCamQuery(ByVal caddr As Integer, ByVal cmd As String)
-        Dim webClient As New System.Net.WebClient
+        'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
         If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
         'If CamCmdPending = True Then Return ""
@@ -364,11 +387,12 @@ Public Class MainForm
         result = ""
         Try
             'CamCmdPending = True
-            result = webClient.DownloadString(url)
+            'result = webClient.DownloadString(url)
+            result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
             If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
@@ -677,34 +701,15 @@ Public Class MainForm
     End Sub
 
     Public Sub ComportOpen()
-        'open com port for camera comms
-        'If _serialPort.IsOpen Then _serialPort.Close()
-        '_serialPort.PortName = GetSetting("Atemswitcher", "Comm", "1", "COM1")
-        '_serialPort.BaudRate = 9600
-        '_serialPort.Parity = Parity.None
-        '_serialPort.DataBits = 8
-        '_serialPort.StopBits = StopBits.One
-        '_serialPort.Handshake = Handshake.None
-        '_serialPort.DiscardNull = False
-
-        ' Set the read/write timeouts
-        '_serialPort.ReadTimeout = 500
-        '_serialPort.WriteTimeout = 500
-        'camconnect = True
-        'Try
-        ' _serialPort.Open()
-        'Catch
-        'MsgBox("The camera com port " & _serialPort.PortName & " cannot be opened.")
-        'camconnect = False
-        'End Try
-
         'open com port for controller comms
         If SerialPort1.IsOpen Then SerialPort1.Close()
-        SerialPort1.BaudRate = 9600
+        SerialPort1.BaudRate = 19200
         SerialPort1.PortName = GetSetting("Atemswitcher", "Comm", "2", "COM2")
         Try
             SerialPort1.Open()
         Catch
+            'TODO: if this fails then scan all the ports looking for the controller. If that fails then show status controller not connected
+            'but retry the connect every 10sec
             MsgBox("The controller com port " & SerialPort1.PortName & " cannot be opened.")
         End Try
     End Sub
@@ -964,6 +969,17 @@ Public Class MainForm
             BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
         End If
     End Sub
+    '-----------------------------------------------------
+    ' Set Leds on controller buttons
+    '-----------------------------------------------------
+    Sub SetControllerLedState(op)
+        ControllerLedState(op - 1) = 0
+        If addr = op Then ControllerLedState(op - 1) = ControllerLedState(op - 1) + 2 'green
+        If liveaddr = op Then ControllerLedState(op - 1) = ControllerLedState(op - 1) + 1 'red
+    End Sub
+    '-----------------------------------------------------
+    ' Set active outputs and update button colours
+    '-----------------------------------------------------
     Sub setactive()
 
         BtnCam1.BackColor = Color.White
@@ -1005,6 +1021,10 @@ Public Class MainForm
             If liveaddr = 8 Then BtnInp4.BackColor = Color.Red
             If liveaddr = 9 Then BtnInp5.BackColor = Color.Red
         End If
+        'controller button LEDs
+        For i = 1 To 10
+            SetControllerLedState(i)
+        Next
         'tally
         If Globals.TallyMode Then
             SendCamCmdAddr(nextpreview, "DA0")
@@ -1562,6 +1582,7 @@ Public Class MainForm
             End If
         End If
         If (overlayactive = True) Then BtnOverlay.BackColor = Color.Red Else BtnOverlay.BackColor = Color.White
+        If (overlayactive = True) Then ControllerLedState(10) = 1 : Else ControllerLedState(10) = 0
     End Sub
 
     Private Sub BtnMediaOverlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMediaOverlay.Click
@@ -1596,7 +1617,8 @@ Public Class MainForm
             End If
 
 
-            If (mediaoverlayactive = True) Then BtnMediaOverlay.BackColor = Color.Red Else BtnMediaOverlay.BackColor = Color.White
+        If (mediaoverlayactive = True) Then BtnMediaOverlay.BackColor = Color.Red Else BtnMediaOverlay.BackColor = Color.White
+        If (mediaoverlayactive = True) Then ControllerLedState(11) = 1 : Else ControllerLedState(11) = 0
     End Sub
 
     Private Sub SetCaptionText()
@@ -2674,12 +2696,27 @@ Public Class MainForm
     '#########################################################################################################################################################################
     ' SERIAL PORT (PTZ controller)
     '#########################################################################################################################################################################
+    Private Sub SendSerial()
+        Dim b(32) As Byte
+        b(0) = 2  'start
+        b(1) = 128 + ControllerLedState(0) + 8 * ControllerLedState(1)
+        b(2) = 128 + ControllerLedState(2) + 8 * ControllerLedState(3)
+        b(3) = 128 + ControllerLedState(4) + 8 * ControllerLedState(5)
+        b(4) = 128 + ControllerLedState(6) + 8 * ControllerLedState(7)
+        b(5) = 128 + ControllerLedState(8) + 8 * ControllerLedState(9)
+        b(6) = 128 + ControllerLedState(10) + 8 * ControllerLedState(11)
+        b(7) = 128 + ControllerLedState(12) + 8 * ControllerLedState(13)
+        b(8) = 128 + ControllerLedState(14)
+        b(9) = 128 'encoder reset bits 0..1
+        b(10) = 3  'end
+        SerialPort1.Write(b, 0, 11)
+    End Sub
 
     Private Sub SerialPort1_DataReceived(ByVal sender As Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
         Dim x As Byte, k As Byte, newserial As Byte
         Dim ad As Integer
         Dim op As String
-        CheckForIllegalCrossThreadCalls = False
+        CheckForIllegalCrossThreadCalls = False 'allows us to write diagnostics to textbox on form
         If SerialPort1.IsOpen = False Then Exit Sub
 
         newserial = 0
@@ -2690,6 +2727,8 @@ Public Class MainForm
             ElseIf (x = 3) Then
                 newserial = 1
                 Exit While
+            ElseIf (x = &H57) Then
+                'TextBox2.Text = "ACK!"
             Else
                 If (SerialInBufPtr < 32) Then
                     SerialInBuf(SerialInBufPtr) = x And 127
@@ -2705,9 +2744,41 @@ Public Class MainForm
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
+            SendSerial() 'send back the button illumination info
 
-            TextBox3.Text = ControlKeyState
+            If (ControlKeyState <> PrevControlKeyState) Then
+                If (ControlKeyState > PrevControlKeyState) Then
+                    KeyHit = True
+                    ad = ControlKeyState Xor PrevControlKeyState
+                    For k = 0 To 15
+                        If (ad And (2 ^ k)) Then LastKey = k + 1
+                    Next
+                End If
+                PrevControlKeyState = ControlKeyState
+
+                If KeyHit Then
+                    If LastKey = 1 Then BtnCam1.PerformClick()
+                    If LastKey = 2 Then BtnCam2.PerformClick()
+                    If LastKey = 3 Then BtnCam3.PerformClick()
+                    If LastKey = 4 Then BtnCam4.PerformClick()
+                    If LastKey = 5 Then BtnInp1.PerformClick()
+                    If LastKey = 6 Then BtnInp2.PerformClick()
+                    If LastKey = 7 Then BtnInp3.PerformClick()
+                    If LastKey = 8 Then BtnInp4.PerformClick()
+                    If LastKey = 9 Then BtnInp5.PerformClick()
+                    If LastKey = 10 Then BtnCam2.PerformClick()
+
+                    If LastKey = 11 Then BtnOverlay.PerformClick()
+                    If LastKey = 12 Then BtnMediaOverlay.PerformClick()
+                    If LastKey = 13 Then BtnTransition.PerformClick()
+                    If LastKey = 14 Then BtnCut.PerformClick()
+
+
+                End If
+
+            End If
         End If
+
 
         Exit Sub
 
