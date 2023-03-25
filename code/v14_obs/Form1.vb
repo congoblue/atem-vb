@@ -167,6 +167,103 @@ Public Class MainForm
         mLog.Text = mLog.Text & Now & "   " & pvMsg
     End Sub
 
+
+    '--------------------------------------------------------------------------------------------------------------
+    ' Main form load / dispose
+    '--------------------------------------------------------------------------------------------------------------
+    Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Dim i As Integer
+
+        'hold down ctrl key on boot to skip camera connections 
+        If My.Computer.Keyboard.CtrlKeyDown Then 'Or My.Computer.Keyboard.ShiftKeyDown Then
+            ctrlkey = True
+        Else
+            ctrlkey = False
+        End If
+
+        'attempt to open app on the 1024x600 usb touch screen. If not found, open on the main screen as a sizeable window
+        Dim scrfound = False
+        If Screen.AllScreens.Count > 1 Then
+            For Each scr In Screen.AllScreens
+                If scr.Bounds.Width = 1024 And scr.Bounds.Height = 600 Then Me.Bounds = scr.WorkingArea : scrfound = True
+            Next
+            'Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
+            'Windows.Forms.Cursor.Hide()
+            Me.Cursor = Cursors.Cross
+        End If
+        If scrfound = False Then
+            Me.Height = 600 : Me.Width = 1024 'size the same as it would be on the mini touch screen
+            Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
+        End If
+
+        OpenWebSocket()
+
+        gain(1) = 4 : gain(2) = 4 : gain(3) = 4 : gain(4) = 4
+        wblock(1) = 0 : wblock(2) = 0 : wblock(3) = 0 : wblock(4) = 0
+        addr = 2 : liveaddr = 1 : nextpreview = 2
+
+        For i = 1 To 4 'these will be loaded from the camera settings eventually
+            CamIris(i) = 0
+            CamAgc(i) = 0
+            CamShutter(i) = 0
+            CamGain(i) = 0
+            CamWBRed(i) = 0
+            CamWBBlue(i) = 20
+            CamFocusManual(i) = 0
+        Next i
+
+        'For i = 0 To 128
+        'joyconvert(i) = Int((Math.Log(i + 1) / (Math.Log(128))) * 50)
+        'Debug.Print(joyconvert(i) & ",")
+        'Next
+
+        Globals.TallyMode = GetSetting("Atemswitcher", "Set", "Tally", False)
+        Globals.AutoSwap = GetSetting("Atemswitcher", "Set", "Autoswap", True)
+        Globals.PresetFilePath = GetSetting("Atemswitcher", "Set", "PresetsPath", Mid(Application.ExecutablePath, 1, InStrRev(Application.ExecutablePath, "\")))
+        If Globals.PresetFilePath = "" Then Globals.PresetFilePath = Mid(Application.ExecutablePath, 1, InStrRev(Application.ExecutablePath, "\"))
+        Globals.PresetFileName = GetSetting("Atemswitcher", "Set", "PresetsFile", "default.aps")
+        If InStr(Globals.PresetFileName, "\") Then Globals.PresetFileName = Mid(Globals.PresetFileName, InStrRev(Globals.PresetFileName, "\") + 1)
+        If Globals.PresetFileName = "" Then Globals.PresetFileName = "default.aps"
+        Globals.CamInvert(1) = GetSetting("Atemswitcher", "Set", "Caminvert1", False)
+        Globals.CamInvert(2) = GetSetting("Atemswitcher", "Set", "Caminvert2", False)
+        Globals.CamInvert(3) = GetSetting("Atemswitcher", "Set", "Caminvert3", False)
+        Globals.CamInvert(4) = GetSetting("Atemswitcher", "Set", "Caminvert4", False)
+
+        Globals.Cam1Dis = GetSetting("Atemswitcher", "Set", "Cam1Dis", False)
+        Globals.Cam2Dis = GetSetting("Atemswitcher", "Set", "Cam2Dis", False)
+        Globals.Cam3Dis = GetSetting("Atemswitcher", "Set", "Cam3Dis", False)
+        Globals.Cam4Dis = GetSetting("Atemswitcher", "Set", "Cam4Dis", False)
+        Globals.Cam5Dis = GetSetting("Atemswitcher", "Set", "Cam5Dis", False)
+
+        Globals.CamIP(1) = (GetSetting("Atemswitcher", "CamIP", "1", "192.168.1.91"))
+        Globals.CamIP(2) = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.92"))
+        Globals.CamIP(3) = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.93"))
+        Globals.CamIP(4) = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.94"))
+        Globals.CamIP(7) = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
+
+        Globals.Cliptime(1) = (GetSetting("Atemswitcher", "Cliptime", "1", "60"))
+        Globals.Cliptime(2) = (GetSetting("Atemswitcher", "Cliptime", "2", "60"))
+        Globals.Cliptime(3) = (GetSetting("Atemswitcher", "Cliptime", "3", "60"))
+        Globals.Cliptime(4) = (GetSetting("Atemswitcher", "Cliptime", "4", "60"))
+
+        BtnFast.BackColor = Color.Green
+        BtnLiveSlow.BackColor = Color.Green
+        BtnAuxLock.BackColor = Color.Red
+        SetDefaultPresets()
+        ReadPresetFile()
+        ShowMode(1)
+
+        'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
+
+    End Sub
+
+    Private Sub MainForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        If _serialPort.IsOpen Then _serialPort.Close()
+        If SerialPort1.IsOpen Then SerialPort1.Close()
+        'BackgroundWorker1.CancelAsync()
+    End Sub
+
+
     Function ObsSourceName(oaddr As Integer) As String
         ObsSourceName = ""
         If oaddr = 1 Then ObsSourceName = "Cam1"
@@ -406,180 +503,6 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub MainForm_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        If _serialPort.IsOpen Then _serialPort.Close()
-        If SerialPort1.IsOpen Then SerialPort1.Close()
-        'BackgroundWorker1.CancelAsync()
-    End Sub
-
-    Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        Debug.Print(e.KeyCode)
-        Dim op As String
-
-        'If ((Not TextLeaderName.Focus) And (Not TextPreacherName.Focus)) Then
-        If False Then 'temporarily disable hotkeys
-
-            If e.KeyCode = 49 Then BtnCam1_Click(BtnCam1, Nothing)
-            If e.KeyCode = 50 Then BtnCam1_Click(BtnCam2, Nothing)
-            If e.KeyCode = 51 Then BtnCam1_Click(BtnCam3, Nothing)
-            If e.KeyCode = 52 Then BtnCam1_Click(BtnCam4, Nothing)
-            If e.KeyCode = 53 Then BtnInp_Click(BtnInp1, Nothing)
-            If e.KeyCode = 54 Then BtnInp_Click(BtnInp2, Nothing)
-            If e.KeyCode = 55 Then BtnInp_Click(BtnInp3, Nothing)
-            If e.KeyCode = 56 Then BtnInp_Click(BtnInp4, Nothing)
-            If e.KeyCode = Keys.Q Then BtnPreset_Click(BtnPreset1, Nothing)
-            If e.KeyCode = Keys.W Then BtnPreset_Click(BtnPreset2, Nothing)
-            If e.KeyCode = Keys.E Then BtnPreset_Click(BtnPreset3, Nothing)
-            If e.KeyCode = Keys.R Then BtnPreset_Click(BtnPreset4, Nothing)
-            If e.KeyCode = Keys.A Then BtnPreset_Click(BtnPreset5, Nothing)
-            If e.KeyCode = Keys.S Then BtnPreset_Click(BtnPreset6, Nothing)
-            If e.KeyCode = Keys.D Then BtnPreset_Click(BtnPreset7, Nothing)
-            If e.KeyCode = Keys.F Then BtnPreset_Click(BtnPreset8, Nothing)
-            If e.KeyCode = Keys.Z Then BtnPreset_Click(BtnPreset9, Nothing)
-            If e.KeyCode = Keys.X Then BtnPreset_Click(BtnPreset10, Nothing)
-            If e.KeyCode = Keys.C Then BtnPreset_Click(BtnPreset11, Nothing)
-            If e.KeyCode = Keys.V Then BtnPreset_Click(BtnPreset12, Nothing)
-            'If e.KeyCode = Keys.C Then CheckBoxCU.Checked = True : BtnPreset_Click(BtnPreset9, Nothing)
-            If e.KeyCode = 33 Then TextBox4.Text = Val(TextBox4.Text - 1) : BtnIrisDown_Click(Nothing, Nothing)
-            If e.KeyCode = 34 Then TextBox4.Text = Val(TextBox4.Text + 1) : BtnIrisUp_Click(Nothing, Nothing)
-            If e.KeyCode = 32 Then BtnTransition_Click(Nothing, Nothing)
-            If e.KeyCode = Asc(".") Then BtnCut_Click(Nothing, Nothing)
-            If e.KeyCode = 17 Or e.KeyCode = Keys.O Then BtnOverlay_Click(Nothing, Nothing)
-            If e.KeyCode = 100 Then 'left cursor (numeric keypad only)
-                If e.Modifiers = Keys.Control Then op = "PTS2050" Else op = "PTS4050"
-                If kc <> 37 Then SendCamCmd(op)
-                kc = 37
-                e.Handled = True
-            End If
-            If e.KeyCode = 102 Then 'right cursor
-                If e.Modifiers = Keys.Control Then op = "PTS8050" Else op = "PTS6050"
-                If kc <> 39 Then SendCamCmd(op)
-                kc = 39
-                e.Handled = True
-            End If
-            If e.KeyCode = 104 Then 'up cursor
-                If e.Modifiers = Keys.Control Then op = "PTS5020" Else op = "PTS5040"
-                If kc <> 38 Then SendCamCmd(op)
-                kc = 38
-                e.Handled = True
-            End If
-            If e.KeyCode = 98 Then 'down cursor
-                If e.Modifiers = Keys.Control Then op = "PTS5080" Else op = "PTS5060"
-                If kc <> 40 Then SendCamCmd(op)
-                kc = 40
-                e.Handled = True
-            End If
-            If e.KeyCode = 109 Then 'pgup
-                If e.Modifiers = Keys.Control Then op = "Z10" Else op = "Z40"
-                If kc <> 33 Then SendCamCmd(op)
-                kc = 33
-                e.Handled = True
-            End If
-            If e.KeyCode = 107 Then 'pgup
-                If e.Modifiers = Keys.Control Then op = "Z90" Else op = "Z60"
-                If kc <> 34 Then SendCamCmd(op)
-                kc = 34
-                e.Handled = True
-            End If
-        End If
-
-    End Sub
-
-    Private Sub MainForm_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
-        If kc <> 0 Then
-            If (kc = 33) Or kc = 34 Then
-                SendCamCmd("Z50") 'was zooming
-            Else
-                SendCamCmd("PTS5050") 'was panning
-            End If
-        End If
-        kc = 0
-    End Sub
-
-
-    Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim i As Integer
-
-        'hold down ctrl key on boot to skip camera connections 
-        If My.Computer.Keyboard.CtrlKeyDown Then 'Or My.Computer.Keyboard.ShiftKeyDown Then
-            ctrlkey = True
-        Else
-            ctrlkey = False
-        End If
-
-        'attempt to open app on the 1024x600 usb touch screen. If not found, open on the main screen as a sizeable window
-        Dim scrfound = False
-        If Screen.AllScreens.Count > 1 Then
-            For Each scr In Screen.AllScreens
-                If scr.Bounds.Width = 1024 And scr.Bounds.Height = 600 Then Me.Bounds = scr.WorkingArea : scrfound = True
-            Next
-            'Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
-            'Windows.Forms.Cursor.Hide()
-            Me.Cursor = Cursors.Cross
-        End If
-        If scrfound = False Then
-            Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
-        End If
-
-        OpenWebSocket()
-
-        gain(1) = 4 : gain(2) = 4 : gain(3) = 4 : gain(4) = 4
-        wblock(1) = 0 : wblock(2) = 0 : wblock(3) = 0 : wblock(4) = 0
-        addr = 2 : liveaddr = 1 : nextpreview = 2
-
-        For i = 1 To 4 'these will be loaded from the camera settings eventually
-            CamIris(i) = 0
-            CamAgc(i) = 0
-            CamShutter(i) = 0
-            CamGain(i) = 0
-            CamWBRed(i) = 0
-            CamWBBlue(i) = 20
-            CamFocusManual(i) = 0
-        Next i
-
-        'For i = 0 To 128
-        'joyconvert(i) = Int((Math.Log(i + 1) / (Math.Log(128))) * 50)
-        'Debug.Print(joyconvert(i) & ",")
-        'Next
-
-        Globals.TallyMode = GetSetting("Atemswitcher", "Set", "Tally", False)
-        Globals.AutoSwap = GetSetting("Atemswitcher", "Set", "Autoswap", True)
-        Globals.PresetFilePath = GetSetting("Atemswitcher", "Set", "PresetsPath", Mid(Application.ExecutablePath, 1, InStrRev(Application.ExecutablePath, "\")))
-        If Globals.PresetFilePath = "" Then Globals.PresetFilePath = Mid(Application.ExecutablePath, 1, InStrRev(Application.ExecutablePath, "\"))
-        Globals.PresetFileName = GetSetting("Atemswitcher", "Set", "PresetsFile", "default.aps")
-        If InStr(Globals.PresetFileName, "\") Then Globals.PresetFileName = Mid(Globals.PresetFileName, InStrRev(Globals.PresetFileName, "\") + 1)
-        If Globals.PresetFileName = "" Then Globals.PresetFileName = "default.aps"
-        Globals.CamInvert(1) = GetSetting("Atemswitcher", "Set", "Caminvert1", False)
-        Globals.CamInvert(2) = GetSetting("Atemswitcher", "Set", "Caminvert2", False)
-        Globals.CamInvert(3) = GetSetting("Atemswitcher", "Set", "Caminvert3", False)
-        Globals.CamInvert(4) = GetSetting("Atemswitcher", "Set", "Caminvert4", False)
-
-        Globals.Cam1Dis = GetSetting("Atemswitcher", "Set", "Cam1Dis", False)
-        Globals.Cam2Dis = GetSetting("Atemswitcher", "Set", "Cam2Dis", False)
-        Globals.Cam3Dis = GetSetting("Atemswitcher", "Set", "Cam3Dis", False)
-        Globals.Cam4Dis = GetSetting("Atemswitcher", "Set", "Cam4Dis", False)
-        Globals.Cam5Dis = GetSetting("Atemswitcher", "Set", "Cam5Dis", False)
-
-        Globals.CamIP(1) = (GetSetting("Atemswitcher", "CamIP", "1", "192.168.1.91"))
-        Globals.CamIP(2) = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.92"))
-        Globals.CamIP(3) = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.93"))
-        Globals.CamIP(4) = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.94"))
-        Globals.CamIP(7) = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
-
-        Globals.Cliptime(1) = (GetSetting("Atemswitcher", "Cliptime", "1", "60"))
-        Globals.Cliptime(2) = (GetSetting("Atemswitcher", "Cliptime", "2", "60"))
-        Globals.Cliptime(3) = (GetSetting("Atemswitcher", "Cliptime", "3", "60"))
-        Globals.Cliptime(4) = (GetSetting("Atemswitcher", "Cliptime", "4", "60"))
-
-        BtnFast.BackColor = Color.Green
-        BtnLiveSlow.BackColor = Color.Green
-        BtnAuxLock.BackColor = Color.Red
-        SetDefaultPresets()
-        ReadPresetFile()
-
-        'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
-
-    End Sub
 
     '----------------------Read camera states back from cameras-----------------------------------------------------
     Sub ReadbackCameraStates(ByVal ta As Integer)
@@ -1653,11 +1576,11 @@ Public Class MainForm
         'ExecuteLua("ATEMMixerMPSetMediaIndex(1,2," & mediaindex & ")")
     End Sub
 
-    Private Sub TextLeaderName_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TextLeaderName.LostFocus
+    Private Sub TextLeaderName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
         If mediaindex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
     End Sub
 
-    Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMPrev.Click
+    Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Mixer output"",""message-id"":""TEST1""}")
         If ListBoxMedia.Items.Count = 0 Then Exit Sub
         If MediaItem > 0 Then
@@ -1668,7 +1591,7 @@ Public Class MainForm
             ListBoxMedia.Items.Item(MediaItem) = ListBoxMedia.Items.Item(MediaItem) & "*"
         End If
     End Sub
-    Private Sub BtnMNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMNext.Click
+    Private Sub BtnMNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Loop"",""message-id"":""TEST1""}")
         If ListBoxMedia.Items.Count = 0 Then Exit Sub
         If MediaItem < ListBoxMedia.Items.Count - 1 Then
@@ -2533,7 +2456,7 @@ Public Class MainForm
 
 
 
-    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSBroadcast.Click
+    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'Dim ct As Integer
         'OBSResponse = ""
         'websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
@@ -2558,7 +2481,7 @@ Public Class MainForm
         While OBSResponse = "" And ct < 1000000 : ct = ct + 1 : End While
 
     End Sub
-    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSRecord.Click
+    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'websocket.Send("{""request-type"":""StartRecording"",""message-id"":""TEST1""}")
         'Dim ct As Integer
         'OBSResponse = ""
@@ -3423,18 +3346,96 @@ Public Class MainForm
     End Sub
 
 
+    '----------------------------------------------------------
+    ' display mode buttons
+    '----------------------------------------------------------
+    Sub ShowMode(mode)
+        ModeBtnPresets.BackColor = Color.White
+        ModeBtnCam.BackColor = Color.White
+        ModeBtnSettings.BackColor = Color.White
+        If (mode = 1) Then
+            ModeBtnPresets.BackColor = Color.Red
+            PresetPanel.Visible = True
+            PresetPanel.Top = 0 : PresetPanel.Left = 120
+            CamPanel.Visible = False
+            SettingsPanel.Visible = False
+            LineShapeMode1.Y2 = 0
+            LineShapeMode2.Y1 = 110
+            LineShapeMode3.Y1 = 110 : LineShapeMode3.Y2 = 110
+            LineShapeMode4.Y1 = 110 : LineShapeMode4.Y2 = 110
+        End If
+        If (mode = 2) Then
+            ModeBtnCam.BackColor = Color.Red
+            PresetPanel.Visible = False
+            CamPanel.Visible = True
+            CamPanel.Top = 0 : CamPanel.Left = 120
+            SettingsPanel.Visible = False
+            LineShapeMode1.Y2 = 110
+            LineShapeMode2.Y1 = 220
+            LineShapeMode3.Y1 = 110 : LineShapeMode3.Y2 = 110
+            LineShapeMode4.Y1 = 220 : LineShapeMode4.Y2 = 220
+        End If
+        If (mode = 3) Then
+            ModeBtnSettings.BackColor = Color.Red
+            PresetPanel.Visible = False
+            CamPanel.Visible = False
+            SettingsPanel.Visible = True
+            SettingsPanel.Top = 0 : SettingsPanel.Left = 120
+            LineShapeMode1.Y2 = 220
+            LineShapeMode2.Y1 = 330
+            LineShapeMode3.Y1 = 220 : LineShapeMode3.Y2 = 220
+            LineShapeMode4.Y1 = 330 : LineShapeMode4.Y2 = 330
+        End If
+    End Sub
+    Private Sub ModeBtnPresets_Click(sender As Object, e As EventArgs) Handles ModeBtnPresets.Click
+        ShowMode(1)
+    End Sub
+    Private Sub ModeBtnCam_Click(sender As Object, e As EventArgs) Handles ModeBtnCam.Click
+        ShowMode(2)
+    End Sub
+    Private Sub ModeBtnSettings_Click(sender As Object, e As EventArgs) Handles ModeBtnSettings.Click
+        ShowMode(3)
+    End Sub
 
-    Private Sub TextPreacherName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextPreacherName.TextChanged
+
+
+    '----------------------------------------------------------
+    ' encoders
+    ' click on encoder status area to change encoder allocation
+    '----------------------------------------------------------
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
     End Sub
-    Private Sub Label26_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LabelCap2.Click
+    Private Sub TextEncAStatus_Click(sender As Object, e As EventArgs) Handles TextEncAStatus.Click
+
+    End Sub
+    Private Sub LabelEncA_Click(sender As Object, e As EventArgs) Handles LabelEncA.Click
+
+    End Sub
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
+
+    End Sub
+    Private Sub TextEncBStatus_Click(sender As Object, e As EventArgs) Handles TextEncBStatus.Click
 
     End Sub
 
-
-
-    Private Sub ShapeContainer1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ShapeContainer1.Load
+    Private Sub Label27_Click(sender As Object, e As EventArgs) Handles Label27.Click
 
     End Sub
 
+    Private Sub LabelCap1_Click(sender As Object, e As EventArgs) Handles LabelCap1.Click
+
+    End Sub
+
+    Private Sub LabelCap2_Click(sender As Object, e As EventArgs) Handles LabelCap2.Click
+
+    End Sub
+
+    Private Sub LabelCap3_Click(sender As Object, e As EventArgs) Handles LabelCap3.Click
+
+    End Sub
+
+    Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
+
+    End Sub
 End Class
