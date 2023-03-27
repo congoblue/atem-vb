@@ -46,20 +46,14 @@ Partial Class MainForm
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.ButtonSetup = New System.Windows.Forms.Button()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.LineShape11 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape10 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape9 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape7 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape6 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape8 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape5 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape4 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
@@ -489,34 +483,12 @@ Partial Class MainForm
         Me.Label15.Text = "Projector out (Aux2)"
         Me.Label15.Visible = False
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.Yellow
-        Me.Label2.Location = New System.Drawing.Point(961, 59)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(136, 16)
-        Me.Label2.TabIndex = 174
-        Me.Label2.Text = "Camera preset positions"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.Yellow
-        Me.Label3.Location = New System.Drawing.Point(961, 483)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(139, 16)
-        Me.Label3.TabIndex = 183
-        Me.Label3.Text = "Live moves (use presets)"
-        '
         'ShapeContainer1
         '
         Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape11, Me.LineShape10, Me.LineShape9, Me.LineShape3, Me.LineShape7, Me.LineShape6, Me.LineShape8, Me.LineShape5, Me.LineShape4, Me.LineShape2, Me.LineShape1})
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape11, Me.LineShape10, Me.LineShape9, Me.LineShape3, Me.LineShape8, Me.LineShape5, Me.LineShape4})
         Me.ShapeContainer1.Size = New System.Drawing.Size(1280, 1460)
         Me.ShapeContainer1.TabIndex = 184
         Me.ShapeContainer1.TabStop = False
@@ -558,25 +530,6 @@ Partial Class MainForm
         Me.LineShape3.Y1 = 585
         Me.LineShape3.Y2 = 585
         '
-        'LineShape7
-        '
-        Me.LineShape7.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape7.Name = "LineShape7"
-        Me.LineShape7.X1 = 967
-        Me.LineShape7.X2 = 1255
-        Me.LineShape7.Y1 = 701
-        Me.LineShape7.Y2 = 701
-        '
-        'LineShape6
-        '
-        Me.LineShape6.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape6.Name = "LineShape6"
-        Me.LineShape6.Visible = False
-        Me.LineShape6.X1 = 74
-        Me.LineShape6.X2 = 930
-        Me.LineShape6.Y1 = 709
-        Me.LineShape6.Y2 = 709
-        '
         'LineShape8
         '
         Me.LineShape8.BorderColor = System.Drawing.Color.Yellow
@@ -603,24 +556,6 @@ Partial Class MainForm
         Me.LineShape4.X2 = 735
         Me.LineShape4.Y1 = 855
         Me.LineShape4.Y2 = 855
-        '
-        'LineShape2
-        '
-        Me.LineShape2.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape2.Name = "LineShape2"
-        Me.LineShape2.X1 = 970
-        Me.LineShape2.X2 = 1249
-        Me.LineShape2.Y1 = 68
-        Me.LineShape2.Y2 = 68
-        '
-        'LineShape1
-        '
-        Me.LineShape1.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape1.Name = "LineShape1"
-        Me.LineShape1.X1 = 967
-        Me.LineShape1.X2 = 1255
-        Me.LineShape1.Y1 = 491
-        Me.LineShape1.Y2 = 491
         '
         'Label16
         '
@@ -1741,7 +1676,7 @@ Partial Class MainForm
         '
         Me.BtnPreset9.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset9.Image = CType(resources.GetObject("BtnPreset9.Image"), System.Drawing.Image)
-        Me.BtnPreset9.Location = New System.Drawing.Point(355, 240)
+        Me.BtnPreset9.Location = New System.Drawing.Point(370, 220)
         Me.BtnPreset9.Name = "BtnPreset9"
         Me.BtnPreset9.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset9.TabIndex = 166
@@ -1752,7 +1687,7 @@ Partial Class MainForm
         '
         Me.BtnPreset1.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset1.Image = CType(resources.GetObject("BtnPreset1.Image"), System.Drawing.Image)
-        Me.BtnPreset1.Location = New System.Drawing.Point(355, 29)
+        Me.BtnPreset1.Location = New System.Drawing.Point(370, 20)
         Me.BtnPreset1.Name = "BtnPreset1"
         Me.BtnPreset1.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset1.TabIndex = 156
@@ -1763,7 +1698,7 @@ Partial Class MainForm
         '
         Me.BtnPreset2.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset2.Image = CType(resources.GetObject("BtnPreset2.Image"), System.Drawing.Image)
-        Me.BtnPreset2.Location = New System.Drawing.Point(454, 29)
+        Me.BtnPreset2.Location = New System.Drawing.Point(470, 20)
         Me.BtnPreset2.Name = "BtnPreset2"
         Me.BtnPreset2.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset2.TabIndex = 157
@@ -1774,7 +1709,7 @@ Partial Class MainForm
         '
         Me.BtnPreset3.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset3.Image = CType(resources.GetObject("BtnPreset3.Image"), System.Drawing.Image)
-        Me.BtnPreset3.Location = New System.Drawing.Point(552, 29)
+        Me.BtnPreset3.Location = New System.Drawing.Point(570, 20)
         Me.BtnPreset3.Name = "BtnPreset3"
         Me.BtnPreset3.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset3.TabIndex = 158
@@ -1785,7 +1720,7 @@ Partial Class MainForm
         '
         Me.BtnPreset4.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset4.Image = CType(resources.GetObject("BtnPreset4.Image"), System.Drawing.Image)
-        Me.BtnPreset4.Location = New System.Drawing.Point(651, 30)
+        Me.BtnPreset4.Location = New System.Drawing.Point(670, 20)
         Me.BtnPreset4.Name = "BtnPreset4"
         Me.BtnPreset4.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset4.TabIndex = 159
@@ -1796,7 +1731,7 @@ Partial Class MainForm
         '
         Me.BtnPreset5.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset5.Image = CType(resources.GetObject("BtnPreset5.Image"), System.Drawing.Image)
-        Me.BtnPreset5.Location = New System.Drawing.Point(355, 135)
+        Me.BtnPreset5.Location = New System.Drawing.Point(370, 120)
         Me.BtnPreset5.Name = "BtnPreset5"
         Me.BtnPreset5.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset5.TabIndex = 160
@@ -1807,7 +1742,7 @@ Partial Class MainForm
         '
         Me.BtnPreset6.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset6.Image = CType(resources.GetObject("BtnPreset6.Image"), System.Drawing.Image)
-        Me.BtnPreset6.Location = New System.Drawing.Point(454, 136)
+        Me.BtnPreset6.Location = New System.Drawing.Point(470, 120)
         Me.BtnPreset6.Name = "BtnPreset6"
         Me.BtnPreset6.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset6.TabIndex = 161
@@ -1818,7 +1753,7 @@ Partial Class MainForm
         '
         Me.BtnPreset7.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset7.Image = CType(resources.GetObject("BtnPreset7.Image"), System.Drawing.Image)
-        Me.BtnPreset7.Location = New System.Drawing.Point(552, 135)
+        Me.BtnPreset7.Location = New System.Drawing.Point(571, 120)
         Me.BtnPreset7.Name = "BtnPreset7"
         Me.BtnPreset7.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset7.TabIndex = 162
@@ -1829,7 +1764,7 @@ Partial Class MainForm
         '
         Me.BtnPreset8.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset8.Image = CType(resources.GetObject("BtnPreset8.Image"), System.Drawing.Image)
-        Me.BtnPreset8.Location = New System.Drawing.Point(651, 136)
+        Me.BtnPreset8.Location = New System.Drawing.Point(670, 120)
         Me.BtnPreset8.Name = "BtnPreset8"
         Me.BtnPreset8.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset8.TabIndex = 163
@@ -1840,7 +1775,7 @@ Partial Class MainForm
         '
         Me.BtnPreset10.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset10.Image = CType(resources.GetObject("BtnPreset10.Image"), System.Drawing.Image)
-        Me.BtnPreset10.Location = New System.Drawing.Point(457, 240)
+        Me.BtnPreset10.Location = New System.Drawing.Point(470, 220)
         Me.BtnPreset10.Name = "BtnPreset10"
         Me.BtnPreset10.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset10.TabIndex = 167
@@ -1851,7 +1786,7 @@ Partial Class MainForm
         '
         Me.BtnPreset11.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset11.Image = CType(resources.GetObject("BtnPreset11.Image"), System.Drawing.Image)
-        Me.BtnPreset11.Location = New System.Drawing.Point(552, 240)
+        Me.BtnPreset11.Location = New System.Drawing.Point(570, 220)
         Me.BtnPreset11.Name = "BtnPreset11"
         Me.BtnPreset11.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset11.TabIndex = 168
@@ -1862,7 +1797,7 @@ Partial Class MainForm
         '
         Me.BtnPreset12.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset12.Image = CType(resources.GetObject("BtnPreset12.Image"), System.Drawing.Image)
-        Me.BtnPreset12.Location = New System.Drawing.Point(651, 240)
+        Me.BtnPreset12.Location = New System.Drawing.Point(670, 220)
         Me.BtnPreset12.Name = "BtnPreset12"
         Me.BtnPreset12.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset12.TabIndex = 169
@@ -1873,7 +1808,7 @@ Partial Class MainForm
         '
         Me.BtnPreset13.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset13.Image = CType(resources.GetObject("BtnPreset13.Image"), System.Drawing.Image)
-        Me.BtnPreset13.Location = New System.Drawing.Point(355, 346)
+        Me.BtnPreset13.Location = New System.Drawing.Point(370, 320)
         Me.BtnPreset13.Name = "BtnPreset13"
         Me.BtnPreset13.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset13.TabIndex = 170
@@ -1884,7 +1819,7 @@ Partial Class MainForm
         '
         Me.BtnPreset14.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset14.Image = CType(resources.GetObject("BtnPreset14.Image"), System.Drawing.Image)
-        Me.BtnPreset14.Location = New System.Drawing.Point(454, 346)
+        Me.BtnPreset14.Location = New System.Drawing.Point(470, 320)
         Me.BtnPreset14.Name = "BtnPreset14"
         Me.BtnPreset14.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset14.TabIndex = 171
@@ -1895,7 +1830,7 @@ Partial Class MainForm
         '
         Me.BtnPreset15.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset15.Image = CType(resources.GetObject("BtnPreset15.Image"), System.Drawing.Image)
-        Me.BtnPreset15.Location = New System.Drawing.Point(552, 346)
+        Me.BtnPreset15.Location = New System.Drawing.Point(570, 320)
         Me.BtnPreset15.Name = "BtnPreset15"
         Me.BtnPreset15.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset15.TabIndex = 172
@@ -1906,7 +1841,7 @@ Partial Class MainForm
         '
         Me.BtnPreset16.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnPreset16.Image = CType(resources.GetObject("BtnPreset16.Image"), System.Drawing.Image)
-        Me.BtnPreset16.Location = New System.Drawing.Point(651, 346)
+        Me.BtnPreset16.Location = New System.Drawing.Point(670, 320)
         Me.BtnPreset16.Name = "BtnPreset16"
         Me.BtnPreset16.Size = New System.Drawing.Size(100, 100)
         Me.BtnPreset16.TabIndex = 173
@@ -2188,7 +2123,7 @@ Partial Class MainForm
         Me.ModeBtnPresets.Name = "ModeBtnPresets"
         Me.ModeBtnPresets.Size = New System.Drawing.Size(100, 100)
         Me.ModeBtnPresets.TabIndex = 157
-        Me.ModeBtnPresets.Text = "Presets"
+        Me.ModeBtnPresets.Text = "Live"
         Me.ModeBtnPresets.UseVisualStyleBackColor = True
         '
         'BtnInp5
@@ -2746,8 +2681,6 @@ Partial Class MainForm
         Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label16)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.ButtonSetup)
         Me.Controls.Add(Me.Label14)
@@ -2852,8 +2785,6 @@ Partial Class MainForm
     Friend WithEvents BtnPreset11 As AtemController.MyButton
     Friend WithEvents BtnPreset10 As AtemController.MyButton
     Friend WithEvents BtnPreset9 As AtemController.MyButton
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
@@ -2963,11 +2894,7 @@ Partial Class MainForm
     Private WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Private WithEvents LineShape5 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape4 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Private WithEvents LineShape2 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Private WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape8 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Private WithEvents LineShape6 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Private WithEvents LineShape7 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape3 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape9 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape10 As Microsoft.VisualBasic.PowerPacks.LineShape
