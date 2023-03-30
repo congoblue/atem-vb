@@ -11,43 +11,35 @@ Partial Public Class MyButton
         'MyBase.OnPaint(e) 'draw default appearance
         If Not pushed Then
             If Me.BackColor = Color.Green Then
-                e.Graphics.DrawImage(My.Resources.greenBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.greenbtnrnd, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
             ElseIf Me.BackColor = Color.Red Then
-                e.Graphics.DrawImage(My.Resources.redBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.redbtnrnd, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
             ElseIf Me.BackColor = Color.Yellow Then
                 e.Graphics.DrawImage(My.Resources.RedGrnBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
             ElseIf Me.BackColor = Color.Orange Then
-                e.Graphics.DrawImage(My.Resources.yellowBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.yellowbtnrnd, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
             Else
-                e.Graphics.DrawImage(My.Resources.WhiteBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.whitebtnrnd, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
             End If
             offset = 0
         Else
             If Me.BackColor = Color.Green Then
-                e.Graphics.DrawImage(My.Resources.greenBtnpush, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.greenbtnrnd, ClientRectangle.Top + 2, ClientRectangle.Left + 2, ClientRectangle.Width - 4, ClientRectangle.Height + 3 - 4)
             ElseIf Me.BackColor = Color.Red Then
-                e.Graphics.DrawImage(My.Resources.redBtnpush, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.redbtnrnd, ClientRectangle.Top + 2, ClientRectangle.Left + 2, ClientRectangle.Width - 4, ClientRectangle.Height + 3 - 4)
             ElseIf Me.BackColor = Color.Yellow Then
-                e.Graphics.DrawImage(My.Resources.RedGrnBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.RedGrnBtn, ClientRectangle.Top + 2, ClientRectangle.Left + 2, ClientRectangle.Width - 4, ClientRectangle.Height + 3 - 4)
             ElseIf Me.BackColor = Color.Orange Then
-                e.Graphics.DrawImage(My.Resources.yellowBtn, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.yellowbtnrnd, ClientRectangle.Top + 2, ClientRectangle.Left + 2, ClientRectangle.Width - 4, ClientRectangle.Height + 3 - 4)
             Else
-                e.Graphics.DrawImage(My.Resources.WhiteBtnPush, ClientRectangle.Top, ClientRectangle.Left, ClientRectangle.Width, ClientRectangle.Height + 3)
+                e.Graphics.DrawImage(My.Resources.whitebtnrnd, ClientRectangle.Top + 2, ClientRectangle.Left + 2, ClientRectangle.Width - 4, ClientRectangle.Height + 3 - 4)
             End If
             offset = 2
         End If
-        'if this string is set to something other than "", show Auto status on the button
-        'If Me.AccessibleDescription <> "" Then 
+
         Dim flags As TextFormatFlags = TextFormatFlags.WordBreak Or TextFormatFlags.TextBoxControl Or TextFormatFlags.VerticalCenter Or TextFormatFlags.HorizontalCenter Or TextFormatFlags.NoPadding
         'the textboxcontrol flag causes it to split long words
-        'If pushed Then Me.ClientSize = New Size(PreferredSize.Width - 2, PreferredSize.Height - 2)
-        'Me.ClientSize = New Size(PreferredSize.Width + 2, PreferredSize.Height + 2)
         TextRenderer.DrawText(e.Graphics, MyBase.Text, Me.Font, ClientRectangle, Me.ForeColor, flags)
-
-        If Me.AccessibleDescription <> "" Then
-            flags = TextFormatFlags.Bottom Or TextFormatFlags.Right
-            TextRenderer.DrawText(e.Graphics, "A", Me.Font, ClientRectangle, Color.Red, flags)
-        End If
 
     End Sub
 

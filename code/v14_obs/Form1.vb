@@ -637,6 +637,15 @@ Public Class MainForm
         End Try
     End Sub
     Sub EditPresetDetails(ByVal index As Integer)
+        'TextBoxPresetEdit.Text = PresetCaption((addr - 1) * 16 + index - 1)
+        'TextBoxPresetEdit.Visible = True
+        Dim btny = ((index - 1) Mod 4) * BtnPreset1.Height
+        Dim btnx = Int(((index - 1) / 4)) * BtnPreset1.Width
+        Dim controlLoc = Me.PointToScreen(BtnPreset1.Location)
+        'TextBoxPresetEdit.Top = BtnPreset1.Top + BtnPreset1.Height * btny + 5
+        'TextBoxPresetEdit.Left = BtnPreset1.Left + BtnPreset1.Width * btnx
+
+
         'op = InputBox("Enter legend", , PresetCaption((addr - 1) * 16 + index - 1))
         Globals.EditPresetIndex = index
         Globals.EditPresetCaption = PresetCaption((addr - 1) * 16 + index - 1)
@@ -645,6 +654,8 @@ Public Class MainForm
         Globals.EditPresetAuto = PresetAuto((addr - 1) * 16 + index - 1)
 
         Form3.ShowDialog()  'needs to be modal
+        Form3.Top = controlLoc.Y + BtnPreset1.Height * btny + 5
+        Form3.Left = controlLoc.X + BtnPreset1.Width * btnx + 5
         'PresetCaption((addr - 1) * 16 + index - 1) = op
         PresetCaption((addr - 1) * 16 + index - 1) = Globals.EditPresetCaption
         PresetContent((addr - 1) * 16 + index - 1) = Globals.EditPresetContent
@@ -832,8 +843,8 @@ Public Class MainForm
                 End If
             Else 'edit preset details
                 cu = "0"
-                Button7.ForeColor = Color.Black
                 EditPresetDetails(index)
+                BtnEditPreset.BackColor = Color.White
                 legendmode = False
                 WritePresetFile()
                 setactive()
@@ -871,7 +882,7 @@ Public Class MainForm
             End If
             savemode = 0
             WritePresetFile()
-            BtnPresetSave.ForeColor = Color.Black
+            BtnPresetSave.BackColor = Color.White
 
         End If
         'If _serialPort.IsOpen Then _serialPort.Write(buffer, 0, 7)
@@ -894,6 +905,7 @@ Public Class MainForm
     End Sub
     '-----------------------------------------------------
     ' Set Leds on controller buttons
+    ' ControllerLedState(0..13) sets colour bit0=red bit1=green bit2=blue
     '-----------------------------------------------------
     Sub SetControllerLedState(op)
         ControllerLedState(op - 1) = 0
@@ -948,6 +960,8 @@ Public Class MainForm
         For i = 1 To 10
             SetControllerLedState(i)
         Next
+        'set encoder status caption
+        If (addr < 6) Then LabelEncStatus.Text = "CAM" & addr
         'tally
         If Globals.TallyMode Then
             SendCamCmdAddr(nextpreview, "DA0")
@@ -1212,10 +1226,10 @@ Public Class MainForm
 
     Private Sub BtnPresetSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnPresetSave.Click
         If savemode = False Then
-            BtnPresetSave.ForeColor = Color.Red
+            BtnPresetSave.BackColor = Color.Red
             savemode = True
         Else
-            BtnPresetSave.ForeColor = Color.Black
+            BtnPresetSave.BackColor = Color.White
             savemode = False
         End If
     End Sub
@@ -1223,10 +1237,10 @@ Public Class MainForm
     Private Sub BtnMovePreset_Click(sender As Object, e As EventArgs) Handles BtnMovePreset.Click
         If (MovePresetMode = 0) Then
             MovePresetMode = 1
-            BtnMovePreset.ForeColor = Color.Red
+            BtnMovePreset.BackColor = Color.Red
         Else
             MovePresetMode = 0
-            BtnMovePreset.ForeColor = Color.Black
+            BtnMovePreset.BackColor = Color.White
         End If
     End Sub
 
@@ -1505,7 +1519,7 @@ Public Class MainForm
             End If
         End If
         If (overlayactive = True) Then BtnOverlay.BackColor = Color.Red Else BtnOverlay.BackColor = Color.White
-        If (overlayactive = True) Then ControllerLedState(10) = 1 : Else ControllerLedState(10) = 0
+        If (overlayactive = True) Then ControllerLedState(10) = 1 Else ControllerLedState(10) = 0
     End Sub
 
     Private Sub BtnMediaOverlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMediaOverlay.Click
@@ -1537,11 +1551,11 @@ Public Class MainForm
             'websocket.Send("{""request-type"":""SetSourceFilterVisibility"",""sourceName"":""Caption"",""filterName"":""Color Correction"",""filterEnabled"":true,""message-id"":""TEST1""}")
             'websocket.Send("{""request-type"":""SetSourceRender"",""source"":""Caption"",""render"":false,""message-id"":""TEST1""}")
             mediaoverlayactive = False
-            End If
+        End If
 
 
         If (mediaoverlayactive = True) Then BtnMediaOverlay.BackColor = Color.Red Else BtnMediaOverlay.BackColor = Color.White
-        If (mediaoverlayactive = True) Then ControllerLedState(11) = 1 : Else ControllerLedState(11) = 0
+        If (mediaoverlayactive = True) Then ControllerLedState(11) = 1 Else ControllerLedState(11) = 0
     End Sub
 
     Private Sub SetCaptionText()
@@ -1644,12 +1658,12 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+    Private Sub BtnEditPreset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnEditPreset.Click
         If legendmode = False Then
-            Button7.ForeColor = Color.Red
+            BtnEditPreset.BackColor = Color.Red
             legendmode = True
         Else
-            Button7.ForeColor = Color.Black
+            BtnEditPreset.BackColor = Color.White
             legendmode = False
         End If
         'test leds on controller
@@ -3403,39 +3417,32 @@ Public Class MainForm
     ' encoders
     ' click on encoder status area to change encoder allocation
     '----------------------------------------------------------
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+    Sub SetEncoderAllocation(num)
 
+    End Sub
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        SetEncoderAllocation(1)
     End Sub
     Private Sub TextEncAStatus_Click(sender As Object, e As EventArgs) Handles TextEncAStatus.Click
-
+        SetEncoderAllocation(1)
     End Sub
     Private Sub LabelEncA_Click(sender As Object, e As EventArgs) Handles LabelEncA.Click
-
+        SetEncoderAllocation(1)
     End Sub
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
-
+        SetEncoderAllocation(2)
     End Sub
     Private Sub TextEncBStatus_Click(sender As Object, e As EventArgs) Handles TextEncBStatus.Click
-
+        SetEncoderAllocation(2)
     End Sub
-
-    Private Sub Label27_Click(sender As Object, e As EventArgs) Handles Label27.Click
-
-    End Sub
-
-    Private Sub LabelCap1_Click(sender As Object, e As EventArgs) Handles LabelCap1.Click
-
-    End Sub
-
-    Private Sub LabelCap2_Click(sender As Object, e As EventArgs) Handles LabelCap2.Click
-
-    End Sub
-
-    Private Sub LabelCap3_Click(sender As Object, e As EventArgs) Handles LabelCap3.Click
-
-    End Sub
-
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
+        SetEncoderAllocation(2)
+    End Sub
+
+
+
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs)
 
     End Sub
 End Class

@@ -482,3 +482,17 @@ C:\Users\Tim.SABRE\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemContr
 C:\Users\Tim.SABRE\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Resources.resources
 C:\Users\Tim.SABRE\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\VISMacrosATEMDemoClient.vbproj.GenerateResource.Cache
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.MainForm.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.exe
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.xml
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.pdb
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\AtemController.exe
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\AtemController.pdb
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\AtemController.xml
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\WebSocket4Net.dll
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\VISMacrosATEMDemoClient.vbprojResolveAssemblyReference.cache
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.MainForm.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form2.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form3.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form4.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Resources.resources
+C:\Users\timsk\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\VISMacrosATEMDemoClient.vbproj.GenerateResource.Cache

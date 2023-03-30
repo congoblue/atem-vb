@@ -191,29 +191,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\WhiteBtn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\WhiteBtnPush.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="redBtn.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="greenBtn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\greenBtnpush.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\redBtnpush.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RedGrnBtn.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\yellowBtn.png" />
-    <Content Include="yellowBtn.png" />
+    <None Include="yellowbtnrnd.png" />
+    <None Include="Resources\WhiteBtnRnd.bmp" />
+    <None Include="greenbtnrnd.png" />
+    <None Include="redbtnrnd.png" />
+    <Content Include="whitebtnrnd.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
