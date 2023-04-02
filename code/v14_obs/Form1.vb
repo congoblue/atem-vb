@@ -239,7 +239,7 @@ Public Class MainForm
         Globals.CamIP(2) = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.92"))
         Globals.CamIP(3) = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.93"))
         Globals.CamIP(4) = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.94"))
-        Globals.CamIP(7) = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
+        Globals.CamIP(5) = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
 
         Globals.Cliptime(1) = (GetSetting("Atemswitcher", "Cliptime", "1", "60"))
         Globals.Cliptime(2) = (GetSetting("Atemswitcher", "Cliptime", "2", "60"))
@@ -263,14 +263,14 @@ Public Class MainForm
         'BackgroundWorker1.CancelAsync()
     End Sub
 
-
+    '---Make OBS scene name from addr
     Function ObsSourceName(oaddr As Integer) As String
         ObsSourceName = ""
         If oaddr = 1 Then ObsSourceName = "Cam1"
         If oaddr = 2 Then ObsSourceName = "Cam2"
         If oaddr = 3 Then ObsSourceName = "Cam3"
         If oaddr = 4 Then ObsSourceName = "Cam4"
-        If oaddr = 7 Then ObsSourceName = "Cam5"
+        If oaddr = 5 Then ObsSourceName = "Cam5"
     End Function
 
     Private Sub OpenWebSocket()
@@ -310,86 +310,11 @@ Public Class MainForm
         websocket.Send("{""request-type"":""GetSceneList"",""message-id"":""GETSCENE""}")
     End Sub
 
-    Private Sub ExecuteLua(ByVal pLuaText As String)
-        If atemconnect = False Then Exit Sub
-        Dim ServerNetworkStream As NetworkStream = VISMacrosConnection.GetStream()
-        Dim lvCommandText As String
-
-        lvCommandText = "<luacommandtoexecute>" & pLuaText & "</luacommandtoexecute>"
-
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(lvCommandText)
-
-        ServerNetworkStream.Write(outStream, 0, outStream.Length)
-        ServerNetworkStream.Flush()
-
-        Dim inStream(10024) As Byte
-
-        ServerNetworkStream.Read(inStream, 0, CInt(VISMacrosConnection.ReceiveBufferSize))
-
-        Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream)
-
-        LuaReturn = returndata
-
-        If True Then 'chkLogMessages.Checked Then
-            VSLog(pLuaText & " == " & returndata)
-        End If
-    End Sub
-
-    Private Sub RequestLua(ByVal pLuaText As String)
-        If atemconnect = False Then Exit Sub
-        Dim ServerNetworkStream As NetworkStream = VISMacrosConnection.GetStream()
-        Dim lvCommandText As String
-
-        lvCommandText = "<request>" & pLuaText & "</request>"
-
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(lvCommandText)
-
-        ServerNetworkStream.Write(outStream, 0, outStream.Length)
-        ServerNetworkStream.Flush()
-
-        Dim inStream(10024) As Byte
-
-        ServerNetworkStream.Read(inStream, 0, CInt(VISMacrosConnection.ReceiveBufferSize))
-
-        Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream)
-
-        LuaReturn = returndata
-
-        VSLog(pLuaText & " == " & returndata)
-
-    End Sub
-
-
-    Private Sub bConnect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles bConnect.Click
-        atemconnect = False
-        Try
-            VISMacrosConnection.Connect(eVISMacrosAppHost.Text, 33991)
-            VISMacrosConnection.ReceiveBufferSize = 10024
-            atemconnect = True
-        Catch
-            If MsgBox("Can't connect to Atem switcher." & vbCrLf & "Before starting this application, you must run the JustMacros application to communicate with the Atem switcher." & vbCrLf & "Click Yes to quit now, or No to continue in test mode", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                Application.Exit()
-            Else
-                atemconnect = False
-            End If
-        End Try
-        If chkLogMessages.Checked Then
-            VSLog("Connected to VIS Macros Server: " & VISMacrosConnection.Connected.ToString)
-        End If
-
-        Auxsel1.BackColor = Color.Red : ExecuteLua("ATEMMixerAUXSetInput( 1,2,2 )")
-        Aux3Btn1.BackColor = Color.Red : ExecuteLua("ATEMMixerAUXSetInput( 1,3,2 )") ' 
-        CurrentAux3 = 1
-        ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & Globals.AtemChannel(1) & " )") 'set preview to 1
-        ExecuteLua("ATEMMixerMESetProgramInput( 1,1," & Globals.AtemChannel(4) & " )") 'set program to 4
-        ExecuteLua("ATEMMixerDSKSetOnAir( 1, 1, FALSE )") 'turn off overlay
-        setactive()
-    End Sub
 
     Private Function SendCamCmd(ByVal cmd As String)
         'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
-        If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
+        If addr = 0 Or addr > 5 Then Return ""
         'If CamCmdPending = True Then Return ""
         If CamIgnore(addr) = True Then Return ""
         url = "http://" & Globals.CamIP(addr) & "/cgi-bin/aw_ptz?cmd=%23" & cmd & "&res=1"
@@ -400,7 +325,6 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
-            If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
             'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
@@ -410,7 +334,7 @@ Public Class MainForm
     Private Function SendCamCmdNoHash(ByVal cmd As String, ByVal typ As String)
         'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
-        If addr = 0 Or (addr > 4 And addr <> 7) Then Return ""
+        If addr = 0 Or addr > 5 Then Return ""
         'If CamCmdPending = True Then Return ""
         If CamIgnore(addr) = True Then Return ""
         If (typ = "") Then typ = "aw_ptz" 'aw_ptz for position, aw_cam for cam settings
@@ -422,7 +346,6 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
-            If addr = 7 Then addr = 5 'cam7 is shown as 5 on the panel
             'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
@@ -432,7 +355,7 @@ Public Class MainForm
     Private Function SendCamCmdAddr(ByVal caddr As Integer, ByVal cmd As String)
         'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
+        If caddr = 0 Or caddr > 5 Then Return ""
         'If CamCmdPending = True Then Return ""
         If CamIgnore(caddr) = True Then Return ""
         url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/aw_ptz?cmd=%23" & cmd & "&res=1"
@@ -443,8 +366,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
-            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+             'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
@@ -453,7 +375,7 @@ Public Class MainForm
         'Dim webClient As New System.Net.WebClient
         'Dim webClient As New WebClientEx
         Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
+        If caddr = 0 Or caddr > 5 Then Return ""
         'If CamCmdPending = True Then Return ""
         If CamIgnore(caddr) = True Then Return ""
         'cmd = Replace(cmd, ":", "%3A")
@@ -467,7 +389,6 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
             'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
@@ -477,7 +398,7 @@ Public Class MainForm
     Function SendCamQuery(ByVal caddr As Integer, ByVal cmd As String)
         'Dim webClient As New System.Net.WebClient
         Dim url As String, result As String
-        If caddr = 0 Or (caddr > 4 And caddr <> 7) Then Return ""
+        If caddr = 0 Or caddr > 5 Then Return ""
         'If CamCmdPending = True Then Return ""
         If CamIgnore(caddr) = True Then Return ""
         url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & cmd
@@ -488,7 +409,6 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            If caddr = 7 Then caddr = 5 'cam7 is shown as 5 on the panel
             'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
@@ -577,9 +497,9 @@ Public Class MainForm
             End Try
         End While
         TextFileReader.Dispose()
-        'read preset names for cam7. these are stored in the registry as the presets are fixed in the camera
+        'read preset names for cam5. these are stored in the registry as the presets are fixed in the camera
         For i = 0 To 15
-            PresetCaption(16 * 6 + i) = GetSetting("Atemswitcher", "Preset7", i, i + 1)
+            PresetCaption(16 * 6 + i) = GetSetting("Atemswitcher", "Preset5", i, i + 1)
         Next
         UpdatePresets()
     End Sub
@@ -605,9 +525,9 @@ Public Class MainForm
         Next j
         file.Close()
 
-        'also save cam7 legends to registry
+        'also save cam5 legends to registry
         For i = 0 To 15
-            SaveSetting("Atemswitcher", "Preset7", i, PresetCaption(6 * 16 + i))
+            SaveSetting("Atemswitcher", "Preset5", i, PresetCaption(6 * 16 + i))
         Next
     End Sub
 
@@ -727,9 +647,9 @@ Public Class MainForm
                 AutoPreset = 0
                 If PreloadPreset = 0 Then
                     '---Recall a preset either live or preview
-                    If (addr = 7) Then
+                    If (addr = 5) Then
                         If index < 11 Then
-                            SendCamCmd("R0" & index - 1) 'recall preset on camera for cam7
+                            SendCamCmd("R0" & index - 1) 'recall preset on camera for cam5
                             presetstate(addr) = 2 ^ (index - 1)
                             UpdatePresets() 'show presets for new cam
                         End If
@@ -870,9 +790,9 @@ Public Class MainForm
                 End If
                 presetstate(addr) = 2 ^ (index - 1)
                 setactive()
-            ElseIf addr = 7 Then
+            ElseIf addr = 5 Then
                 If index < 11 Then
-                    SendCamCmd("M0" & index - 1) 'store preset on camera for cam7
+                    SendCamCmd("M0" & index - 1) 'store preset on camera for cam5
                     If PresetCaption((addr - 1) * 16 + index - 1) = Convert.ToString(index) Then 'automatically ask for legend if the legend is just the initial number
                         EditPresetDetails(index)
                     End If
@@ -981,7 +901,7 @@ Public Class MainForm
         End If
 
         'cam settings
-        If (addr <= 4) Or addr = 7 Then
+        If (addr <= 5) Then
             ShowCamValues()
             'load preset button captions
             UpdatePresets()
@@ -1002,7 +922,7 @@ Public Class MainForm
         Dim ad As Integer
 
         If PresetLive = False Then ad = addr Else ad = liveaddr
-        If ad > 4 And ad <> 7 Then 'for non-cam inputs just show 1-16 legends
+        If ad > 5 Then 'for non-cam inputs just show 1-16 legends
             BtnPreset1.Text = "1" : BtnPreset1.BackColor = Color.White
             BtnPreset2.Text = "2" : BtnPreset2.BackColor = Color.White
             BtnPreset3.Text = "3" : BtnPreset3.BackColor = Color.White
@@ -1032,7 +952,7 @@ Public Class MainForm
         BtnPreset8.Text = PresetCaption((ad - 1) * 16 + 7) : BtnPreset8.BackColor = Color.White
         BtnPreset9.Text = PresetCaption((ad - 1) * 16 + 8) : BtnPreset9.BackColor = Color.White
         BtnPreset10.Text = PresetCaption((ad - 1) * 16 + 9) : BtnPreset10.BackColor = Color.White
-        If addr <> 7 Then
+        If addr <> 5 Then
             BtnPreset11.Text = PresetCaption((ad - 1) * 16 + 10) : BtnPreset11.BackColor = Color.White
             BtnPreset12.Text = PresetCaption((ad - 1) * 16 + 11) : BtnPreset12.BackColor = Color.White
             BtnPreset13.Text = PresetCaption((ad - 1) * 16 + 12) : BtnPreset13.BackColor = Color.White
@@ -1049,7 +969,7 @@ Public Class MainForm
         End If
 
 
-        If ad <= 4 Or ad = 7 Then
+        If ad <= 5 Then
             If (presetstate(ad) And 1) <> 0 Then BtnPreset1.BackColor = Color.Green
             If (presetstate(ad) And 2) <> 0 Then BtnPreset2.BackColor = Color.Green
             If (presetstate(ad) And 4) <> 0 Then BtnPreset3.BackColor = Color.Green
@@ -1131,7 +1051,7 @@ Public Class MainForm
     Private Sub BtnCam1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnCam1.Click, BtnCam2.Click, BtnCam3.Click, BtnCam4.Click, BtnInp3.Click
         Dim index As Integer
         index = Val(Mid(sender.name, 7))
-        If sender.name = "BtnInp3" Then index = 7
+        If sender.name = "BtnInp3" Then index = 5
 
         'If _serialPort.IsOpen Then _serialPort.Write(buffer, 0, 7)
 
@@ -1192,12 +1112,7 @@ Public Class MainForm
 
     Private Sub BtnTransition_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnTransition.Click
         If CutLockoutTimer > 0 Then Exit Sub
-        If addr = 5 Then 'if we are cutting to black - mute audio out
-            AudioFade = -1 ': AudioLevel = 0
-        End If
-        If liveaddr = 5 And addr <> 8 Then 'cutting away from black - restore audio
-            AudioFade = 1
-        End If
+
         If liveaddr = 8 Then MediaPlayerWasActive = True 'if cutting to mediaplayer then remember we were on it
         nextpreview = liveaddr
         liveaddr = addr
@@ -1305,96 +1220,6 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub TextBox1_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox1.GotFocus
-        Me.KeyPreview = False
-    End Sub
-
-    Private Sub TextBox1_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox1.LostFocus
-        ExecuteLua("ATEMMixerMESetTransitionRate( 1,1," & Val(TextBox1.Text) * 25 & " )")
-        Me.KeyPreview = True
-    End Sub
-    Sub SetAux2(ByVal index As Integer)
-        Dim aux As String
-        aux = "22"
-        Auxsel1.BackColor = Color.White
-        Auxsel2.BackColor = Color.White
-        Auxsel3.BackColor = Color.White
-        Auxsel4.BackColor = Color.White
-        Auxsel5.BackColor = Color.White
-        Auxsel6.BackColor = Color.White
-        Auxsel7.BackColor = Color.White
-        Auxsel8.BackColor = Color.White
-        AuxSel9.BackColor = Color.White
-        Auxsel10.BackColor = Color.White
-        Auxsel11.BackColor = Color.White
-        AuxSel12.BackColor = Color.White
-        If index = 1 Then aux = "2" : Auxsel1.BackColor = Color.Red 'words
-        If index = 2 Then aux = "4" : Auxsel2.BackColor = Color.Red 'matrix
-        If index = 3 Then aux = "26" : Auxsel3.BackColor = Color.Red 'mix (program)
-        If index = 4 Then aux = "5" : Auxsel4.BackColor = Color.Red 'local
-        If index = 5 Then aux = "6" : Auxsel5.BackColor = Color.Red 'cam1
-        If index = 6 Then aux = "7" : Auxsel6.BackColor = Color.Red 'cam2
-        If index = 7 Then aux = "8" : Auxsel7.BackColor = Color.Red 'cam3
-        If index = 8 Then aux = "9" : Auxsel8.BackColor = Color.Red 'cam4
-        If index = 9 Then aux = "1" : AuxSel9.BackColor = Color.Red 'black
-        If index = 10 Then aux = "15" : Auxsel10.BackColor = Color.Red 'media1
-        If index = 11 Then aux = "3" : Auxsel11.BackColor = Color.Red 'overlay
-        If index = 12 Then aux = "10" : AuxSel12.BackColor = Color.Red 'stage (input 9)
-        ExecuteLua("ATEMMixerAUXSetInput( 1,2," & aux & " )") ' 
-    End Sub
-    Private Sub Auxsel1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Auxsel1.Click, Auxsel2.Click, Auxsel3.Click, Auxsel4.Click, Auxsel5.Click, Auxsel6.Click, Auxsel7.Click, Auxsel8.Click, AuxSel9.Click, Auxsel10.Click, Auxsel11.Click, AuxSel12.Click
-        If BtnAuxLock.BackColor = Color.Red Then Exit Sub 'must turn off the lock before you can do this
-        Dim index As Integer
-        index = Val(Mid(sender.name, 7))
-        SetAux2(index)
-    End Sub
-
-    Sub SetAux3(ByVal index As Integer)
-        Dim aux As String
-        aux = "22"
-        Aux3Btn1.BackColor = Color.White
-        Aux3Btn3.BackColor = Color.White
-        Aux3Btn2.BackColor = Color.White
-        Aux3Btn4.BackColor = Color.White
-        Aux3Btn5.BackColor = Color.White
-        Aux3Btn6.BackColor = Color.White
-        Aux3Btn7.BackColor = Color.White
-        Aux3Btn8.BackColor = Color.White
-        Aux3Btn9.BackColor = Color.White
-        Aux3Btn10.BackColor = Color.White
-        Aux3Btn11.BackColor = Color.White
-        Aux3Btn12.BackColor = Color.White
-        If index = 1 Then aux = "2" : Aux3Btn1.BackColor = Color.Red 'words
-        If index = 2 Then aux = "4" : Aux3Btn2.BackColor = Color.Red 'matrix
-        If index = 3 Then aux = "26" : Aux3Btn3.BackColor = Color.Red 'mix (program)
-        If index = 4 Then aux = "5" : Aux3Btn4.BackColor = Color.Red 'player
-        If index = 5 Then aux = "6" : Aux3Btn5.BackColor = Color.Red 'cam1
-        If index = 6 Then aux = "7" : Aux3Btn6.BackColor = Color.Red 'cam2
-        If index = 7 Then aux = "8" : Aux3Btn7.BackColor = Color.Red 'cam3
-        If index = 8 Then aux = "9" : Aux3Btn8.BackColor = Color.Red 'cam4
-        If index = 9 Then aux = "1" : Aux3Btn9.BackColor = Color.Red 'black
-        If index = 10 Then aux = "15" : Aux3Btn10.BackColor = Color.Red 'media 1
-        If index = 11 Then aux = "3" : Aux3Btn11.BackColor = Color.Red 'overlay
-        If index = 12 Then aux = "10" : Aux3Btn12.BackColor = Color.Red 'stage (input 9)
-        ExecuteLua("ATEMMixerAUXSetInput( 1,3," & aux & " )") ' 
-        CurrentAux3 = index
-    End Sub
-
-    Private Sub Aux3Btn1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Aux3Btn1.Click, Aux3Btn2.Click, Aux3Btn3.Click, Aux3Btn4.Click, Aux3Btn5.Click, Aux3Btn6.Click, Aux3Btn7.Click, Aux3Btn8.Click, Aux3Btn9.Click, Aux3Btn10.Click, Aux3Btn11.Click, Aux3Btn12.Click
-        If BtnAuxLock.BackColor = Color.Red Then Exit Sub 'must turn off the lock before you can do this
-        Dim index As Integer
-        index = Val(Mid(sender.name, 8))
-        SetAux3(index)
-    End Sub
-
-    Private Sub TextBox2_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox2.GotFocus
-        Me.KeyPreview = False
-    End Sub
-
-    Private Sub TextBox2_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox2.LostFocus
-        ExecuteLua("ATEMMixerDSKSetRate( 1,1," & Val(TextBox1.Text) * 25 & " )")
-        Me.KeyPreview = True
-    End Sub
 
 
 
@@ -2048,44 +1873,7 @@ Public Class MainForm
         AutoPreset = 0
     End Sub
 
-    Private Sub MyButton2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAutoSong.Click
-        If AutoSongMode = 0 Then
-            BtnAutoSong.BackColor = Color.Green
-            BtnAutoSpeech.BackColor = Color.White
-            AutoSongMode = 1
-            AutoSpeechMode = 0
-            If overlayactive = False Then BtnOverlay_Click(BtnOverlay, Nothing) 'ensure overlay is turned on in song mode
-            'preload next shot for song mode here
-            NextAutoShot()
-
-        Else
-            BtnAutoSong.BackColor = Color.White
-            AutoSongMode = 0
-            PreloadPreset = 0
-            cdir = 0
-            SetLiveMoveIndicators()
-            UpdatePresets()
-        End If
-    End Sub
-
-    Private Sub BtnAutoSpeech_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAutoSpeech.Click
-        If AutoSpeechMode = 0 Then
-            BtnAutoSpeech.BackColor = Color.Green
-            BtnAutoSong.BackColor = Color.White
-            AutoSongMode = 0
-            AutoSpeechMode = 1
-            'preload next shot for speech mode here
-            NextAutoShot()
-        Else
-            BtnAutoSpeech.BackColor = Color.White
-            AutoSpeechMode = 0
-            PrevAutoSpeech = False
-            cdir = 0
-            SetLiveMoveIndicators()
-            UpdatePresets()
-        End If
-
-    End Sub
+   
     Sub PresetClick(ByVal c As Integer)
         If c = 1 Then BtnPreset_Click(BtnPreset1, Nothing)
         If c = 2 Then BtnPreset_Click(BtnPreset2, Nothing)
@@ -2105,170 +1893,7 @@ Public Class MainForm
         If c = 16 Then BtnPreset_Click(BtnPreset16, Nothing)
     End Sub
 
-    Sub NextAutoShot()
-        Dim c As Integer, i As Integer
-        Dim f As Boolean
-        Dim ShotSize As Integer
-        Dim Newcontent As Integer
-        If AutoSongMode = True Or SingleAutoShot = 1 Then
-            'pick next cam at random
-            Do
-                c = CInt(Rnd() * 4 + 1)
-            Loop While c = liveaddr Or (SingleAutoShot = 1 And c = addr) Or c > 4
-            If c = 1 Then BtnCam1_Click(BtnCam1, Nothing)
-            If c = 2 Then BtnCam1_Click(BtnCam2, Nothing)
-            If c = 3 Then BtnCam1_Click(BtnCam3, Nothing)
-            If c = 4 Then BtnCam1_Click(BtnCam4, Nothing)
-            'find shots for next cam that aren't "stage"
-            'PresetContent: 1=stage 2=band (not singers) 3=congregation 4=all 5=singers
-            f = False
-            'current shot content is in prevautosongshot
-            'Debug.Print(PrevAutoSongShot)
-            For c = 1 To 16 'check that there is at least one suitable preset
-                If PresetAuto((c - 1) + ((addr - 1) * 16)) = True Then 'if shot is enabled for auto
-                    Newcontent = PresetContent((c - 1) + ((addr - 1) * 16))
-                    If SingleAutoShot = 1 Then
-                        If Newcontent <> 1 Then f = True
-                    Else
-                        If PrevAutoSongShot = 5 Then 'if previous shot singers, we want not singers
-                            If Newcontent = 2 Or Newcontent = 3 Or Newcontent = 4 Then f = True
-                        Else 'else go for singers
-                            If Newcontent = 4 Or Newcontent = 5 Then f = True
-                        End If
-                    End If
-                End If
-            Next
-            If f = True Then 'only change the shot if there is something suitable
-                f = False
-                Do
-                    c = CInt(Rnd() * 16 + 1)
-                    If (c < 17) Then
-                        If PresetAuto((c - 1) + ((addr - 1) * 16)) = True Then
-                            Newcontent = PresetContent((c - 1) + ((addr - 1) * 16))
-                            If SingleAutoShot = 1 Then 'in magic shot mode pick any shot except stage
-                                If Newcontent <> 1 Then f = True
-                            Else
-                                If PrevAutoSongShot = 5 Then 'if previous shot singers, we want not singers
-                                    If Newcontent = 2 Or Newcontent = 3 Or Newcontent = 4 Then f = True
-                                Else
-                                    If Newcontent = 4 Or Newcontent = 5 Then f = True
-                                End If
-                            End If
-                        End If
-                    End If
-                Loop While f = False
-                AutoPreset = 1
-                PrevAutoSongShot = Newcontent 'remember the content of this shot so we don't do 2 the same
-                PresetClick(c)
-                'if new shot is closeup, 25% chance fixed zoom out, 50% chance move to wide shot
-                'PresetSize: 1=very close 2=close 3=mid 4=full 5=wide 6=full wide
-                ShotSize = PresetSize((c - 1) + ((addr - 1) * 16))
-                If ShotSize <= 5 Then
-                    If (Rnd() < 0.3) Then ' Or ShotSize = 1 Then
-                        BtnSlowOut_Click(BtnSlowOut, Nothing)
-                        AutoSongPreload = True
-                    Else
-                        If (Rnd() > 0.5) Then
-                            f = False
-                            For i = 1 To 16 'first check that there is another suitable preset to go to
-                                If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) > 4 And i <> c Then f = True
-                            Next
-                            If f = True Then 'there is at least one, pick at random
-                                BtnPreload_Click(BtnPreload, Nothing)
-                                AutoSongPreload = True
-                                f = False
-                                Do
-                                    i = CInt(Rnd() * 16 + 1)
-                                    If (i < 17) Then
-                                        If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) > 4 And i <> c Then f = True
-                                    End If
-                                Loop While f = False
-                                AutoPreset = 1
-                                PresetClick(i)
-                            End If
-                        End If
-                    End If
-
-                End If
-
-                'if shot is wide, 50% chance zoom in to close shot
-                If ShotSize >= 5 Then
-                    If (Rnd() < 0.5) Then
-                        f = False
-                        For i = 1 To 16 'first check that there is another suitable preset to go to
-                            If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 4 And i <> c Then f = True
-                        Next
-                        If f = True Then 'there is at least one, pick at random
-                            BtnPreload_Click(BtnPreload, Nothing)
-                            AutoSongPreload = True
-                            f = False
-                            Do
-                                i = CInt(Rnd() * 16 + 1)
-                                If (i < 17) Then
-                                    If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 4 And i <> c Then f = True
-                                End If
-                            Loop While f = False
-                            AutoPreset = 1
-                            PresetClick(i)
-                        End If
-                    End If
-
-                End If
-            End If
-        End If
-
-        If AutoSpeechMode = True Then
-            'if livecam is 1 pick next cam at random and pick wide stage cong or all
-            'else cam 1, stage close or mid
-            If liveaddr = 1 Then
-                'pick next cam at random - go to a wide shot
-                Do
-                    c = CInt(Rnd() * 4 + 1)
-                Loop While c = liveaddr Or c > 4
-                If c = 1 Then BtnCam1_Click(BtnCam1, Nothing)
-                If c = 2 Then BtnCam1_Click(BtnCam2, Nothing)
-                If c = 3 Then BtnCam1_Click(BtnCam3, Nothing)
-                If c = 4 Then BtnCam1_Click(BtnCam4, Nothing)
-
-                f = False
-                For i = 1 To 16 'first check that there is another suitable preset to go to
-                    If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 2 And PresetSize((i - 1) + ((addr - 1) * 16)) >= 4 Then f = True
-                Next
-                If f = True Then 'there is at least one, pick at random
-                    f = False
-                    Do
-                        i = CInt(Rnd() * 16 + 1)
-                        If (i < 17) Then
-                            If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) <> 2 And PresetSize((i - 1) + ((addr - 1) * 16)) >= 4 Then f = True
-                        End If
-                    Loop While f = False
-                    PresetClick(i)
-                End If
-
-
-            Else
-                'return to the stage shot and pick a slightly closer or wider shot
-                If (PrevAutoSpeech = False) Then 'pick close stage shot if we don't already have one
-                    PrevAutoSpeech = True
-                    For i = 1 To 16 'first check that there is another suitable preset to go to
-                        If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) = 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 3 Then f = True
-                    Next
-                    If f = True Then 'there is at least one, pick at random
-                        f = False
-                        Do
-                            i = CInt(Rnd() * 16 + 1)
-                            If (i < 17) Then
-                                If PresetAuto((i - 1) + ((addr - 1) * 16)) = True And PresetContent((i - 1) + ((addr - 1) * 16)) = 1 And PresetSize((i - 1) + ((addr - 1) * 16)) <= 3 Then f = True
-                            End If
-                        Loop While f = False
-                        PresetClick(i)
-                    End If
-                End If
-            End If
-
-
-        End If
-    End Sub
+    
 
     Private Sub BtnLiveSlow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLiveSlow.Click
         BtnLiveSlow.BackColor = Color.Green
@@ -2282,14 +1907,6 @@ Public Class MainForm
         LiveMoveSpeed = 1
     End Sub
 
-
-    Private Sub MagicShotClick_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MagicShotButton.Click
-        SingleAutoShot = 1
-        AutoPreset = 1
-        NextAutoShot()
-
-        SingleAutoShot = 0
-    End Sub
 
     Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
         CamIgnore(1) = False
@@ -2429,43 +2046,20 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub BtnOBSamintro_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSamintro.Click
-        'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Intro video morning"",""message-id"":""TEST1""}")
-
-    End Sub
-    Private Sub BtnOBSpmintro_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSpmintro.Click
-        websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Intro video evening"",""message-id"":""TEST1""}")
-        BtnMPrev.BackColor = Color.White
-        BtnOBSamintro.BackColor = Color.White
-        BtnOBSpmintro.BackColor = Color.Green
-        BtnOBSIdent.BackColor = Color.White
-        BtnMNext.BackColor = Color.White
-        If TieAux3 And PrevAux3 = 0 Then
-            PrevAux3 = CurrentAux3 'remember what it was set to
-            SetAux3(4) 'set foldback output to show OBS preview
-        End If
-
-        'if broadcasting but not recording, start the recording
-        If OBSStreamState = True And OBSRecState = False Then
-            BtnOBSRecord_Click(sender, e)
-        End If
-
-        ClipRemainTime = Globals.Cliptime(2)
-
-    End Sub
+    
     Private Sub BtnOBSIdent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSIdent.Click
-        websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Ident video"",""message-id"":""TEST1""}")
-        BtnMPrev.BackColor = Color.White
-        BtnOBSamintro.BackColor = Color.White
-        BtnOBSpmintro.BackColor = Color.White
-        BtnOBSIdent.BackColor = Color.Green
-        BtnMNext.BackColor = Color.White
-        If TieAux3 And PrevAux3 = 0 Then
-            PrevAux3 = CurrentAux3 'remember what it was set to
-            SetAux3(4) 'set foldback output to show OBS preview
-        End If
+        'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Ident video"",""message-id"":""TEST1""}")
+        'BtnMPrev.BackColor = Color.White
+        'BtnOBSamintro.BackColor = Color.White
+        'BtnOBSpmintro.BackColor = Color.White
+        'BtnOBSIdent.BackColor = Color.Green
+        'BtnMNext.BackColor = Color.White
+        'If TieAux3 And PrevAux3 = 0 Then
+        'PrevAux3 = CurrentAux3 'remember what it was set to
+        'SetAux3(4) 'set foldback output to show OBS preview
+        'End If
 
-        ClipRemainTime = Globals.Cliptime(3)
+        'ClipRemainTime = Globals.Cliptime(3)
     End Sub
 
 
@@ -3005,25 +2599,6 @@ Public Class MainForm
             TextBoxCam2Rec.Text = CamRecStatus(SendCamQuery(2, "get_state"), 2)
             TextBoxCam3Rec.Text = CamRecStatus(SendCamQuery(3, "get_state"), 3)
             TextBoxCam4Rec.Text = CamRecStatus(SendCamQuery(4, "get_state"), 4)
-            'also, set aux volume on Atem to normal
-            'ExecuteLua("ATEMMixerAudioSetInputGain( 1,11, " & 0 & ")") 'set the aux input to 0db
-            'also, set OBS to mix
-            'BtnOBSOut.PerformClick()
-            'also, set the Pip box
-            'set up the parameters for the USK 1, we only need to do this once
-            ExecuteLua("ATEMMixerMEKeySetKeyType(1,1,1,""DVE"")") 'dve mode
-            ExecuteLua("ATEMMixerMEKeyDVESetEnabled(1,1,1,""TRUE"")") 'border
-            ExecuteLua("ATEMMixerMEKeyFlySetOffsetX(1,1,1,7.8)")
-            ExecuteLua("ATEMMixerMEKeyFlySetOffsetY(1,1,1,4.3)")
-            ExecuteLua("ATEMMixerMEKeyFlySetStretchX(1,1,1,0.5)")
-            ExecuteLua("ATEMMixerMEKeyFlySetStretchY(1,1,1,0.5)")
-            ExecuteLua("ATEMMixerMEKeyDVESetOpacity(1,1,1,0.5)")
-            ExecuteLua("ATEMMixerMEKeyDVESetWidthIn(1,1,1,0.2)")
-            ExecuteLua("ATEMMixerMEKeyDVESetWidthOut(1,1,1,0.2)")
-            ExecuteLua("ATEMMixerMEKeyDVESetLightAngle(1,1,1,51)")
-            ExecuteLua("ATEMMixerMEKeyDVESetLightAltitude(1,1,1,49)")
-            ExecuteLua("ATEMMixerMEKeyDVESetShadowEnabled(1,1,1,""TRUE"")")
-            ExecuteLua("ATEMMixerMEKeySetFillSource(1,1,1,2)") 'default to words input
 
         End If
 
@@ -3132,20 +2707,6 @@ Public Class MainForm
                 'End If
                 'End If
 
-                If addr >= 1 And addr <= 4 Then
-                    'mLog.Text = LuaReturn
-                    RequestLua("ATEMMixerMEGetPreviewInput(1,1)")
-                    'mLog.Text = LuaReturn
-                    px = InStr(LuaReturn, "INTEGER:")
-                    If (px <> 0) Then py = Val(Mid(LuaReturn, px + 8, 1))
-                    'If py <> addr + 5 Then
-                    '    'error!!! the live cam setting is wrong
-                    '    ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & addr + 5 & " )")
-                    '    Dim objWriter As New System.IO.StreamWriter("vblog.txt", True)
-                    '    objWriter.WriteLine(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") & " " & "AtemPrev:" & py - '5 & " VBPrev:" & liveaddr)
-                    '    objWriter.Close()
-                    'End If
-                End If
             End If
         End If
 
@@ -3252,36 +2813,6 @@ Public Class MainForm
             End If
         End If
 
-        'timer to load next shot if in auto mode
-        If AutoWait > 0 Then
-            AutoWait = AutoWait - 1
-            If (AutoWait = 0) And (AutoSongMode = True Or AutoSpeechMode = True) Then
-                NextAutoShot()
-            End If
-        End If
-
-        'process keyhit from cam controller
-        If (KeyHit) Then
-            KeyHit = False
-            'this code sets the preview button from the cam controller
-            'If LastKey = 11 Then BtnCam1_Click(BtnCam1, Nothing)
-            'If LastKey = 12 Then BtnCam1_Click(BtnCam2, Nothing)
-            'If LastKey = 13 Then BtnCam1_Click(BtnCam3, Nothing)
-            'If LastKey = 14 Then BtnCam1_Click(BtnCam4, Nothing)
-            'If LastKey = 15 Then BtnInp_Click(BtnInp2, Nothing)
-
-            'this code set the projector output
-            aux = 0
-            If LastKey = 11 Then aux = 6
-            If LastKey = 12 Then aux = 7
-            If LastKey = 13 Then aux = 8
-            If LastKey = 14 Then aux = 2
-            If LastKey = 15 Then aux = 5
-            If LastKey = 16 Then BtnCut_Click(BtnCut, Nothing)
-            If aux <> 0 Then ExecuteLua("ATEMMixerAUXSetInput( 1,2," & aux & " )") ' 
-
-        End If
-
         'program close safety timer
         If (ProgCloseTimer > 0) Then
             ProgCloseTimer = ProgCloseTimer - 1
@@ -3312,24 +2843,6 @@ Public Class MainForm
         End If
         If ShutDownTimer = 30 Then Label22.Text = Label22.Text & "Exit application..." & vbCrLf
         If ShutDownTimer = 50 Then Application.Exit()
-
-        'audio fades for black output
-        If AudioFade = -1 Then 'fading out the main sound, going to media player
-            AudioLevel = AudioLevel - 3
-            If (AudioLevel < -60) Then
-                AudioLevel = -60
-                AudioFade = 0
-            End If
-            ExecuteLua("ATEMMixerAudioSetInputGain( 1,11, " & AudioLevel & ")") 'fade the aux input (main sound)
-        End If
-        If AudioFade = 1 Then 'fading back to main sound from media
-            AudioLevel = AudioLevel + 3
-            If (AudioLevel > 0) Then
-                AudioLevel = 0
-                AudioFade = 0
-            End If
-            ExecuteLua("ATEMMixerAudioSetInputGain( 1,11, " & AudioLevel & ")")
-        End If
 
 
     End Sub
@@ -3440,9 +2953,4 @@ Public Class MainForm
     End Sub
 
 
-
-
-    Private Sub Button7_Click(sender As Object, e As EventArgs)
-
-    End Sub
 End Class

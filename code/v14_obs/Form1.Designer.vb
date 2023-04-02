@@ -105,6 +105,9 @@ Partial Class MainForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.PresetPanel = New System.Windows.Forms.Panel()
+        Me.BtnMovePreset = New AtemController.MyButton()
+        Me.BtnEditPreset = New AtemController.MyButton()
+        Me.BtnPresetSave = New AtemController.MyButton()
         Me.LabelCap3 = New System.Windows.Forms.Label()
         Me.TextCaptionOther = New System.Windows.Forms.TextBox()
         Me.Label27 = New System.Windows.Forms.Label()
@@ -114,31 +117,6 @@ Partial Class MainForm
         Me.TextLeaderName = New System.Windows.Forms.TextBox()
         Me.ListBoxMedia = New System.Windows.Forms.ListBox()
         Me.Label28 = New System.Windows.Forms.Label()
-        Me.ShapeContainer3 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape13 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShapeMode4 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.CamPanel = New System.Windows.Forms.Panel()
-        Me.SettingsPanel = New System.Windows.Forms.Panel()
-        Me.StatPanel = New System.Windows.Forms.Panel()
-        Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
-        Me.TextBoxOBSBroadcastTime = New System.Windows.Forms.TextBox()
-        Me.LabelEncB = New System.Windows.Forms.Label()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.TextEncBStatus = New System.Windows.Forms.TextBox()
-        Me.LabelEncA = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.TextEncAStatus = New System.Windows.Forms.TextBox()
-        Me.LabelEncStatus = New System.Windows.Forms.Label()
-        Me.ShapeContainer4 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape12 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.BtnMovePreset = New AtemController.MyButton()
-        Me.BtnEditPreset = New AtemController.MyButton()
-        Me.BtnPresetSave = New AtemController.MyButton()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnMPrev = New AtemController.MyButton()
         Me.BtnLiveFast = New AtemController.MyButton()
@@ -164,6 +142,18 @@ Partial Class MainForm
         Me.BtnPreset14 = New AtemController.MyButton()
         Me.BtnPreset15 = New AtemController.MyButton()
         Me.BtnPreset16 = New AtemController.MyButton()
+        Me.ShapeContainer3 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShape13 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ModeBtnSettings = New AtemController.MyButton()
+        Me.ModeBtnCam = New AtemController.MyButton()
+        Me.ModeBtnPresets = New AtemController.MyButton()
+        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShapeMode4 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.CamPanel = New System.Windows.Forms.Panel()
         Me.BtnOBSpmintro = New AtemController.MyButton()
         Me.BtnOBSIdent = New AtemController.MyButton()
         Me.BtnOBSamintro = New AtemController.MyButton()
@@ -184,11 +174,21 @@ Partial Class MainForm
         Me.MyButtonCamU = New AtemController.MyButton()
         Me.MyButtonCamUL = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
+        Me.SettingsPanel = New System.Windows.Forms.Panel()
+        Me.StatPanel = New System.Windows.Forms.Panel()
+        Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
         Me.BtnOBSRecord = New AtemController.MyButton()
         Me.BtnOBSBroadcast = New AtemController.MyButton()
-        Me.ModeBtnSettings = New AtemController.MyButton()
-        Me.ModeBtnCam = New AtemController.MyButton()
-        Me.ModeBtnPresets = New AtemController.MyButton()
+        Me.TextBoxOBSBroadcastTime = New System.Windows.Forms.TextBox()
+        Me.LabelEncB = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.TextEncBStatus = New System.Windows.Forms.TextBox()
+        Me.LabelEncA = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TextEncAStatus = New System.Windows.Forms.TextBox()
+        Me.LabelEncStatus = New System.Windows.Forms.Label()
+        Me.ShapeContainer4 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShape12 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.BtnInp5 = New AtemController.MyButton()
         Me.AuxSel12 = New AtemController.MyButton()
         Me.Aux3Btn12 = New AtemController.MyButton()
@@ -233,6 +233,8 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
+        Me.TextBoxPresetEdit = New System.Windows.Forms.TextBox()
+        Me.PanelMaskAll = New System.Windows.Forms.Panel()
         Me.GroupBox1.SuspendLayout()
         Me.PresetPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -1086,6 +1088,7 @@ Partial Class MainForm
         '
         'PresetPanel
         '
+        Me.PresetPanel.Controls.Add(Me.TextBoxPresetEdit)
         Me.PresetPanel.Controls.Add(Me.BtnMovePreset)
         Me.PresetPanel.Controls.Add(Me.BtnEditPreset)
         Me.PresetPanel.Controls.Add(Me.BtnPresetSave)
@@ -1129,6 +1132,39 @@ Partial Class MainForm
         Me.PresetPanel.Name = "PresetPanel"
         Me.PresetPanel.Size = New System.Drawing.Size(784, 600)
         Me.PresetPanel.TabIndex = 320
+        '
+        'BtnMovePreset
+        '
+        Me.BtnMovePreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnMovePreset.Image = CType(resources.GetObject("BtnMovePreset.Image"), System.Drawing.Image)
+        Me.BtnMovePreset.Location = New System.Drawing.Point(540, 447)
+        Me.BtnMovePreset.Name = "BtnMovePreset"
+        Me.BtnMovePreset.Size = New System.Drawing.Size(80, 80)
+        Me.BtnMovePreset.TabIndex = 333
+        Me.BtnMovePreset.Text = "Move"
+        Me.BtnMovePreset.UseVisualStyleBackColor = True
+        '
+        'BtnEditPreset
+        '
+        Me.BtnEditPreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnEditPreset.Image = CType(resources.GetObject("BtnEditPreset.Image"), System.Drawing.Image)
+        Me.BtnEditPreset.Location = New System.Drawing.Point(454, 447)
+        Me.BtnEditPreset.Name = "BtnEditPreset"
+        Me.BtnEditPreset.Size = New System.Drawing.Size(80, 80)
+        Me.BtnEditPreset.TabIndex = 332
+        Me.BtnEditPreset.Text = "Edit"
+        Me.BtnEditPreset.UseVisualStyleBackColor = True
+        '
+        'BtnPresetSave
+        '
+        Me.BtnPresetSave.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnPresetSave.Image = CType(resources.GetObject("BtnPresetSave.Image"), System.Drawing.Image)
+        Me.BtnPresetSave.Location = New System.Drawing.Point(374, 447)
+        Me.BtnPresetSave.Name = "BtnPresetSave"
+        Me.BtnPresetSave.Size = New System.Drawing.Size(80, 80)
+        Me.BtnPresetSave.TabIndex = 331
+        Me.BtnPresetSave.Text = "Save"
+        Me.BtnPresetSave.UseVisualStyleBackColor = True
         '
         'LabelCap3
         '
@@ -1237,344 +1273,6 @@ Partial Class MainForm
         Me.Label28.Size = New System.Drawing.Size(74, 16)
         Me.Label28.TabIndex = 322
         Me.Label28.Text = "Media player"
-        '
-        'ShapeContainer3
-        '
-        Me.ShapeContainer3.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer3.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer3.Name = "ShapeContainer3"
-        Me.ShapeContainer3.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape13})
-        Me.ShapeContainer3.Size = New System.Drawing.Size(784, 600)
-        Me.ShapeContainer3.TabIndex = 319
-        Me.ShapeContainer3.TabStop = False
-        '
-        'LineShape13
-        '
-        Me.LineShape13.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape13.Name = "LineShape13"
-        Me.LineShape13.X1 = 9
-        Me.LineShape13.X2 = 297
-        Me.LineShape13.Y1 = 271
-        Me.LineShape13.Y2 = 271
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.ModeBtnSettings)
-        Me.Panel1.Controls.Add(Me.ModeBtnCam)
-        Me.Panel1.Controls.Add(Me.ModeBtnPresets)
-        Me.Panel1.Controls.Add(Me.ShapeContainer2)
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(120, 600)
-        Me.Panel1.TabIndex = 321
-        '
-        'ShapeContainer2
-        '
-        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer2.Name = "ShapeContainer2"
-        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeMode4, Me.LineShapeMode3, Me.LineShapeMode2, Me.LineShapeMode1})
-        Me.ShapeContainer2.Size = New System.Drawing.Size(120, 600)
-        Me.ShapeContainer2.TabIndex = 160
-        Me.ShapeContainer2.TabStop = False
-        '
-        'LineShapeMode4
-        '
-        Me.LineShapeMode4.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode4.BorderWidth = 2
-        Me.LineShapeMode4.Name = "LineShapeMode4"
-        Me.LineShapeMode4.X1 = 0
-        Me.LineShapeMode4.X2 = 110
-        Me.LineShapeMode4.Y1 = 380
-        Me.LineShapeMode4.Y2 = 380
-        '
-        'LineShapeMode3
-        '
-        Me.LineShapeMode3.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode3.BorderWidth = 2
-        Me.LineShapeMode3.Name = "LineShapeMode3"
-        Me.LineShapeMode3.X1 = 0
-        Me.LineShapeMode3.X2 = 110
-        Me.LineShapeMode3.Y1 = 334
-        Me.LineShapeMode3.Y2 = 334
-        '
-        'LineShapeMode2
-        '
-        Me.LineShapeMode2.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode2.BorderWidth = 2
-        Me.LineShapeMode2.Name = "LineShapeMode2"
-        Me.LineShapeMode2.X1 = 110
-        Me.LineShapeMode2.X2 = 110
-        Me.LineShapeMode2.Y1 = 0
-        Me.LineShapeMode2.Y2 = 600
-        '
-        'LineShapeMode1
-        '
-        Me.LineShapeMode1.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode1.BorderWidth = 2
-        Me.LineShapeMode1.Name = "LineShapeMode1"
-        Me.LineShapeMode1.X1 = 110
-        Me.LineShapeMode1.X2 = 110
-        Me.LineShapeMode1.Y1 = 0
-        Me.LineShapeMode1.Y2 = 600
-        '
-        'CamPanel
-        '
-        Me.CamPanel.Controls.Add(Me.TextBox3)
-        Me.CamPanel.Controls.Add(Me.Label23)
-        Me.CamPanel.Controls.Add(Me.BtnOBSpmintro)
-        Me.CamPanel.Controls.Add(Me.BtnOBSIdent)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam4Rec)
-        Me.CamPanel.Controls.Add(Me.BtnOBSamintro)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam3Rec)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam2Rec)
-        Me.CamPanel.Controls.Add(Me.Button8)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam1Rec)
-        Me.CamPanel.Controls.Add(Me.TextPlayerTime)
-        Me.CamPanel.Controls.Add(Me.BtnCam4Rec)
-        Me.CamPanel.Controls.Add(Me.BtnCam3Rec)
-        Me.CamPanel.Controls.Add(Me.BtnCam2Rec)
-        Me.CamPanel.Controls.Add(Me.BtnAgcAuto)
-        Me.CamPanel.Controls.Add(Me.BtnCam1Rec)
-        Me.CamPanel.Controls.Add(Me.BtnWBAuto)
-        Me.CamPanel.Controls.Add(Me.BtnIrisAuto)
-        Me.CamPanel.Controls.Add(Me.Label25)
-        Me.CamPanel.Controls.Add(Me.Button6)
-        Me.CamPanel.Controls.Add(Me.Button4)
-        Me.CamPanel.Controls.Add(Me.Button3)
-        Me.CamPanel.Controls.Add(Me.Button2)
-        Me.CamPanel.Controls.Add(Me.BtnFocusUp)
-        Me.CamPanel.Controls.Add(Me.BtnFocusDn)
-        Me.CamPanel.Controls.Add(Me.BtnFocusLock)
-        Me.CamPanel.Controls.Add(Me.BtnFocusAuto)
-        Me.CamPanel.Controls.Add(Me.Label12)
-        Me.CamPanel.Controls.Add(Me.Label10)
-        Me.CamPanel.Controls.Add(Me.Label11)
-        Me.CamPanel.Controls.Add(Me.BtnWbBlueUp)
-        Me.CamPanel.Controls.Add(Me.BtnSlow)
-        Me.CamPanel.Controls.Add(Me.BtnWbBlueDn)
-        Me.CamPanel.Controls.Add(Me.BtnFast)
-        Me.CamPanel.Controls.Add(Me.BtnWbRedUp)
-        Me.CamPanel.Controls.Add(Me.BtnWbRedDn)
-        Me.CamPanel.Controls.Add(Me.Label21)
-        Me.CamPanel.Controls.Add(Me.Label9)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamDR)
-        Me.CamPanel.Controls.Add(Me.BtnShutterUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamD)
-        Me.CamPanel.Controls.Add(Me.BtnShutterDn)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamDL)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamR)
-        Me.CamPanel.Controls.Add(Me.Label8)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamL)
-        Me.CamPanel.Controls.Add(Me.BtnGainUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamUR)
-        Me.CamPanel.Controls.Add(Me.BtnGainDown)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamU)
-        Me.CamPanel.Controls.Add(Me.BtnAGCUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamUL)
-        Me.CamPanel.Controls.Add(Me.BtnAGCDown)
-        Me.CamPanel.Controls.Add(Me.Label20)
-        Me.CamPanel.Controls.Add(Me.Label19)
-        Me.CamPanel.Controls.Add(Me.BtnIrisUp)
-        Me.CamPanel.Controls.Add(Me.TextBox9)
-        Me.CamPanel.Controls.Add(Me.TextBox8)
-        Me.CamPanel.Controls.Add(Me.TextBox7)
-        Me.CamPanel.Controls.Add(Me.TextBox6)
-        Me.CamPanel.Controls.Add(Me.TextBox5)
-        Me.CamPanel.Controls.Add(Me.BtnIrisDown)
-        Me.CamPanel.Controls.Add(Me.TextBox4)
-        Me.CamPanel.Controls.Add(Me.OverrideBtn)
-        Me.CamPanel.Location = New System.Drawing.Point(131, 25)
-        Me.CamPanel.Name = "CamPanel"
-        Me.CamPanel.Size = New System.Drawing.Size(784, 600)
-        Me.CamPanel.TabIndex = 322
-        '
-        'SettingsPanel
-        '
-        Me.SettingsPanel.Controls.Add(Me.Label13)
-        Me.SettingsPanel.Location = New System.Drawing.Point(189, 1229)
-        Me.SettingsPanel.Name = "SettingsPanel"
-        Me.SettingsPanel.Size = New System.Drawing.Size(188, 181)
-        Me.SettingsPanel.TabIndex = 323
-        '
-        'StatPanel
-        '
-        Me.StatPanel.Controls.Add(Me.TextBoxOBSRecTime)
-        Me.StatPanel.Controls.Add(Me.BtnOBSRecord)
-        Me.StatPanel.Controls.Add(Me.BtnOBSBroadcast)
-        Me.StatPanel.Controls.Add(Me.TextBoxOBSBroadcastTime)
-        Me.StatPanel.Controls.Add(Me.LabelEncB)
-        Me.StatPanel.Controls.Add(Me.PictureBox2)
-        Me.StatPanel.Controls.Add(Me.TextEncBStatus)
-        Me.StatPanel.Controls.Add(Me.LabelEncA)
-        Me.StatPanel.Controls.Add(Me.PictureBox1)
-        Me.StatPanel.Controls.Add(Me.TextEncAStatus)
-        Me.StatPanel.Controls.Add(Me.LabelEncStatus)
-        Me.StatPanel.Controls.Add(Me.ShapeContainer4)
-        Me.StatPanel.Location = New System.Drawing.Point(904, 0)
-        Me.StatPanel.Name = "StatPanel"
-        Me.StatPanel.Size = New System.Drawing.Size(120, 600)
-        Me.StatPanel.TabIndex = 324
-        '
-        'TextBoxOBSRecTime
-        '
-        Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
-        Me.TextBoxOBSRecTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxOBSRecTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(17, 566)
-        Me.TextBoxOBSRecTime.Name = "TextBoxOBSRecTime"
-        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(100, 26)
-        Me.TextBoxOBSRecTime.TabIndex = 300
-        Me.TextBoxOBSRecTime.Text = "..."
-        Me.TextBoxOBSRecTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBoxOBSBroadcastTime
-        '
-        Me.TextBoxOBSBroadcastTime.BackColor = System.Drawing.Color.Black
-        Me.TextBoxOBSBroadcastTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxOBSBroadcastTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(17, 426)
-        Me.TextBoxOBSBroadcastTime.Name = "TextBoxOBSBroadcastTime"
-        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(100, 26)
-        Me.TextBoxOBSBroadcastTime.TabIndex = 297
-        Me.TextBoxOBSBroadcastTime.Text = "..."
-        Me.TextBoxOBSBroadcastTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncB
-        '
-        Me.LabelEncB.AutoSize = True
-        Me.LabelEncB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncB.ForeColor = System.Drawing.Color.White
-        Me.LabelEncB.Location = New System.Drawing.Point(61, 129)
-        Me.LabelEncB.Name = "LabelEncB"
-        Me.LabelEncB.Size = New System.Drawing.Size(57, 19)
-        Me.LabelEncB.TabIndex = 252
-        Me.LabelEncB.Text = "Focus"
-        Me.LabelEncB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(17, 116)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(40, 40)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox2.TabIndex = 251
-        Me.PictureBox2.TabStop = False
-        '
-        'TextEncBStatus
-        '
-        Me.TextEncBStatus.BackColor = System.Drawing.Color.Black
-        Me.TextEncBStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextEncBStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextEncBStatus.ForeColor = System.Drawing.Color.Yellow
-        Me.TextEncBStatus.Location = New System.Drawing.Point(17, 162)
-        Me.TextEncBStatus.Name = "TextEncBStatus"
-        Me.TextEncBStatus.Size = New System.Drawing.Size(100, 29)
-        Me.TextEncBStatus.TabIndex = 250
-        Me.TextEncBStatus.Text = "17"
-        Me.TextEncBStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncA
-        '
-        Me.LabelEncA.AutoSize = True
-        Me.LabelEncA.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncA.ForeColor = System.Drawing.Color.White
-        Me.LabelEncA.Location = New System.Drawing.Point(61, 43)
-        Me.LabelEncA.Name = "LabelEncA"
-        Me.LabelEncA.Size = New System.Drawing.Size(32, 19)
-        Me.LabelEncA.TabIndex = 249
-        Me.LabelEncA.Text = "Iris"
-        Me.LabelEncA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(17, 30)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(40, 40)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 115
-        Me.PictureBox1.TabStop = False
-        '
-        'TextEncAStatus
-        '
-        Me.TextEncAStatus.BackColor = System.Drawing.Color.Black
-        Me.TextEncAStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextEncAStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextEncAStatus.ForeColor = System.Drawing.Color.Yellow
-        Me.TextEncAStatus.Location = New System.Drawing.Point(17, 76)
-        Me.TextEncAStatus.Name = "TextEncAStatus"
-        Me.TextEncAStatus.Size = New System.Drawing.Size(100, 29)
-        Me.TextEncAStatus.TabIndex = 114
-        Me.TextEncAStatus.Text = "17"
-        Me.TextEncAStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncStatus
-        '
-        Me.LabelEncStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.LabelEncStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LabelEncStatus.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncStatus.Location = New System.Drawing.Point(17, 6)
-        Me.LabelEncStatus.Name = "LabelEncStatus"
-        Me.LabelEncStatus.Size = New System.Drawing.Size(91, 21)
-        Me.LabelEncStatus.TabIndex = 1
-        Me.LabelEncStatus.Text = "CAM?"
-        Me.LabelEncStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ShapeContainer4
-        '
-        Me.ShapeContainer4.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer4.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer4.Name = "ShapeContainer4"
-        Me.ShapeContainer4.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape12})
-        Me.ShapeContainer4.Size = New System.Drawing.Size(120, 600)
-        Me.ShapeContainer4.TabIndex = 0
-        Me.ShapeContainer4.TabStop = False
-        '
-        'LineShape12
-        '
-        Me.LineShape12.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape12.Name = "LineShape12"
-        Me.LineShape12.X1 = 6
-        Me.LineShape12.X2 = 6
-        Me.LineShape12.Y1 = 0
-        Me.LineShape12.Y2 = 600
-        '
-        'BtnMovePreset
-        '
-        Me.BtnMovePreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnMovePreset.Image = CType(resources.GetObject("BtnMovePreset.Image"), System.Drawing.Image)
-        Me.BtnMovePreset.Location = New System.Drawing.Point(540, 447)
-        Me.BtnMovePreset.Name = "BtnMovePreset"
-        Me.BtnMovePreset.Size = New System.Drawing.Size(80, 80)
-        Me.BtnMovePreset.TabIndex = 333
-        Me.BtnMovePreset.Text = "Move"
-        Me.BtnMovePreset.UseVisualStyleBackColor = True
-        '
-        'BtnEditPreset
-        '
-        Me.BtnEditPreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnEditPreset.Image = CType(resources.GetObject("BtnEditPreset.Image"), System.Drawing.Image)
-        Me.BtnEditPreset.Location = New System.Drawing.Point(454, 447)
-        Me.BtnEditPreset.Name = "BtnEditPreset"
-        Me.BtnEditPreset.Size = New System.Drawing.Size(80, 80)
-        Me.BtnEditPreset.TabIndex = 332
-        Me.BtnEditPreset.Text = "Edit"
-        Me.BtnEditPreset.UseVisualStyleBackColor = True
-        '
-        'BtnPresetSave
-        '
-        Me.BtnPresetSave.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnPresetSave.Image = CType(resources.GetObject("BtnPresetSave.Image"), System.Drawing.Image)
-        Me.BtnPresetSave.Location = New System.Drawing.Point(374, 447)
-        Me.BtnPresetSave.Name = "BtnPresetSave"
-        Me.BtnPresetSave.Size = New System.Drawing.Size(80, 80)
-        Me.BtnPresetSave.TabIndex = 331
-        Me.BtnPresetSave.Text = "Save"
-        Me.BtnPresetSave.UseVisualStyleBackColor = True
         '
         'BtnMNext
         '
@@ -1851,6 +1549,190 @@ Partial Class MainForm
         Me.BtnPreset16.Text = "16"
         Me.BtnPreset16.UseVisualStyleBackColor = True
         '
+        'ShapeContainer3
+        '
+        Me.ShapeContainer3.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer3.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer3.Name = "ShapeContainer3"
+        Me.ShapeContainer3.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape13})
+        Me.ShapeContainer3.Size = New System.Drawing.Size(784, 600)
+        Me.ShapeContainer3.TabIndex = 319
+        Me.ShapeContainer3.TabStop = False
+        '
+        'LineShape13
+        '
+        Me.LineShape13.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShape13.Name = "LineShape13"
+        Me.LineShape13.X1 = 9
+        Me.LineShape13.X2 = 297
+        Me.LineShape13.Y1 = 271
+        Me.LineShape13.Y2 = 271
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.ModeBtnSettings)
+        Me.Panel1.Controls.Add(Me.ModeBtnCam)
+        Me.Panel1.Controls.Add(Me.ModeBtnPresets)
+        Me.Panel1.Controls.Add(Me.ShapeContainer2)
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(120, 600)
+        Me.Panel1.TabIndex = 321
+        '
+        'ModeBtnSettings
+        '
+        Me.ModeBtnSettings.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnSettings.Image = CType(resources.GetObject("ModeBtnSettings.Image"), System.Drawing.Image)
+        Me.ModeBtnSettings.Location = New System.Drawing.Point(8, 225)
+        Me.ModeBtnSettings.Name = "ModeBtnSettings"
+        Me.ModeBtnSettings.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnSettings.TabIndex = 159
+        Me.ModeBtnSettings.Text = "System Settings"
+        Me.ModeBtnSettings.UseVisualStyleBackColor = True
+        '
+        'ModeBtnCam
+        '
+        Me.ModeBtnCam.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnCam.Image = CType(resources.GetObject("ModeBtnCam.Image"), System.Drawing.Image)
+        Me.ModeBtnCam.Location = New System.Drawing.Point(8, 116)
+        Me.ModeBtnCam.Name = "ModeBtnCam"
+        Me.ModeBtnCam.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnCam.TabIndex = 158
+        Me.ModeBtnCam.Text = "Camera Settings"
+        Me.ModeBtnCam.UseVisualStyleBackColor = True
+        '
+        'ModeBtnPresets
+        '
+        Me.ModeBtnPresets.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnPresets.Image = CType(resources.GetObject("ModeBtnPresets.Image"), System.Drawing.Image)
+        Me.ModeBtnPresets.Location = New System.Drawing.Point(8, 9)
+        Me.ModeBtnPresets.Name = "ModeBtnPresets"
+        Me.ModeBtnPresets.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnPresets.TabIndex = 157
+        Me.ModeBtnPresets.Text = "Live"
+        Me.ModeBtnPresets.UseVisualStyleBackColor = True
+        '
+        'ShapeContainer2
+        '
+        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer2.Name = "ShapeContainer2"
+        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeMode4, Me.LineShapeMode3, Me.LineShapeMode2, Me.LineShapeMode1})
+        Me.ShapeContainer2.Size = New System.Drawing.Size(120, 600)
+        Me.ShapeContainer2.TabIndex = 160
+        Me.ShapeContainer2.TabStop = False
+        '
+        'LineShapeMode4
+        '
+        Me.LineShapeMode4.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode4.BorderWidth = 2
+        Me.LineShapeMode4.Name = "LineShapeMode4"
+        Me.LineShapeMode4.X1 = 0
+        Me.LineShapeMode4.X2 = 110
+        Me.LineShapeMode4.Y1 = 380
+        Me.LineShapeMode4.Y2 = 380
+        '
+        'LineShapeMode3
+        '
+        Me.LineShapeMode3.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode3.BorderWidth = 2
+        Me.LineShapeMode3.Name = "LineShapeMode3"
+        Me.LineShapeMode3.X1 = 0
+        Me.LineShapeMode3.X2 = 110
+        Me.LineShapeMode3.Y1 = 334
+        Me.LineShapeMode3.Y2 = 334
+        '
+        'LineShapeMode2
+        '
+        Me.LineShapeMode2.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode2.BorderWidth = 2
+        Me.LineShapeMode2.Name = "LineShapeMode2"
+        Me.LineShapeMode2.X1 = 110
+        Me.LineShapeMode2.X2 = 110
+        Me.LineShapeMode2.Y1 = 0
+        Me.LineShapeMode2.Y2 = 600
+        '
+        'LineShapeMode1
+        '
+        Me.LineShapeMode1.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode1.BorderWidth = 2
+        Me.LineShapeMode1.Name = "LineShapeMode1"
+        Me.LineShapeMode1.X1 = 110
+        Me.LineShapeMode1.X2 = 110
+        Me.LineShapeMode1.Y1 = 0
+        Me.LineShapeMode1.Y2 = 600
+        '
+        'CamPanel
+        '
+        Me.CamPanel.Controls.Add(Me.TextBox3)
+        Me.CamPanel.Controls.Add(Me.Label23)
+        Me.CamPanel.Controls.Add(Me.BtnOBSpmintro)
+        Me.CamPanel.Controls.Add(Me.BtnOBSIdent)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam4Rec)
+        Me.CamPanel.Controls.Add(Me.BtnOBSamintro)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam3Rec)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam2Rec)
+        Me.CamPanel.Controls.Add(Me.Button8)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam1Rec)
+        Me.CamPanel.Controls.Add(Me.TextPlayerTime)
+        Me.CamPanel.Controls.Add(Me.BtnCam4Rec)
+        Me.CamPanel.Controls.Add(Me.BtnCam3Rec)
+        Me.CamPanel.Controls.Add(Me.BtnCam2Rec)
+        Me.CamPanel.Controls.Add(Me.BtnAgcAuto)
+        Me.CamPanel.Controls.Add(Me.BtnCam1Rec)
+        Me.CamPanel.Controls.Add(Me.BtnWBAuto)
+        Me.CamPanel.Controls.Add(Me.BtnIrisAuto)
+        Me.CamPanel.Controls.Add(Me.Label25)
+        Me.CamPanel.Controls.Add(Me.Button6)
+        Me.CamPanel.Controls.Add(Me.Button4)
+        Me.CamPanel.Controls.Add(Me.Button3)
+        Me.CamPanel.Controls.Add(Me.Button2)
+        Me.CamPanel.Controls.Add(Me.BtnFocusUp)
+        Me.CamPanel.Controls.Add(Me.BtnFocusDn)
+        Me.CamPanel.Controls.Add(Me.BtnFocusLock)
+        Me.CamPanel.Controls.Add(Me.BtnFocusAuto)
+        Me.CamPanel.Controls.Add(Me.Label12)
+        Me.CamPanel.Controls.Add(Me.Label10)
+        Me.CamPanel.Controls.Add(Me.Label11)
+        Me.CamPanel.Controls.Add(Me.BtnWbBlueUp)
+        Me.CamPanel.Controls.Add(Me.BtnSlow)
+        Me.CamPanel.Controls.Add(Me.BtnWbBlueDn)
+        Me.CamPanel.Controls.Add(Me.BtnFast)
+        Me.CamPanel.Controls.Add(Me.BtnWbRedUp)
+        Me.CamPanel.Controls.Add(Me.BtnWbRedDn)
+        Me.CamPanel.Controls.Add(Me.Label21)
+        Me.CamPanel.Controls.Add(Me.Label9)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamDR)
+        Me.CamPanel.Controls.Add(Me.BtnShutterUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamD)
+        Me.CamPanel.Controls.Add(Me.BtnShutterDn)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamDL)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamR)
+        Me.CamPanel.Controls.Add(Me.Label8)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamL)
+        Me.CamPanel.Controls.Add(Me.BtnGainUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamUR)
+        Me.CamPanel.Controls.Add(Me.BtnGainDown)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamU)
+        Me.CamPanel.Controls.Add(Me.BtnAGCUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamUL)
+        Me.CamPanel.Controls.Add(Me.BtnAGCDown)
+        Me.CamPanel.Controls.Add(Me.Label20)
+        Me.CamPanel.Controls.Add(Me.Label19)
+        Me.CamPanel.Controls.Add(Me.BtnIrisUp)
+        Me.CamPanel.Controls.Add(Me.TextBox9)
+        Me.CamPanel.Controls.Add(Me.TextBox8)
+        Me.CamPanel.Controls.Add(Me.TextBox7)
+        Me.CamPanel.Controls.Add(Me.TextBox6)
+        Me.CamPanel.Controls.Add(Me.TextBox5)
+        Me.CamPanel.Controls.Add(Me.BtnIrisDown)
+        Me.CamPanel.Controls.Add(Me.TextBox4)
+        Me.CamPanel.Controls.Add(Me.OverrideBtn)
+        Me.CamPanel.Location = New System.Drawing.Point(131, 25)
+        Me.CamPanel.Name = "CamPanel"
+        Me.CamPanel.Size = New System.Drawing.Size(784, 600)
+        Me.CamPanel.TabIndex = 322
+        '
         'BtnOBSpmintro
         '
         Me.BtnOBSpmintro.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2074,6 +1956,46 @@ Partial Class MainForm
         Me.OverrideBtn.Text = "Over ride"
         Me.OverrideBtn.UseVisualStyleBackColor = True
         '
+        'SettingsPanel
+        '
+        Me.SettingsPanel.Controls.Add(Me.Label13)
+        Me.SettingsPanel.Location = New System.Drawing.Point(189, 1229)
+        Me.SettingsPanel.Name = "SettingsPanel"
+        Me.SettingsPanel.Size = New System.Drawing.Size(188, 181)
+        Me.SettingsPanel.TabIndex = 323
+        '
+        'StatPanel
+        '
+        Me.StatPanel.Controls.Add(Me.TextBoxOBSRecTime)
+        Me.StatPanel.Controls.Add(Me.BtnOBSRecord)
+        Me.StatPanel.Controls.Add(Me.BtnOBSBroadcast)
+        Me.StatPanel.Controls.Add(Me.TextBoxOBSBroadcastTime)
+        Me.StatPanel.Controls.Add(Me.LabelEncB)
+        Me.StatPanel.Controls.Add(Me.PictureBox2)
+        Me.StatPanel.Controls.Add(Me.TextEncBStatus)
+        Me.StatPanel.Controls.Add(Me.LabelEncA)
+        Me.StatPanel.Controls.Add(Me.PictureBox1)
+        Me.StatPanel.Controls.Add(Me.TextEncAStatus)
+        Me.StatPanel.Controls.Add(Me.LabelEncStatus)
+        Me.StatPanel.Controls.Add(Me.ShapeContainer4)
+        Me.StatPanel.Location = New System.Drawing.Point(904, 0)
+        Me.StatPanel.Name = "StatPanel"
+        Me.StatPanel.Size = New System.Drawing.Size(120, 600)
+        Me.StatPanel.TabIndex = 324
+        '
+        'TextBoxOBSRecTime
+        '
+        Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
+        Me.TextBoxOBSRecTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSRecTime.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(17, 566)
+        Me.TextBoxOBSRecTime.Name = "TextBoxOBSRecTime"
+        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(100, 26)
+        Me.TextBoxOBSRecTime.TabIndex = 300
+        Me.TextBoxOBSRecTime.Text = "..."
+        Me.TextBoxOBSRecTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
         'BtnOBSRecord
         '
         Me.BtnOBSRecord.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2096,38 +2018,119 @@ Partial Class MainForm
         Me.BtnOBSBroadcast.Text = "Broad cast"
         Me.BtnOBSBroadcast.UseVisualStyleBackColor = True
         '
-        'ModeBtnSettings
+        'TextBoxOBSBroadcastTime
         '
-        Me.ModeBtnSettings.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnSettings.Image = CType(resources.GetObject("ModeBtnSettings.Image"), System.Drawing.Image)
-        Me.ModeBtnSettings.Location = New System.Drawing.Point(8, 225)
-        Me.ModeBtnSettings.Name = "ModeBtnSettings"
-        Me.ModeBtnSettings.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnSettings.TabIndex = 159
-        Me.ModeBtnSettings.Text = "System Settings"
-        Me.ModeBtnSettings.UseVisualStyleBackColor = True
+        Me.TextBoxOBSBroadcastTime.BackColor = System.Drawing.Color.Black
+        Me.TextBoxOBSBroadcastTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSBroadcastTime.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(17, 426)
+        Me.TextBoxOBSBroadcastTime.Name = "TextBoxOBSBroadcastTime"
+        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(100, 26)
+        Me.TextBoxOBSBroadcastTime.TabIndex = 297
+        Me.TextBoxOBSBroadcastTime.Text = "..."
+        Me.TextBoxOBSBroadcastTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ModeBtnCam
+        'LabelEncB
         '
-        Me.ModeBtnCam.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnCam.Image = CType(resources.GetObject("ModeBtnCam.Image"), System.Drawing.Image)
-        Me.ModeBtnCam.Location = New System.Drawing.Point(8, 116)
-        Me.ModeBtnCam.Name = "ModeBtnCam"
-        Me.ModeBtnCam.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnCam.TabIndex = 158
-        Me.ModeBtnCam.Text = "Camera Settings"
-        Me.ModeBtnCam.UseVisualStyleBackColor = True
+        Me.LabelEncB.AutoSize = True
+        Me.LabelEncB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncB.ForeColor = System.Drawing.Color.White
+        Me.LabelEncB.Location = New System.Drawing.Point(61, 129)
+        Me.LabelEncB.Name = "LabelEncB"
+        Me.LabelEncB.Size = New System.Drawing.Size(57, 19)
+        Me.LabelEncB.TabIndex = 252
+        Me.LabelEncB.Text = "Focus"
+        Me.LabelEncB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ModeBtnPresets
+        'PictureBox2
         '
-        Me.ModeBtnPresets.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnPresets.Image = CType(resources.GetObject("ModeBtnPresets.Image"), System.Drawing.Image)
-        Me.ModeBtnPresets.Location = New System.Drawing.Point(8, 9)
-        Me.ModeBtnPresets.Name = "ModeBtnPresets"
-        Me.ModeBtnPresets.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnPresets.TabIndex = 157
-        Me.ModeBtnPresets.Text = "Live"
-        Me.ModeBtnPresets.UseVisualStyleBackColor = True
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(17, 116)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(40, 40)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox2.TabIndex = 251
+        Me.PictureBox2.TabStop = False
+        '
+        'TextEncBStatus
+        '
+        Me.TextEncBStatus.BackColor = System.Drawing.Color.Black
+        Me.TextEncBStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextEncBStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextEncBStatus.ForeColor = System.Drawing.Color.Yellow
+        Me.TextEncBStatus.Location = New System.Drawing.Point(17, 162)
+        Me.TextEncBStatus.Name = "TextEncBStatus"
+        Me.TextEncBStatus.Size = New System.Drawing.Size(100, 29)
+        Me.TextEncBStatus.TabIndex = 250
+        Me.TextEncBStatus.Text = "17"
+        Me.TextEncBStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'LabelEncA
+        '
+        Me.LabelEncA.AutoSize = True
+        Me.LabelEncA.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncA.ForeColor = System.Drawing.Color.White
+        Me.LabelEncA.Location = New System.Drawing.Point(61, 43)
+        Me.LabelEncA.Name = "LabelEncA"
+        Me.LabelEncA.Size = New System.Drawing.Size(32, 19)
+        Me.LabelEncA.TabIndex = 249
+        Me.LabelEncA.Text = "Iris"
+        Me.LabelEncA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(17, 30)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(40, 40)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 115
+        Me.PictureBox1.TabStop = False
+        '
+        'TextEncAStatus
+        '
+        Me.TextEncAStatus.BackColor = System.Drawing.Color.Black
+        Me.TextEncAStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextEncAStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextEncAStatus.ForeColor = System.Drawing.Color.Yellow
+        Me.TextEncAStatus.Location = New System.Drawing.Point(17, 76)
+        Me.TextEncAStatus.Name = "TextEncAStatus"
+        Me.TextEncAStatus.Size = New System.Drawing.Size(100, 29)
+        Me.TextEncAStatus.TabIndex = 114
+        Me.TextEncAStatus.Text = "17"
+        Me.TextEncAStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'LabelEncStatus
+        '
+        Me.LabelEncStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.LabelEncStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LabelEncStatus.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncStatus.Location = New System.Drawing.Point(17, 6)
+        Me.LabelEncStatus.Name = "LabelEncStatus"
+        Me.LabelEncStatus.Size = New System.Drawing.Size(91, 21)
+        Me.LabelEncStatus.TabIndex = 1
+        Me.LabelEncStatus.Text = "CAM?"
+        Me.LabelEncStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'ShapeContainer4
+        '
+        Me.ShapeContainer4.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer4.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer4.Name = "ShapeContainer4"
+        Me.ShapeContainer4.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape12})
+        Me.ShapeContainer4.Size = New System.Drawing.Size(120, 600)
+        Me.ShapeContainer4.TabIndex = 0
+        Me.ShapeContainer4.TabStop = False
+        '
+        'LineShape12
+        '
+        Me.LineShape12.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShape12.Name = "LineShape12"
+        Me.LineShape12.X1 = 6
+        Me.LineShape12.X2 = 6
+        Me.LineShape12.Y1 = 0
+        Me.LineShape12.Y2 = 600
         '
         'BtnInp5
         '
@@ -2636,12 +2639,35 @@ Partial Class MainForm
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
         '
+        'TextBoxPresetEdit
+        '
+        Me.TextBoxPresetEdit.BackColor = System.Drawing.Color.White
+        Me.TextBoxPresetEdit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxPresetEdit.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPresetEdit.ForeColor = System.Drawing.Color.Black
+        Me.TextBoxPresetEdit.Location = New System.Drawing.Point(280, 472)
+        Me.TextBoxPresetEdit.Multiline = True
+        Me.TextBoxPresetEdit.Name = "TextBoxPresetEdit"
+        Me.TextBoxPresetEdit.Size = New System.Drawing.Size(85, 87)
+        Me.TextBoxPresetEdit.TabIndex = 334
+        Me.TextBoxPresetEdit.Text = "..."
+        Me.TextBoxPresetEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxPresetEdit.Visible = False
+        '
+        'PanelMaskAll
+        '
+        Me.PanelMaskAll.Location = New System.Drawing.Point(996, 1108)
+        Me.PanelMaskAll.Name = "PanelMaskAll"
+        Me.PanelMaskAll.Size = New System.Drawing.Size(102, 104)
+        Me.PanelMaskAll.TabIndex = 325
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1280, 1339)
+        Me.Controls.Add(Me.PanelMaskAll)
         Me.Controls.Add(Me.PresetPanel)
         Me.Controls.Add(Me.CamPanel)
         Me.Controls.Add(Me.StatPanel)
@@ -2943,4 +2969,6 @@ Partial Class MainForm
     Friend WithEvents BtnMovePreset As AtemController.MyButton
     Friend WithEvents BtnEditPreset As AtemController.MyButton
     Friend WithEvents BtnPresetSave As AtemController.MyButton
+    Friend WithEvents TextBoxPresetEdit As System.Windows.Forms.TextBox
+    Friend WithEvents PanelMaskAll As System.Windows.Forms.Panel
 End Class
