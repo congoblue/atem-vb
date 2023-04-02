@@ -2833,7 +2833,7 @@ Public Class MainForm
             SendCamCmdAddr(2, "O0")
             SendCamCmdAddr(3, "O0")
             SendCamCmdAddr(4, "O0")
-            SendCamCmdAddr(7, "O0")
+            SendCamCmdAddr(5, "O0")
             'SendCamCmdAddr(1, "APC8000FFFF") 'central position lens fully down
             'SendCamCmdAddr(2, "APC8000FFFF")
             'SendCamCmdAddr(3, "APC8000FFFF")
@@ -2852,15 +2852,6 @@ Public Class MainForm
         'check OBS status (returns in websocket handler routine elsewhere)
         websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
 
-        If (PrevAux3 <> 0) Then 'we are playing a clip on obs
-            websocket.Send("{""request-type"":""GetCurrentScene"",""message-id"":""OBSSCENE""}")
-            If (ClipRemainTime > 0) Then ClipRemainTime = ClipRemainTime - 1
-            Dim hr As Integer = Math.Floor(ClipRemainTime / 3600)
-            Dim min As Integer = (Math.Floor(ClipRemainTime / 60)) Mod 60
-            Dim sec As Integer = ClipRemainTime Mod 60
-            TextPlayerTime.Text = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
-        End If
-
         'check if cameras recording
         CamRecStatusTimer = CamRecStatusTimer + 1
         If CamRecStatusTimer > 60 Then CamRecStatusTimer = 0
@@ -2875,6 +2866,7 @@ Public Class MainForm
 
     '----------------------------------------------------------
     ' display mode buttons
+    ' show the appropriate frame with controls
     '----------------------------------------------------------
     Sub ShowMode(mode)
         ModeBtnPresets.BackColor = Color.White
