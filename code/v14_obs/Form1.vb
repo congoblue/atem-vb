@@ -266,20 +266,18 @@ Public Class MainForm
     '---my message box
     Sub ShowMsgBox(label As String)
         MsgBoxPanel.Left = 20
-        MsgBoxLabel.Text = MsgBoxLabel.Text & vbCrLf & label
+        MsgBoxLabel.Text = MsgBoxLabel.Text & vbCrLf & label 'add new text to existing string, if open
         MsgBoxPanel.Height = MsgBoxLabel.Height + 50
         MsgBoxPanel.Width = MsgBoxLabel.Width + 50
         MsgBoxPanel.Top = Me.Height - 50 - MsgBoxPanel.Height
         MsgboxClose.Left = MsgBoxPanel.Width - 25
         MsgBoxPanel.BringToFront()
         MsgBoxPanel.Visible = True
-
     End Sub
-    Private Sub MsgboxClose_Click(sender As Object, e As EventArgs) Handles MsgBoxPanel.Click
+    Private Sub MsgboxClose_Click(sender As Object, e As EventArgs) Handles MsgBoxPanel.Click, MsgboxClose.Click
         MsgBoxPanel.Visible = False
-        MsgBoxLabel.Text = ""
+        MsgBoxLabel.Text = "" 'clear the text when closed/hidden
     End Sub
-
 
     '---Make OBS scene name from addr
     Function ObsSourceName(oaddr As Integer) As String
@@ -343,7 +341,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
-            'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
+            ShowMsgBox("Error sending to camera " & addr & " (" & ex.Message & ")")
         End Try
         'CamCmdPending = False
         Return result
@@ -364,7 +362,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(addr) = True
-            'MsgBox("Error sending to camera " & addr & vbCrLf & ex.Message)
+            ShowMsgBox("Error sending to camera " & addr & " (" & ex.Message & ")")
         End Try
         'CamCmdPending = False
         Return result
@@ -384,7 +382,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            ShowMsgBox("Error sending to camera " & caddr & " (" & ex.Message & ")")
         End Try
         'CamCmdPending = False
         Return result
@@ -407,7 +405,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            ShowMsgBox("Error sending to camera " & caddr & " (" & ex.Message & ")")
         End Try
         'CamCmdPending = False
         Return result
@@ -427,7 +425,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            ShowMsgBox("Error sending to camera " & caddr & " (" & ex.Message & ")")
         End Try
         'CamCmdPending = False
         Return result
