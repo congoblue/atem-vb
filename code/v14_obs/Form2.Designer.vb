@@ -61,14 +61,6 @@ Partial Class Form2
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.CheckBoxCam5Dis = New System.Windows.Forms.CheckBox()
-        Me.TextBox8 = New System.Windows.Forms.TextBox()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.TextBox10 = New System.Windows.Forms.TextBox()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.TextBox11 = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.CheckBoxCam1Dis = New System.Windows.Forms.CheckBox()
@@ -437,70 +429,6 @@ Partial Class Form2
         Me.CheckBoxCam5Dis.TabIndex = 175
         Me.CheckBoxCam5Dis.UseVisualStyleBackColor = True
         '
-        'TextBox8
-        '
-        Me.TextBox8.Location = New System.Drawing.Point(12, 403)
-        Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(62, 20)
-        Me.TextBox8.TabIndex = 175
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(13, 387)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(86, 13)
-        Me.Label15.TabIndex = 176
-        Me.Label15.Text = "Am intro clip time"
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(105, 387)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(85, 13)
-        Me.Label16.TabIndex = 178
-        Me.Label16.Text = "pm intro clip time"
-        '
-        'TextBox9
-        '
-        Me.TextBox9.Location = New System.Drawing.Point(108, 403)
-        Me.TextBox9.Name = "TextBox9"
-        Me.TextBox9.Size = New System.Drawing.Size(60, 20)
-        Me.TextBox9.TabIndex = 177
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(197, 387)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(71, 13)
-        Me.Label17.TabIndex = 180
-        Me.Label17.Text = "ident clip time"
-        '
-        'TextBox10
-        '
-        Me.TextBox10.Location = New System.Drawing.Point(200, 403)
-        Me.TextBox10.Name = "TextBox10"
-        Me.TextBox10.Size = New System.Drawing.Size(60, 20)
-        Me.TextBox10.TabIndex = 179
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(291, 387)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(72, 13)
-        Me.Label18.TabIndex = 182
-        Me.Label18.Text = "Loop clip time"
-        '
-        'TextBox11
-        '
-        Me.TextBox11.Location = New System.Drawing.Point(294, 403)
-        Me.TextBox11.Name = "TextBox11"
-        Me.TextBox11.Size = New System.Drawing.Size(60, 20)
-        Me.TextBox11.TabIndex = 181
-        '
         'Label19
         '
         Me.Label19.AutoSize = True
@@ -575,22 +503,14 @@ Partial Class Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(534, 435)
+        Me.ClientSize = New System.Drawing.Size(534, 368)
         Me.Controls.Add(Me.CheckBoxCam4Dis)
         Me.Controls.Add(Me.CheckBoxCam3Dis)
         Me.Controls.Add(Me.CheckBoxCam2Dis)
         Me.Controls.Add(Me.CheckBoxCam1Dis)
         Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.Label18)
-        Me.Controls.Add(Me.TextBox11)
         Me.Controls.Add(Me.CheckBoxCam5Dis)
-        Me.Controls.Add(Me.Label17)
-        Me.Controls.Add(Me.TextBox10)
-        Me.Controls.Add(Me.Label16)
-        Me.Controls.Add(Me.TextBox9)
-        Me.Controls.Add(Me.Label15)
-        Me.Controls.Add(Me.TextBox8)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
@@ -674,14 +594,6 @@ Partial Class Form2
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents CheckBoxCam5Dis As System.Windows.Forms.CheckBox
-    Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
-    Friend WithEvents Label15 As System.Windows.Forms.Label
-    Friend WithEvents Label16 As System.Windows.Forms.Label
-    Friend WithEvents TextBox9 As System.Windows.Forms.TextBox
-    Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents TextBox10 As System.Windows.Forms.TextBox
-    Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents TextBox11 As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As Label
     Friend WithEvents Label20 As Label
     Friend WithEvents CheckBoxCam1Dis As System.Windows.Forms.CheckBox

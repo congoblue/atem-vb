@@ -29,7 +29,7 @@ Public Class MainForm
     Dim kc As Integer
     Dim cdir As Integer
     Dim savemode As Boolean
-    Dim legendmode As Boolean
+    Dim PresetLegendMode As Integer = 0
     Dim atemconnect As Boolean = False
     Dim camconnect As Boolean
     Dim overlayactive As Boolean
@@ -250,7 +250,7 @@ Public Class MainForm
         BtnLiveSlow.BackColor = Color.Green
         BtnAuxLock.BackColor = Color.Red
         SetDefaultPresets()
-        ReadPresetFile()
+        'ReadPresetFile()
         ShowMode(1)
 
         'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
@@ -262,6 +262,24 @@ Public Class MainForm
         If SerialPort1.IsOpen Then SerialPort1.Close()
         'BackgroundWorker1.CancelAsync()
     End Sub
+
+    '---my message box
+    Sub ShowMsgBox(label As String)
+        MsgBoxPanel.Left = 20
+        MsgBoxLabel.Text = MsgBoxLabel.Text & vbCrLf & label
+        MsgBoxPanel.Height = MsgBoxLabel.Height + 50
+        MsgBoxPanel.Width = MsgBoxLabel.Width + 50
+        MsgBoxPanel.Top = Me.Height - 50 - MsgBoxPanel.Height
+        MsgboxClose.Left = MsgBoxPanel.Width - 25
+        MsgBoxPanel.BringToFront()
+        MsgBoxPanel.Visible = True
+
+    End Sub
+    Private Sub MsgboxClose_Click(sender As Object, e As EventArgs) Handles MsgBoxPanel.Click
+        MsgBoxPanel.Visible = False
+        MsgBoxLabel.Text = ""
+    End Sub
+
 
     '---Make OBS scene name from addr
     Function ObsSourceName(oaddr As Integer) As String
@@ -366,7 +384,7 @@ Public Class MainForm
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
             CamIgnore(caddr) = True
-             'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
+            'MsgBox("Error sending to camera " & caddr & vbCrLf & ex.Message)
         End Try
         'CamCmdPending = False
         Return result
@@ -465,34 +483,36 @@ Public Class MainForm
             Try
                 CurrentRow = TextFileReader.ReadFields()
                 If Not CurrentRow Is Nothing Then
-                    PresetCaption(i) = CurrentRow(0).ToString
-                    PresetXPos(i) = CurrentRow(1).ToString
-                    PresetYPos(i) = CurrentRow(2).ToString
-                    PresetZPos(i) = CurrentRow(3).ToString
-                    If CurrentRow.GetUpperBound(0) > 3 Then 'check if we have these params or not
-                        PresetContent(i) = Convert.ToInt32(CurrentRow(4).ToString)
-                        PresetSize(i) = Convert.ToInt32(CurrentRow(5).ToString)
-                        a = CurrentRow(6).ToString
-                        If (a = "0" Or a = "False") Then PresetAuto(i) = False Else PresetAuto(i) = True
-                        'PresetAuto(i) = Convert.ToBoolean(CurrentRow(6).ToString)
-                    Else
-                        PresetContent(i) = 0
-                        PresetSize(i) = 0
-                        PresetAuto(i) = False
-                    End If
-                    If CurrentRow.GetUpperBound(0) > 6 Then 'check if we have these params or not
-                        PresetFocus(i) = Convert.ToInt32(CurrentRow(7).ToString)
-                        a = CurrentRow(8).ToString
-                        If (a = "0" Or a = "False") Then PresetFocusAuto(i) = False Else PresetFocusAuto(i) = True
-                    Else
-                        PresetFocus(i) = 0
-                        PresetFocusAuto(i) = True
+                    If UBound(CurrentRow) = 4 Then
+                        PresetCaption(i) = CurrentRow(0).ToString
+                        PresetXPos(i) = CurrentRow(1).ToString
+                        PresetYPos(i) = CurrentRow(2).ToString
+                        PresetZPos(i) = CurrentRow(3).ToString
+                        If CurrentRow.GetUpperBound(0) > 3 Then 'check if we have these params or not
+                            PresetContent(i) = Convert.ToInt32(CurrentRow(4).ToString)
+                            PresetSize(i) = Convert.ToInt32(CurrentRow(5).ToString)
+                            a = CurrentRow(6).ToString
+                            If (a = "0" Or a = "False") Then PresetAuto(i) = False Else PresetAuto(i) = True
+                            'PresetAuto(i) = Convert.ToBoolean(CurrentRow(6).ToString)
+                        Else
+                            PresetContent(i) = 0
+                            PresetSize(i) = 0
+                            PresetAuto(i) = False
+                        End If
+                        If CurrentRow.GetUpperBound(0) > 6 Then 'check if we have these params or not
+                            PresetFocus(i) = Convert.ToInt32(CurrentRow(7).ToString)
+                            a = CurrentRow(8).ToString
+                            If (a = "0" Or a = "False") Then PresetFocusAuto(i) = False Else PresetFocusAuto(i) = True
+                        Else
+                            PresetFocus(i) = 0
+                            PresetFocusAuto(i) = True
+                        End If
                     End If
                     i = i + 1
-                End If
-            Catch ex As  _
+                    End If
+            Catch ex As _
             Microsoft.VisualBasic.FileIO.MalformedLineException
-                MsgBox("Line " & ex.Message & _
+                MsgBox("Line " & ex.Message &
                 "is not valid and will be skipped.")
             End Try
         End While
@@ -553,36 +573,43 @@ Public Class MainForm
         Catch
             'TODO: if this fails then scan all the ports looking for the controller. If that fails then show status controller not connected
             'but retry the connect every 10sec
-            MsgBox("The controller com port " & SerialPort1.PortName & " cannot be opened.")
+            ShowMsgBox("The controller com port " & SerialPort1.PortName & " cannot be opened.")
+            'MsgBox("The controller com port " & SerialPort1.PortName & " cannot be opened.")
         End Try
     End Sub
-    Sub EditPresetDetails(ByVal index As Integer)
-        'TextBoxPresetEdit.Text = PresetCaption((addr - 1) * 16 + index - 1)
-        'TextBoxPresetEdit.Visible = True
-        Dim btny = ((index - 1) Mod 4) * BtnPreset1.Height
-        Dim btnx = Int(((index - 1) / 4)) * BtnPreset1.Width
-        Dim controlLoc = Me.PointToScreen(BtnPreset1.Location)
-        'TextBoxPresetEdit.Top = BtnPreset1.Top + BtnPreset1.Height * btny + 5
-        'TextBoxPresetEdit.Left = BtnPreset1.Left + BtnPreset1.Width * btnx
 
+    '---------------------------------------------------------------------------------
+    'edit preset button caption
 
-        'op = InputBox("Enter legend", , PresetCaption((addr - 1) * 16 + index - 1))
-        Globals.EditPresetIndex = index
-        Globals.EditPresetCaption = PresetCaption((addr - 1) * 16 + index - 1)
-        Globals.EditPresetContent = PresetContent((addr - 1) * 16 + index - 1)
-        Globals.EditPresetSize = PresetSize((addr - 1) * 16 + index - 1)
-        Globals.EditPresetAuto = PresetAuto((addr - 1) * 16 + index - 1)
-
-        Form3.ShowDialog()  'needs to be modal
-        Form3.Top = controlLoc.Y + BtnPreset1.Height * btny + 5
-        Form3.Left = controlLoc.X + BtnPreset1.Width * btnx + 5
-        'PresetCaption((addr - 1) * 16 + index - 1) = op
-        PresetCaption((addr - 1) * 16 + index - 1) = Globals.EditPresetCaption
-        PresetContent((addr - 1) * 16 + index - 1) = Globals.EditPresetContent
-        PresetSize((addr - 1) * 16 + index - 1) = Globals.EditPresetSize
-        PresetAuto((addr - 1) * 16 + index - 1) = Globals.EditPresetAuto
-
+    Sub StartEditPresetDetails(ByVal index As Integer)
+        TextBoxPresetEdit.Text = PresetCaption((addr - 1) * 16 + index - 1)
+        TextBoxPresetEdit.Visible = True
+        Dim btnx = ((index - 1) Mod 4)
+        Dim btny = Int(((index - 1) / 4))
+        TextBoxPresetEdit.Top = BtnPreset1.Top + BtnPreset1.Height * btny + 8
+        TextBoxPresetEdit.Left = BtnPreset1.Left + BtnPreset1.Width * btnx + 8
+        TextBoxPresetEdit.SelectAll()
+        TextBoxPresetEdit.Focus()
     End Sub
+    Sub EndEditPresetDetails()
+        TextBoxPresetEdit.Visible = False
+        PresetCaption((addr - 1) * 16 + PresetLegendMode - 1) = TextBoxPresetEdit.Text
+        PresetLegendMode = 0
+        BtnEditPreset.BackColor = Color.White
+        WritePresetFile()
+        setactive()
+    End Sub
+    Private Sub TextBoxPresetEdit_Leave(sender As Object, e As EventArgs) Handles TextBoxPresetEdit.Leave
+        EndEditPresetDetails() 'user clicks on another control
+    End Sub
+    Private Sub PresetPanel_Click(sender As Object, e As EventArgs) Handles PresetPanel.Click
+        If PresetLegendMode <> 0 Then EndEditPresetDetails() 'user clicks on the panel
+    End Sub
+    Private Sub TextBoxPresetEdit_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBoxPresetEdit.KeyDown
+        If e.KeyCode = Keys.Enter And e.Modifiers = 0 Then EndEditPresetDetails()
+    End Sub
+
+
     '--------------------------------------------------------------------------------------------------------------
     'Click on a preset button
     '--------------------------------------------------------------------------------------------------------------
@@ -634,7 +661,7 @@ Public Class MainForm
         End If
 
         If savemode = False Then
-            If legendmode = False Then
+            If PresetLegendMode = 0 Then
                 'If AutoSongPreload = True And AutoPreset = 0 Then 'if in autosongmode and it has picked a preload, but user is picking a different preset, cancel the preload
                 'If AutoPreset = 1 Then 'if last shot was autoselected, then disable transitions if user picks another preset
                 'BtnPreload.BackColor = Color.White
@@ -763,11 +790,8 @@ Public Class MainForm
                 End If
             Else 'edit preset details
                 cu = "0"
-                EditPresetDetails(index)
-                BtnEditPreset.BackColor = Color.White
-                legendmode = False
-                WritePresetFile()
-                setactive()
+                PresetLegendMode = index
+                StartEditPresetDetails(index)
             End If
         Else
             'save current preset position
@@ -786,7 +810,7 @@ Public Class MainForm
                 op = Mid(op, 3)
                 If (op = "0") Then PresetFocusAuto((addr - 1) * 16 + index - 1) = False Else PresetFocusAuto((addr - 1) * 16 + index - 1) = True
                 If PresetCaption((addr - 1) * 16 + index - 1) = Convert.ToString(index) Then 'automatically ask for legend if the legend is just the initial number
-                    EditPresetDetails(index)
+                    StartEditPresetDetails(index)
                 End If
                 presetstate(addr) = 2 ^ (index - 1)
                 setactive()
@@ -794,7 +818,7 @@ Public Class MainForm
                 If index < 11 Then
                     SendCamCmd("M0" & index - 1) 'store preset on camera for cam5
                     If PresetCaption((addr - 1) * 16 + index - 1) = Convert.ToString(index) Then 'automatically ask for legend if the legend is just the initial number
-                        EditPresetDetails(index)
+                        StartEditPresetDetails(index)
                     End If
                     presetstate(addr) = 2 ^ (index - 1)
                     setactive()
@@ -1484,15 +1508,12 @@ Public Class MainForm
     End Sub
 
     Private Sub BtnEditPreset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnEditPreset.Click
-        If legendmode = False Then
+        If PresetLegendMode = 0 Then
             BtnEditPreset.BackColor = Color.Red
-            legendmode = True
+            PresetLegendMode = 999
         Else
-            BtnEditPreset.BackColor = Color.White
-            legendmode = False
+            EndEditPresetDetails()
         End If
-        'test leds on controller
-        'SerialPort1.Write(&HFF & &H55 & &H55)
     End Sub
 
     Private Sub CheckBoxCU_CheckStateChanged(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -1873,7 +1894,7 @@ Public Class MainForm
         AutoPreset = 0
     End Sub
 
-   
+
     Sub PresetClick(ByVal c As Integer)
         If c = 1 Then BtnPreset_Click(BtnPreset1, Nothing)
         If c = 2 Then BtnPreset_Click(BtnPreset2, Nothing)
@@ -1893,7 +1914,7 @@ Public Class MainForm
         If c = 16 Then BtnPreset_Click(BtnPreset16, Nothing)
     End Sub
 
-    
+
 
     Private Sub BtnLiveSlow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLiveSlow.Click
         BtnLiveSlow.BackColor = Color.Green
@@ -2046,8 +2067,8 @@ Public Class MainForm
     End Sub
 
 
-    
-    Private Sub BtnOBSIdent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSIdent.Click
+
+    Private Sub BtnOBSIdent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Ident video"",""message-id"":""TEST1""}")
         'BtnMPrev.BackColor = Color.White
         'BtnOBSamintro.BackColor = Color.White
@@ -2940,9 +2961,9 @@ Public Class MainForm
     Private Sub TextEncBStatus_Click(sender As Object, e As EventArgs) Handles TextEncBStatus.Click
         SetEncoderAllocation(2)
     End Sub
+
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
         SetEncoderAllocation(2)
     End Sub
-
 
 End Class

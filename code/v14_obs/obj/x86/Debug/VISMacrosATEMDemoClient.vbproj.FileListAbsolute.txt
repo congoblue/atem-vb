@@ -462,7 +462,6 @@ C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\WebSocket4Net
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\VISMacrosATEMDemoClient.vbprojResolveAssemblyReference.cache
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form2.resources
-C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form3.resources
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form4.resources
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Resources.resources
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\VISMacrosATEMDemoClient.vbproj.GenerateResource.Cache

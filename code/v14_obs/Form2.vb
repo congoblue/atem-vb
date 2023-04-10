@@ -31,16 +31,12 @@ Public Class Form2
         SaveSetting("Atemswitcher", "Set", "Cam4Dis", CheckBoxCam4Dis.Checked)
         SaveSetting("Atemswitcher", "Set", "Cam5Dis", CheckBoxCam5Dis.Checked)
 
-        SaveSetting("Atemswitcher", "Cliptime", "1", TextBox8.Text)
-        SaveSetting("Atemswitcher", "Cliptime", "2", TextBox9.Text)
-        SaveSetting("Atemswitcher", "Cliptime", "3", TextBox10.Text)
-        SaveSetting("Atemswitcher", "Cliptime", "4", TextBox11.Text)
         Globals.PresetFileName = TextBox5.Text
         Globals.CamIP(1) = TextBox1.Text
         Globals.CamIP(2) = TextBox2.Text
         Globals.CamIP(3) = TextBox3.Text
         Globals.CamIP(4) = TextBox4.Text
-        Globals.CamIP(7) = TextBox7.Text
+        Globals.CamIP(5) = TextBox7.Text
 
         MainForm.ReadPresetFile()
         If CheckBoxCam5Dis.Checked Then Globals.Cam5Dis = True Else Globals.Cam5Dis = False
@@ -83,16 +79,12 @@ Public Class Form2
         If Globals.CamInvert(2) Then CheckBoxInvert2.Checked = True
         If Globals.CamInvert(3) Then CheckBoxInvert3.Checked = True
         If Globals.CamInvert(4) Then CheckBoxInvert4.Checked = True
-        TextBox8.Text = (GetSetting("Atemswitcher", "Cliptime", "1", "60"))
-        TextBox9.Text = (GetSetting("Atemswitcher", "Cliptime", "2", "60"))
-        TextBox10.Text = (GetSetting("Atemswitcher", "Cliptime", "3", "60"))
-        TextBox11.Text = (GetSetting("Atemswitcher", "Cliptime", "4", "60"))
 
         If Globals.CamStatus(1) = True Then Label8.Text = "FAIL"
         If Globals.CamStatus(2) = True Then Label9.Text = "FAIL"
         If Globals.CamStatus(3) = True Then Label10.Text = "FAIL"
         If Globals.CamStatus(4) = True Then Label11.Text = "FAIL"
-        If Globals.CamStatus(7) = True Then Label13.Text = "FAIL"
+        If Globals.CamStatus(5) = True Then Label13.Text = "FAIL"
     End Sub
 
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
