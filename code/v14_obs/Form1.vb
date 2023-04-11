@@ -1240,8 +1240,51 @@ Public Class MainForm
             PresetLive = False
         End If
     End Sub
+    Private Sub BtnSlowPanL_Click(sender As Object, e As EventArgs) Handles BtnSlowPanL.Click
+        If PresetLive = False Then
+            cdir = cdir Xor &H2
+            If (cdir And &H2) Then cdir = cdir And Not &H4 'cancel zoom out if zoom in set
+            SetLiveMoveIndicators()
+            If cdir <> 0 Then
+                BtnPreload.BackColor = Color.Orange : PreloadPreset = 99
+            Else
+                BtnPreload.BackColor = Color.White : PreloadPreset = 0
+            End If
+            'PreloadPreset = 0 'if we set fixed zoom, cancel preset preload
+            UpdatePresets()
+        Else
+            If LiveMoveSpeed = 0 Then
+                SendCamCmdAddr(liveaddr, "PTS5200")
+            Else
+                SendCamCmdAddr(liveaddr, "PTS5500")
+            End If
+            BtnLive.BackColor = Color.White
+            PresetLive = False
+        End If
+    End Sub
 
-
+    Private Sub BtnSlowPanR_Click(sender As Object, e As EventArgs) Handles BtnSlowPanR.Click
+        If PresetLive = False Then
+            cdir = cdir Xor &H4
+            If (cdir And &H4) Then cdir = cdir And Not &H2 'cancel zoom out if zoom in set
+            SetLiveMoveIndicators()
+            If cdir <> 0 Then
+                BtnPreload.BackColor = Color.Orange : PreloadPreset = 99
+            Else
+                BtnPreload.BackColor = Color.White : PreloadPreset = 0
+            End If
+            'PreloadPreset = 0 'if we set fixed zoom, cancel preset preload
+            UpdatePresets()
+        Else
+            If LiveMoveSpeed = 0 Then
+                SendCamCmdAddr(liveaddr, "PTS4800")
+            Else
+                SendCamCmdAddr(liveaddr, "PTS4500")
+            End If
+            BtnLive.BackColor = Color.White
+            PresetLive = False
+        End If
+    End Sub
 
 
 
@@ -1275,6 +1318,8 @@ Public Class MainForm
     End Sub
 
     Sub SetLiveMoveIndicators()
+        If cdir And &H2 Then BtnSlowPanL.BackColor = Color.Orange Else BtnSlowPanL.BackColor = Color.White
+        If cdir And &H4 Then BtnSlowPanR.BackColor = Color.Orange Else BtnSlowPanR.BackColor = Color.White
         If cdir And &H20 Then BtnSlowIn.BackColor = Color.Orange Else BtnSlowIn.BackColor = Color.White
         If cdir And &H40 Then BtnSlowOut.BackColor = Color.Orange Else BtnSlowOut.BackColor = Color.White
         If cdir = 0 And PreloadPreset = 0 Then BtnPreload.BackColor = Color.White
@@ -1404,41 +1449,54 @@ Public Class MainForm
         If (mediaoverlayactive = True) Then BtnMediaOverlay.BackColor = Color.Red Else BtnMediaOverlay.BackColor = Color.White
         If (mediaoverlayactive = True) Then ControllerLedState(11) = 1 Else ControllerLedState(11) = 0
     End Sub
-
+    Sub CapRectangle(tb As Object)
+        Dim l = tb.Left - 2 : Dim r = tb.Left + tb.Width + 2
+        Dim t = tb.Top - 2 : Dim b = tb.Top + tb.Height + 2
+        LineShapeCapL.X1 = l : LineShapeCapL.X2 = l : LineShapeCapT.X1 = l : LineShapeCapB.X1 = l
+        LineShapeCapR.X1 = r : LineShapeCapR.X2 = r : LineShapeCapT.X2 = r : LineShapeCapB.X2 = r
+        LineShapeCapL.Y1 = t : LineShapeCapR.Y1 = t : LineShapeCapT.Y1 = t : LineShapeCapT.Y2 = t
+        LineShapeCapL.Y2 = b : LineShapeCapR.Y2 = b : LineShapeCapB.Y1 = b : LineShapeCapB.Y2 = b
+    End Sub
     Private Sub SetCaptionText()
         If mediaindex = 1 Then
-            LabelCap1.Text = "Leader *" : LabelCap2.Text = "Preacher" : LabelCap3.Text = "Other"
+            CapRectangle(TextLeaderName)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Leader"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""" & TextLeaderName.Text & """,""message-id"":""TEST1""}")
         End If
         If mediaindex = 2 Then
-            LabelCap1.Text = "Leader" : LabelCap2.Text = "Preacher *" : LabelCap3.Text = "Other"
+            CapRectangle(TextPreacherName)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Preacher"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""   " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
 
         End If
         If mediaindex = 3 Then
-            LabelCap1.Text = "Leader" : LabelCap2.Text = "Preacher" : LabelCap3.Text = "Other *"
+            CapRectangle(TextCaptionOther)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""" & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":"""",""message-id"":""TEST1""}")
 
         End If
     End Sub
 
-    Private Sub BtnMediaPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMediaPrev.Click
+    Private Sub BtnCapPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCPrev.Click
         If (mediaindex > 1) Then mediaindex = mediaindex - 1
         SetCaptionText()
         'ExecuteLua("ATEMMixerMPSetMediaIndex(1,2," & mediaindex & ")")
     End Sub
 
-    Private Sub BtnMediaNxt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMediaNxt.Click
-        If (mediaindex < 4) Then mediaindex = mediaindex + 1
+    Private Sub BtnCapNxt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCNxt.Click
+        If (mediaindex < 3) Then mediaindex = mediaindex + 1
         SetCaptionText()
         'ExecuteLua("ATEMMixerMPSetMediaIndex(1,2," & mediaindex & ")")
     End Sub
 
     Private Sub TextLeaderName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
         If mediaindex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+    End Sub
+    Private Sub TextPreacherName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
+        If mediaindex = 2 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+    End Sub
+    Private Sub TextCaptionOther_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
+        If mediaindex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
     End Sub
 
     Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -2958,6 +3016,10 @@ Public Class MainForm
     End Sub
     Private Sub TextEncBStatus_Click(sender As Object, e As EventArgs) Handles TextEncBStatus.Click
         SetEncoderAllocation(2)
+    End Sub
+
+    Private Sub BtnSlowPan_Click(sender As Object, e As EventArgs)
+
     End Sub
 
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
