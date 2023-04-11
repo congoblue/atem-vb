@@ -1552,10 +1552,10 @@ Partial Class MainForm
         Me.LineShapeCapT.BorderColor = System.Drawing.Color.Yellow
         Me.LineShapeCapT.BorderWidth = 2
         Me.LineShapeCapT.Name = "LineShapeCapT"
-        Me.LineShapeCapT.X1 = 107
-        Me.LineShapeCapT.X2 = 217
-        Me.LineShapeCapT.Y1 = 239
-        Me.LineShapeCapT.Y2 = 239
+        Me.LineShapeCapT.X1 = 98
+        Me.LineShapeCapT.X2 = 264
+        Me.LineShapeCapT.Y1 = 249
+        Me.LineShapeCapT.Y2 = 249
         '
         'ShapeContainer3
         '
@@ -1572,30 +1572,30 @@ Partial Class MainForm
         Me.LineShapeCapB.BorderColor = System.Drawing.Color.Yellow
         Me.LineShapeCapB.BorderWidth = 2
         Me.LineShapeCapB.Name = "LineShapeCapB"
-        Me.LineShapeCapB.X1 = 107
-        Me.LineShapeCapB.X2 = 217
-        Me.LineShapeCapB.Y1 = 269
-        Me.LineShapeCapB.Y2 = 269
+        Me.LineShapeCapB.X1 = 98
+        Me.LineShapeCapB.X2 = 264
+        Me.LineShapeCapB.Y1 = 282
+        Me.LineShapeCapB.Y2 = 282
         '
         'LineShapeCapL
         '
         Me.LineShapeCapL.BorderColor = System.Drawing.Color.Yellow
         Me.LineShapeCapL.BorderWidth = 2
         Me.LineShapeCapL.Name = "LineShapeCapL"
-        Me.LineShapeCapL.X1 = 103
-        Me.LineShapeCapL.X2 = 102
-        Me.LineShapeCapL.Y1 = 268
-        Me.LineShapeCapL.Y2 = 241
+        Me.LineShapeCapL.X1 = 98
+        Me.LineShapeCapL.X2 = 98
+        Me.LineShapeCapL.Y1 = 248
+        Me.LineShapeCapL.Y2 = 282
         '
         'LineShapeCapR
         '
         Me.LineShapeCapR.BorderColor = System.Drawing.Color.Yellow
         Me.LineShapeCapR.BorderWidth = 2
         Me.LineShapeCapR.Name = "LineShapeCapR"
-        Me.LineShapeCapR.X1 = 269
-        Me.LineShapeCapR.X2 = 268
-        Me.LineShapeCapR.Y1 = 266
-        Me.LineShapeCapR.Y2 = 239
+        Me.LineShapeCapR.X1 = 264
+        Me.LineShapeCapR.X2 = 264
+        Me.LineShapeCapR.Y1 = 248
+        Me.LineShapeCapR.Y2 = 282
         '
         'BtnCNxt
         '

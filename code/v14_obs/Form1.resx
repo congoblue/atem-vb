@@ -2240,40 +2240,40 @@
 </value>
   </data>
   <metadata name="LineShapeCapR.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>268, 239, 1, 27</value>
+    <value>264, 248, 0, 34</value>
   </metadata>
   <metadata name="LineShapeCapR.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>268, 239</value>
+    <value>264, 248</value>
   </metadata>
   <metadata name="LineShapeCapR.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 27</value>
+    <value>0, 34</value>
   </metadata>
   <metadata name="LineShapeCapL.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>102, 241, 1, 27</value>
+    <value>98, 248, 0, 34</value>
   </metadata>
   <metadata name="LineShapeCapL.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>102, 241</value>
+    <value>98, 248</value>
   </metadata>
   <metadata name="LineShapeCapL.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1, 27</value>
+    <value>0, 34</value>
   </metadata>
   <metadata name="LineShapeCapB.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 269, 110, 0</value>
+    <value>98, 282, 166, 0</value>
   </metadata>
   <metadata name="LineShapeCapB.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 269</value>
+    <value>98, 282</value>
   </metadata>
   <metadata name="LineShapeCapB.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>110, 0</value>
+    <value>166, 0</value>
   </metadata>
   <metadata name="LineShapeCapT.Bounds" type="System.Drawing.Rectangle, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 239, 110, 0</value>
+    <value>98, 249, 166, 0</value>
   </metadata>
   <metadata name="LineShapeCapT.Location" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 239</value>
+    <value>98, 249</value>
   </metadata>
   <metadata name="LineShapeCapT.Size" type="System.Drawing.Size, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>110, 0</value>
+    <value>166, 0</value>
   </metadata>
   <data name="ModeBtnSettings.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
