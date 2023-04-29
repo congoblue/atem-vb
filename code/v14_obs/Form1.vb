@@ -102,6 +102,8 @@ Public Class MainForm
     Dim WebsocketReinitTimer As Integer = 0
     Dim MovePresetMode As Integer = 0
     Dim MovePresetFrom As Integer = 0
+    Dim PresetLoadStart As Integer = 0
+    Dim PresetLoadFileCount As Integer = 0
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -262,6 +264,120 @@ Public Class MainForm
         If _serialPort.IsOpen Then _serialPort.Close()
         If SerialPort1.IsOpen Then SerialPort1.Close()
         'BackgroundWorker1.CancelAsync()
+    End Sub
+
+    '---Select preset file to load (touch friendly)
+    Sub SelectPresetFile()
+        Dim di As New IO.DirectoryInfo(Globals.PresetFilePath)
+        Dim aryFi As IO.FileInfo() = di.GetFiles("*.aps")
+        Dim fi As IO.FileInfo
+        Dim btnct As Integer = 0
+        Dim i As Integer
+
+
+        PresetLoadPanel.Left = 50
+        PresetLoadPanel.Height = SettingsPanel.Height - 100
+        PresetLoadPanel.Width = SettingsPanel.Width - 100
+        PresetLoadPanel.Top = 50
+        PresetLoadClose.Left = PresetLoadPanel.Width - 25
+        PresetLoadPanel.BringToFront()
+        PresetLoadPanel.Visible = True
+
+        Dim myFont As System.Drawing.Font
+        myFont = New System.Drawing.Font("Arial", 14, FontStyle.Bold)
+
+        PresetLoadFileCount = aryFi.Count
+
+        For Each fi In aryFi
+            'Console.WriteLine("File Name: {0}", fi.Name)
+            'Console.WriteLine("File Full Name: {0}", fi.FullName)
+
+            Dim new_Button As New Button
+            new_Button.Name = "BtnPresetFile" + btnct.ToString()
+            new_Button.Text = fi.Name
+            new_Button.Width = 280
+            new_Button.Height = 60
+            new_Button.ForeColor = Color.Yellow
+            new_Button.BackColor = Color.Gray
+            new_Button.Font = myFont
+            new_Button.Location = New Point(0, 1000) 'set initial position off screen so not visible
+            AddHandler new_Button.Click, AddressOf PresetLoadHandler_Click
+            PresetLoadPanel.Controls.Add(new_Button)
+            btnct = btnct + 1
+        Next
+
+        If PresetLoadFileCount > 12 Then
+            'make a next page button
+            Dim new_Button As New Button
+            new_Button.Name = "BtnPresetFileMore"
+            new_Button.Text = "More >>"
+            new_Button.Width = 120
+            new_Button.Height = 60
+            new_Button.ForeColor = Color.Yellow
+            new_Button.BackColor = Color.Gray
+            new_Button.Font = myFont
+            AddHandler new_Button.Click, AddressOf PresetLoadHandler_Click
+            PresetLoadPanel.Controls.Add(new_Button)
+            new_Button.Location = New Point(520, 5 * 70 + 60)
+        End If
+
+        PresetLoadRedraw() 'arrange the buttons
+    End Sub
+    Sub PresetLoadRedraw()
+        'only 12 will fit on a screen.
+        If PresetLoadFileCount > 12 Then
+            For i = 0 To PresetLoadFileCount - 1
+                Dim btn As Button = Me.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
+                btn.Location = New Point(40, 1000) 'put all offscreen
+            Next
+
+            Dim ct As Integer = PresetLoadFileCount - PresetLoadStart
+            Dim pi As Integer
+            If PresetLoadStart + 11 <= PresetLoadFileCount Then ct = 11
+            For i = PresetLoadStart To PresetLoadStart + ct - 1
+                Dim btn As Button = Me.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
+                pi = i - PresetLoadStart
+                If pi < 6 Then
+                    btn.Location = New Point(40, pi * 70 + 60)
+                Else
+                    btn.Location = New Point(360, (pi - 6) * 70 + 60)
+                End If
+            Next
+        Else
+            For i = 0 To PresetLoadFileCount - 1
+                Dim btn As Button = CType(Me.Controls("BtnPresetFile" + i.ToString()), Button)
+                If i < 6 Then
+                    btn.Location = New Point(40, i * 70 + 60)
+                Else
+                    btn.Location = New Point(360, (i - 6) * 70 + 60)
+                End If
+            Next
+        End If
+                PresetLoadPanel.Refresh()
+    End Sub
+    Sub PresetLoadHandler_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If TypeOf sender Is Button Then
+            Dim myButton As Button = CType(sender, Button)
+            Dim pfname As String = myButton.Text
+            If (pfname = "More >>") Then
+                If (PresetLoadStart + 11 < PresetLoadFileCount) Then
+                    PresetLoadStart = PresetLoadStart + 11
+                Else
+                    PresetLoadStart = 0
+                End If
+                PresetLoadRedraw()
+            Else
+                Globals.PresetFileName = pfname
+                SaveSetting("Atemswitcher", "Set", "PresetsFile", Globals.PresetFileName)
+                ReadPresetFile()
+
+                For i = 0 To PresetLoadFileCount - 1
+                    Dim btn As Button = Me.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
+                    PresetLoadPanel.Controls.Remove(btn)
+                Next
+                PresetLoadPanel.Visible = False
+            End If
+        End If
     End Sub
 
     '---my message box
@@ -1578,16 +1694,6 @@ Public Class MainForm
     End Sub
 
 
-
-
-    Private Sub ButtonSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSetup.Click
-        Globals.CamStatus(1) = CamIgnore(1)
-        Globals.CamStatus(2) = CamIgnore(2)
-        Globals.CamStatus(3) = CamIgnore(3)
-        Globals.CamStatus(4) = CamIgnore(4)
-        Form2.Show()
-    End Sub
-
     Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisAuto.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
@@ -2587,21 +2693,22 @@ Public Class MainForm
         If (startuptimer = 5) Then 'open com ports
             Timer1.Enabled = False
             If GetSetting("Atemswitcher", "Set", "Askprofile", True) = True Then
-                Dim fd As OpenFileDialog = New OpenFileDialog()
+                SelectPresetFile()
+                'Dim fd As OpenFileDialog = New OpenFileDialog()
 
-                fd.Title = "Select presets file"
-                fd.InitialDirectory = Globals.PresetFilePath
-                fd.FileName = Globals.PresetFileName
-                fd.Filter = "Presets files (*.aps)|*.aps|All files (*.*)|*.*"
-                fd.FilterIndex = 1
-                fd.RestoreDirectory = True
+                'fd.Title = "Select presets file"
+                'fd.InitialDirectory = Globals.PresetFilePath
+                'fd.FileName = Globals.PresetFileName
+                'fd.Filter = "Presets files (*.aps)|*.aps|All files (*.*)|*.*"
+                'fd.FilterIndex = 1
+                'fd.RestoreDirectory = True
 
-                If fd.ShowDialog() = DialogResult.OK Then
-                    Globals.PresetFileName = Mid(fd.FileName, InStrRev(fd.FileName, "\") + 1) 'this is the filename without the path
-                    Globals.PresetFilePath = Mid(fd.FileName, 1, InStrRev(fd.FileName, "\")) 'this is the filename without the path
-                    SaveSetting("Atemswitcher", "Set", "PresetsFile", Globals.PresetFileName)
-                    ReadPresetFile()
-                End If
+                'If fd.ShowDialog() = DialogResult.OK Then
+                ' Globals.PresetFileName = Mid(fd.FileName, InStrRev(fd.FileName, "\") + 1) 'this is the filename without the path
+                ' Globals.PresetFilePath = Mid(fd.FileName, 1, InStrRev(fd.FileName, "\")) 'this is the filename without the path
+                ' SaveSetting("Atemswitcher", "Set", "PresetsFile", Globals.PresetFileName)
+                ' ReadPresetFile()
+                'End If
             End If
             GroupBox1.Show()
             GroupBox1.Left = 100 : GroupBox1.Top = 100
@@ -3020,10 +3127,6 @@ Public Class MainForm
         SetEncoderAllocation(2)
     End Sub
 
-    Private Sub BtnSlowPan_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
         SetEncoderAllocation(2)
     End Sub
@@ -3067,6 +3170,12 @@ Public Class MainForm
         If Globals.CamInvert(3) Then CheckBoxInvert3.Checked = True
         If Globals.CamInvert(4) Then CheckBoxInvert4.Checked = True
 
+        Globals.CamStatus(1) = CamIgnore(1)
+        Globals.CamStatus(2) = CamIgnore(2)
+        Globals.CamStatus(3) = CamIgnore(3)
+        Globals.CamStatus(4) = CamIgnore(4)
+        Globals.CamStatus(5) = CamIgnore(5)
+
         If Globals.CamStatus(1) = True Then LblCamStatus1.Text = "FAIL"
         If Globals.CamStatus(2) = True Then LblCamStatus2.Text = "FAIL"
         If Globals.CamStatus(3) = True Then LblCamStatus3.Text = "FAIL"
@@ -3074,6 +3183,57 @@ Public Class MainForm
         If Globals.CamStatus(5) = True Then LblCamStatus5.Text = "FAIL"
     End Sub
 
+    '----Update globals / registry with edited values
+    Sub StoreSetupScreen()
+        SaveSetting("Atemswitcher", "CamIP", "1", TextBoxIPCam1.Text)
+        SaveSetting("Atemswitcher", "CamIP", "2", TextBoxIPCam2.Text)
+        SaveSetting("Atemswitcher", "CamIP", "3", TextBoxIPCam3.Text)
+        SaveSetting("Atemswitcher", "CamIP", "4", TextBoxIPCam4.Text)
+        SaveSetting("Atemswitcher", "CamIP", "5", TextBoxIPCam5.Text)
+
+        SaveSetting("Atemswitcher", "Set", "Tally", CheckBoxTally.Checked)
+        SaveSetting("Atemswitcher", "Set", "Autoswap", CheckBoxAutoSwap.Checked)
+        SaveSetting("Atemswitcher", "Set", "CamStandby", CheckBoxStandby.Checked)
+        SaveSetting("Atemswitcher", "Set", "Askprofile", CheckBoxProfile.Checked)
+        SaveSetting("Atemswitcher", "Set", "Caminvert1", CheckBoxInvert1.Checked)
+        SaveSetting("Atemswitcher", "Set", "Caminvert2", CheckBoxInvert2.Checked)
+        SaveSetting("Atemswitcher", "Set", "Caminvert3", CheckBoxInvert3.Checked)
+        SaveSetting("Atemswitcher", "Set", "Caminvert4", CheckBoxInvert4.Checked)
+        SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBox5.Text)
+        SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBox6.Text)
+
+        SaveSetting("Atemswitcher", "Set", "Cam1Dis", CheckBoxCam1Dis.Checked)
+        SaveSetting("Atemswitcher", "Set", "Cam2Dis", CheckBoxCam2Dis.Checked)
+        SaveSetting("Atemswitcher", "Set", "Cam3Dis", CheckBoxCam3Dis.Checked)
+        SaveSetting("Atemswitcher", "Set", "Cam4Dis", CheckBoxCam4Dis.Checked)
+        SaveSetting("Atemswitcher", "Set", "Cam5Dis", CheckBoxCam5Dis.Checked)
+
+        Globals.PresetFileName = TextBoxPresetFilename.Text
+        Globals.CamIP(1) = TextBoxIPCam1.Text
+        Globals.CamIP(2) = TextBoxIPCam2.Text
+        Globals.CamIP(3) = TextBoxIPCam3.Text
+        Globals.CamIP(4) = TextBoxIPCam4.Text
+        Globals.CamIP(5) = TextBoxIPCam5.Text
+
+        'ReadPresetFile()
+        If CheckBoxCam1Dis.Checked Then Globals.Cam1Dis = True Else Globals.Cam1Dis = False
+        If CheckBoxCam2Dis.Checked Then Globals.Cam2Dis = True Else Globals.Cam2Dis = False
+        If CheckBoxCam3Dis.Checked Then Globals.Cam3Dis = True Else Globals.Cam3Dis = False
+        If CheckBoxCam4Dis.Checked Then Globals.Cam4Dis = True Else Globals.Cam4Dis = False
+        If CheckBoxCam5Dis.Checked Then Globals.Cam5Dis = True Else Globals.Cam5Dis = False
+    End Sub
+
+    '----update when control loses focus
+    Sub SetupLostFocus() Handles TextBoxIPCam1.LostFocus, TextBoxIPCam2.LostFocus, TextBoxIPCam3.LostFocus, TextBoxIPCam4.LostFocus, _
+        TextBoxIPCam5.LostFocus, CheckBoxCam1Dis.Click, CheckBoxCam2Dis.Click, CheckBoxCam3Dis.Click, CheckBoxCam4Dis.Click, CheckBoxCam5Dis.Click, _
+        CheckBoxTally.Click, CheckBoxAutoSwap.Click, CheckBoxStandby.Click, CheckBoxProfile.Click, CheckBoxInvert1.Click, CheckBoxInvert2.Click, CheckBoxInvert3.Click, CheckBoxInvert4.Click
+
+        StoreSetupScreen()
+    End Sub
+    Private Sub ComboBoxComport_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBoxSetupComport.SelectedIndexChanged
+        SaveSetting("Atemswitcher", "Comm", "2", ComboBoxSetupComport.SelectedItem)
+        ComportOpen()
+    End Sub
 
     '----Camera OSD buttons
     Private Sub ButtonOsdMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupMenu.Click
