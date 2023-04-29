@@ -102,7 +102,15 @@ Partial Class MainForm
         Me.TextBoxPipSrc = New System.Windows.Forms.TextBox()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.PresetPanel = New System.Windows.Forms.Panel()
+        Me.BtnCNxt = New AtemController.MyButton()
+        Me.BtnCPrev = New AtemController.MyButton()
+        Me.BtnSlowPanL = New AtemController.MyButton()
+        Me.BtnStop = New AtemController.MyButton()
+        Me.BtnSlowPanR = New AtemController.MyButton()
         Me.TextBoxPresetEdit = New System.Windows.Forms.TextBox()
+        Me.BtnMovePreset = New AtemController.MyButton()
+        Me.BtnEditPreset = New AtemController.MyButton()
+        Me.BtnPresetSave = New AtemController.MyButton()
         Me.LabelCap3 = New System.Windows.Forms.Label()
         Me.TextCaptionOther = New System.Windows.Forms.TextBox()
         Me.Label27 = New System.Windows.Forms.Label()
@@ -112,42 +120,6 @@ Partial Class MainForm
         Me.TextLeaderName = New System.Windows.Forms.TextBox()
         Me.ListBoxMedia = New System.Windows.Forms.ListBox()
         Me.Label28 = New System.Windows.Forms.Label()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShapeMode4 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeMode1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.CamPanel = New System.Windows.Forms.Panel()
-        Me.SettingsPanel = New System.Windows.Forms.Panel()
-        Me.StatPanel = New System.Windows.Forms.Panel()
-        Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
-        Me.TextBoxOBSBroadcastTime = New System.Windows.Forms.TextBox()
-        Me.LabelEncB = New System.Windows.Forms.Label()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.TextEncBStatus = New System.Windows.Forms.TextBox()
-        Me.LabelEncA = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.TextEncAStatus = New System.Windows.Forms.TextBox()
-        Me.LabelEncStatus = New System.Windows.Forms.Label()
-        Me.ShapeContainer4 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape12 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.MsgBoxPanel = New System.Windows.Forms.Panel()
-        Me.MsgBoxLabel = New System.Windows.Forms.Label()
-        Me.MsgboxClose = New System.Windows.Forms.Label()
-        Me.LineShapeCapT = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.ShapeContainer3 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShapeCapB = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeCapL = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShapeCapR = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.BtnCNxt = New AtemController.MyButton()
-        Me.BtnCPrev = New AtemController.MyButton()
-        Me.BtnSlowPanL = New AtemController.MyButton()
-        Me.BtnStop = New AtemController.MyButton()
-        Me.BtnSlowPanR = New AtemController.MyButton()
-        Me.BtnMovePreset = New AtemController.MyButton()
-        Me.BtnEditPreset = New AtemController.MyButton()
-        Me.BtnPresetSave = New AtemController.MyButton()
         Me.BtnMNext = New AtemController.MyButton()
         Me.BtnMPrev = New AtemController.MyButton()
         Me.BtnLiveFast = New AtemController.MyButton()
@@ -173,6 +145,21 @@ Partial Class MainForm
         Me.BtnPreset14 = New AtemController.MyButton()
         Me.BtnPreset15 = New AtemController.MyButton()
         Me.BtnPreset16 = New AtemController.MyButton()
+        Me.ShapeContainer3 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShapeCapR = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeCapL = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeCapB = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeCapT = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ModeBtnSettings = New AtemController.MyButton()
+        Me.ModeBtnCam = New AtemController.MyButton()
+        Me.ModeBtnPresets = New AtemController.MyButton()
+        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShapeMode4 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShapeMode1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.CamPanel = New System.Windows.Forms.Panel()
         Me.BtnCam4Rec = New AtemController.MyButton()
         Me.BtnCam3Rec = New AtemController.MyButton()
         Me.BtnCam2Rec = New AtemController.MyButton()
@@ -190,11 +177,68 @@ Partial Class MainForm
         Me.MyButtonCamU = New AtemController.MyButton()
         Me.MyButtonCamUL = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
+        Me.SettingsPanel = New System.Windows.Forms.Panel()
+        Me.CheckBoxCam4Dis = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxCam3Dis = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxCam2Dis = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxCam1Dis = New System.Windows.Forms.CheckBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.CheckBoxCam5Dis = New System.Windows.Forms.CheckBox()
+        Me.BtnSetupOsd = New System.Windows.Forms.Button()
+        Me.BtnSetupDown = New System.Windows.Forms.Button()
+        Me.BtnSetupUp = New System.Windows.Forms.Button()
+        Me.BtnSetupEnter = New System.Windows.Forms.Button()
+        Me.BtnSetupMenu = New System.Windows.Forms.Button()
+        Me.LblCamStatus5 = New System.Windows.Forms.Label()
+        Me.TextBoxIPCam5 = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CheckBoxStandby = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxProfile = New System.Windows.Forms.CheckBox()
+        Me.BtnSetupFolderBrowse = New System.Windows.Forms.Button()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TextBoxPresetFolder = New System.Windows.Forms.TextBox()
+        Me.LblCamStatus4 = New System.Windows.Forms.Label()
+        Me.LblCamStatus3 = New System.Windows.Forms.Label()
+        Me.LblCamStatus2 = New System.Windows.Forms.Label()
+        Me.LblCamStatus1 = New System.Windows.Forms.Label()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.BtnSetupFilenameBrowse = New System.Windows.Forms.Button()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.TextBoxPresetFilename = New System.Windows.Forms.TextBox()
+        Me.TextBoxIPCam4 = New System.Windows.Forms.TextBox()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.TextBoxIPCam3 = New System.Windows.Forms.TextBox()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.TextBoxIPCam2 = New System.Windows.Forms.TextBox()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.TextBoxIPCam1 = New System.Windows.Forms.TextBox()
+        Me.CheckBoxAutoSwap = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxTally = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxInvert4 = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxInvert3 = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxInvert2 = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxInvert1 = New System.Windows.Forms.CheckBox()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.ComboBoxSetupComport = New System.Windows.Forms.ComboBox()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.StatPanel = New System.Windows.Forms.Panel()
+        Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
         Me.BtnOBSRecord = New AtemController.MyButton()
         Me.BtnOBSBroadcast = New AtemController.MyButton()
-        Me.ModeBtnSettings = New AtemController.MyButton()
-        Me.ModeBtnCam = New AtemController.MyButton()
-        Me.ModeBtnPresets = New AtemController.MyButton()
+        Me.TextBoxOBSBroadcastTime = New System.Windows.Forms.TextBox()
+        Me.LabelEncB = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.TextEncBStatus = New System.Windows.Forms.TextBox()
+        Me.LabelEncA = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TextEncAStatus = New System.Windows.Forms.TextBox()
+        Me.LabelEncStatus = New System.Windows.Forms.Label()
+        Me.ShapeContainer4 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.LineShape12 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.MsgBoxPanel = New System.Windows.Forms.Panel()
+        Me.MsgBoxLabel = New System.Windows.Forms.Label()
+        Me.MsgboxClose = New System.Windows.Forms.Label()
         Me.BtnInp5 = New AtemController.MyButton()
         Me.AuxSel12 = New AtemController.MyButton()
         Me.Aux3Btn12 = New AtemController.MyButton()
@@ -461,7 +505,7 @@ Partial Class MainForm
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape11, Me.LineShape10, Me.LineShape9, Me.LineShape3, Me.LineShape8, Me.LineShape5, Me.LineShape4})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(1280, 1339)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(1626, 1460)
         Me.ShapeContainer1.TabIndex = 184
         Me.ShapeContainer1.TabStop = False
         '
@@ -803,7 +847,7 @@ Partial Class MainForm
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.Color.Yellow
-        Me.Label13.Location = New System.Drawing.Point(135, 149)
+        Me.Label13.Location = New System.Drawing.Point(4, 3)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(35, 16)
         Me.Label13.TabIndex = 215
@@ -1103,10 +1147,65 @@ Partial Class MainForm
         Me.PresetPanel.Controls.Add(Me.BtnPreset15)
         Me.PresetPanel.Controls.Add(Me.BtnPreset16)
         Me.PresetPanel.Controls.Add(Me.ShapeContainer3)
-        Me.PresetPanel.Location = New System.Drawing.Point(110, 646)
+        Me.PresetPanel.Location = New System.Drawing.Point(16, 720)
         Me.PresetPanel.Name = "PresetPanel"
         Me.PresetPanel.Size = New System.Drawing.Size(784, 600)
         Me.PresetPanel.TabIndex = 320
+        '
+        'BtnCNxt
+        '
+        Me.BtnCNxt.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.BtnCNxt.Image = CType(resources.GetObject("BtnCNxt.Image"), System.Drawing.Image)
+        Me.BtnCNxt.Location = New System.Drawing.Point(9, 307)
+        Me.BtnCNxt.Name = "BtnCNxt"
+        Me.BtnCNxt.Size = New System.Drawing.Size(80, 80)
+        Me.BtnCNxt.TabIndex = 339
+        Me.BtnCNxt.Text = ""
+        Me.BtnCNxt.UseVisualStyleBackColor = True
+        '
+        'BtnCPrev
+        '
+        Me.BtnCPrev.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.BtnCPrev.Image = CType(resources.GetObject("BtnCPrev.Image"), System.Drawing.Image)
+        Me.BtnCPrev.Location = New System.Drawing.Point(9, 227)
+        Me.BtnCPrev.Name = "BtnCPrev"
+        Me.BtnCPrev.Size = New System.Drawing.Size(80, 80)
+        Me.BtnCPrev.TabIndex = 338
+        Me.BtnCPrev.Text = ""
+        Me.BtnCPrev.UseVisualStyleBackColor = True
+        '
+        'BtnSlowPanL
+        '
+        Me.BtnSlowPanL.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSlowPanL.Image = CType(resources.GetObject("BtnSlowPanL.Image"), System.Drawing.Image)
+        Me.BtnSlowPanL.Location = New System.Drawing.Point(437, 426)
+        Me.BtnSlowPanL.Name = "BtnSlowPanL"
+        Me.BtnSlowPanL.Size = New System.Drawing.Size(80, 80)
+        Me.BtnSlowPanL.TabIndex = 337
+        Me.BtnSlowPanL.Text = "    Slow     pan L"
+        Me.BtnSlowPanL.UseVisualStyleBackColor = True
+        '
+        'BtnStop
+        '
+        Me.BtnStop.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnStop.Image = CType(resources.GetObject("BtnStop.Image"), System.Drawing.Image)
+        Me.BtnStop.Location = New System.Drawing.Point(523, 506)
+        Me.BtnStop.Name = "BtnStop"
+        Me.BtnStop.Size = New System.Drawing.Size(80, 80)
+        Me.BtnStop.TabIndex = 336
+        Me.BtnStop.Text = "Stop All"
+        Me.BtnStop.UseVisualStyleBackColor = True
+        '
+        'BtnSlowPanR
+        '
+        Me.BtnSlowPanR.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSlowPanR.Image = CType(resources.GetObject("BtnSlowPanR.Image"), System.Drawing.Image)
+        Me.BtnSlowPanR.Location = New System.Drawing.Point(523, 426)
+        Me.BtnSlowPanR.Name = "BtnSlowPanR"
+        Me.BtnSlowPanR.Size = New System.Drawing.Size(80, 80)
+        Me.BtnSlowPanR.TabIndex = 335
+        Me.BtnSlowPanR.Text = "    Slow     pan R"
+        Me.BtnSlowPanR.UseVisualStyleBackColor = True
         '
         'TextBoxPresetEdit
         '
@@ -1123,6 +1222,39 @@ Partial Class MainForm
         Me.TextBoxPresetEdit.Text = "..."
         Me.TextBoxPresetEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.TextBoxPresetEdit.Visible = False
+        '
+        'BtnMovePreset
+        '
+        Me.BtnMovePreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnMovePreset.Image = CType(resources.GetObject("BtnMovePreset.Image"), System.Drawing.Image)
+        Me.BtnMovePreset.Location = New System.Drawing.Point(272, 193)
+        Me.BtnMovePreset.Name = "BtnMovePreset"
+        Me.BtnMovePreset.Size = New System.Drawing.Size(80, 80)
+        Me.BtnMovePreset.TabIndex = 333
+        Me.BtnMovePreset.Text = "Move"
+        Me.BtnMovePreset.UseVisualStyleBackColor = True
+        '
+        'BtnEditPreset
+        '
+        Me.BtnEditPreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnEditPreset.Image = CType(resources.GetObject("BtnEditPreset.Image"), System.Drawing.Image)
+        Me.BtnEditPreset.Location = New System.Drawing.Point(272, 106)
+        Me.BtnEditPreset.Name = "BtnEditPreset"
+        Me.BtnEditPreset.Size = New System.Drawing.Size(80, 80)
+        Me.BtnEditPreset.TabIndex = 332
+        Me.BtnEditPreset.Text = "Edit"
+        Me.BtnEditPreset.UseVisualStyleBackColor = True
+        '
+        'BtnPresetSave
+        '
+        Me.BtnPresetSave.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnPresetSave.Image = CType(resources.GetObject("BtnPresetSave.Image"), System.Drawing.Image)
+        Me.BtnPresetSave.Location = New System.Drawing.Point(272, 20)
+        Me.BtnPresetSave.Name = "BtnPresetSave"
+        Me.BtnPresetSave.Size = New System.Drawing.Size(80, 80)
+        Me.BtnPresetSave.TabIndex = 331
+        Me.BtnPresetSave.Text = "Save"
+        Me.BtnPresetSave.UseVisualStyleBackColor = True
         '
         'LabelCap3
         '
@@ -1231,459 +1363,6 @@ Partial Class MainForm
         Me.Label28.Size = New System.Drawing.Size(88, 20)
         Me.Label28.TabIndex = 322
         Me.Label28.Text = "Media player"
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.ModeBtnSettings)
-        Me.Panel1.Controls.Add(Me.ModeBtnCam)
-        Me.Panel1.Controls.Add(Me.ModeBtnPresets)
-        Me.Panel1.Controls.Add(Me.ShapeContainer2)
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(120, 600)
-        Me.Panel1.TabIndex = 321
-        '
-        'ShapeContainer2
-        '
-        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer2.Name = "ShapeContainer2"
-        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeMode4, Me.LineShapeMode3, Me.LineShapeMode2, Me.LineShapeMode1})
-        Me.ShapeContainer2.Size = New System.Drawing.Size(120, 600)
-        Me.ShapeContainer2.TabIndex = 160
-        Me.ShapeContainer2.TabStop = False
-        '
-        'LineShapeMode4
-        '
-        Me.LineShapeMode4.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode4.BorderWidth = 2
-        Me.LineShapeMode4.Name = "LineShapeMode4"
-        Me.LineShapeMode4.X1 = 0
-        Me.LineShapeMode4.X2 = 110
-        Me.LineShapeMode4.Y1 = 380
-        Me.LineShapeMode4.Y2 = 380
-        '
-        'LineShapeMode3
-        '
-        Me.LineShapeMode3.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode3.BorderWidth = 2
-        Me.LineShapeMode3.Name = "LineShapeMode3"
-        Me.LineShapeMode3.X1 = 0
-        Me.LineShapeMode3.X2 = 110
-        Me.LineShapeMode3.Y1 = 334
-        Me.LineShapeMode3.Y2 = 334
-        '
-        'LineShapeMode2
-        '
-        Me.LineShapeMode2.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode2.BorderWidth = 2
-        Me.LineShapeMode2.Name = "LineShapeMode2"
-        Me.LineShapeMode2.X1 = 110
-        Me.LineShapeMode2.X2 = 110
-        Me.LineShapeMode2.Y1 = 0
-        Me.LineShapeMode2.Y2 = 600
-        '
-        'LineShapeMode1
-        '
-        Me.LineShapeMode1.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeMode1.BorderWidth = 2
-        Me.LineShapeMode1.Name = "LineShapeMode1"
-        Me.LineShapeMode1.X1 = 110
-        Me.LineShapeMode1.X2 = 110
-        Me.LineShapeMode1.Y1 = 0
-        Me.LineShapeMode1.Y2 = 600
-        '
-        'CamPanel
-        '
-        Me.CamPanel.Controls.Add(Me.Label23)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam4Rec)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam3Rec)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam2Rec)
-        Me.CamPanel.Controls.Add(Me.Button8)
-        Me.CamPanel.Controls.Add(Me.TextBoxCam1Rec)
-        Me.CamPanel.Controls.Add(Me.TextPlayerTime)
-        Me.CamPanel.Controls.Add(Me.BtnCam4Rec)
-        Me.CamPanel.Controls.Add(Me.BtnCam3Rec)
-        Me.CamPanel.Controls.Add(Me.BtnCam2Rec)
-        Me.CamPanel.Controls.Add(Me.BtnAgcAuto)
-        Me.CamPanel.Controls.Add(Me.BtnCam1Rec)
-        Me.CamPanel.Controls.Add(Me.BtnWBAuto)
-        Me.CamPanel.Controls.Add(Me.BtnIrisAuto)
-        Me.CamPanel.Controls.Add(Me.Label25)
-        Me.CamPanel.Controls.Add(Me.Button6)
-        Me.CamPanel.Controls.Add(Me.Button4)
-        Me.CamPanel.Controls.Add(Me.Button3)
-        Me.CamPanel.Controls.Add(Me.Button2)
-        Me.CamPanel.Controls.Add(Me.BtnFocusUp)
-        Me.CamPanel.Controls.Add(Me.BtnFocusDn)
-        Me.CamPanel.Controls.Add(Me.BtnFocusLock)
-        Me.CamPanel.Controls.Add(Me.BtnFocusAuto)
-        Me.CamPanel.Controls.Add(Me.Label12)
-        Me.CamPanel.Controls.Add(Me.Label10)
-        Me.CamPanel.Controls.Add(Me.Label11)
-        Me.CamPanel.Controls.Add(Me.BtnWbBlueUp)
-        Me.CamPanel.Controls.Add(Me.BtnSlow)
-        Me.CamPanel.Controls.Add(Me.BtnWbBlueDn)
-        Me.CamPanel.Controls.Add(Me.BtnFast)
-        Me.CamPanel.Controls.Add(Me.BtnWbRedUp)
-        Me.CamPanel.Controls.Add(Me.BtnWbRedDn)
-        Me.CamPanel.Controls.Add(Me.Label21)
-        Me.CamPanel.Controls.Add(Me.Label9)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamDR)
-        Me.CamPanel.Controls.Add(Me.BtnShutterUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamD)
-        Me.CamPanel.Controls.Add(Me.BtnShutterDn)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamDL)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamR)
-        Me.CamPanel.Controls.Add(Me.Label8)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamL)
-        Me.CamPanel.Controls.Add(Me.BtnGainUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamUR)
-        Me.CamPanel.Controls.Add(Me.BtnGainDown)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamU)
-        Me.CamPanel.Controls.Add(Me.BtnAGCUp)
-        Me.CamPanel.Controls.Add(Me.MyButtonCamUL)
-        Me.CamPanel.Controls.Add(Me.BtnAGCDown)
-        Me.CamPanel.Controls.Add(Me.Label20)
-        Me.CamPanel.Controls.Add(Me.Label19)
-        Me.CamPanel.Controls.Add(Me.BtnIrisUp)
-        Me.CamPanel.Controls.Add(Me.TextBox9)
-        Me.CamPanel.Controls.Add(Me.TextBox8)
-        Me.CamPanel.Controls.Add(Me.TextBox7)
-        Me.CamPanel.Controls.Add(Me.TextBox6)
-        Me.CamPanel.Controls.Add(Me.TextBox5)
-        Me.CamPanel.Controls.Add(Me.BtnIrisDown)
-        Me.CamPanel.Controls.Add(Me.TextBox4)
-        Me.CamPanel.Controls.Add(Me.OverrideBtn)
-        Me.CamPanel.Location = New System.Drawing.Point(131, 12)
-        Me.CamPanel.Name = "CamPanel"
-        Me.CamPanel.Size = New System.Drawing.Size(784, 600)
-        Me.CamPanel.TabIndex = 322
-        '
-        'SettingsPanel
-        '
-        Me.SettingsPanel.Controls.Add(Me.Label13)
-        Me.SettingsPanel.Location = New System.Drawing.Point(189, 1229)
-        Me.SettingsPanel.Name = "SettingsPanel"
-        Me.SettingsPanel.Size = New System.Drawing.Size(188, 181)
-        Me.SettingsPanel.TabIndex = 323
-        '
-        'StatPanel
-        '
-        Me.StatPanel.Controls.Add(Me.TextBoxOBSRecTime)
-        Me.StatPanel.Controls.Add(Me.BtnOBSRecord)
-        Me.StatPanel.Controls.Add(Me.BtnOBSBroadcast)
-        Me.StatPanel.Controls.Add(Me.TextBoxOBSBroadcastTime)
-        Me.StatPanel.Controls.Add(Me.LabelEncB)
-        Me.StatPanel.Controls.Add(Me.PictureBox2)
-        Me.StatPanel.Controls.Add(Me.TextEncBStatus)
-        Me.StatPanel.Controls.Add(Me.LabelEncA)
-        Me.StatPanel.Controls.Add(Me.PictureBox1)
-        Me.StatPanel.Controls.Add(Me.TextEncAStatus)
-        Me.StatPanel.Controls.Add(Me.LabelEncStatus)
-        Me.StatPanel.Controls.Add(Me.ShapeContainer4)
-        Me.StatPanel.Location = New System.Drawing.Point(904, 0)
-        Me.StatPanel.Name = "StatPanel"
-        Me.StatPanel.Size = New System.Drawing.Size(120, 600)
-        Me.StatPanel.TabIndex = 324
-        '
-        'TextBoxOBSRecTime
-        '
-        Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
-        Me.TextBoxOBSRecTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxOBSRecTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(17, 566)
-        Me.TextBoxOBSRecTime.Name = "TextBoxOBSRecTime"
-        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(100, 26)
-        Me.TextBoxOBSRecTime.TabIndex = 300
-        Me.TextBoxOBSRecTime.Text = "..."
-        Me.TextBoxOBSRecTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'TextBoxOBSBroadcastTime
-        '
-        Me.TextBoxOBSBroadcastTime.BackColor = System.Drawing.Color.Black
-        Me.TextBoxOBSBroadcastTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxOBSBroadcastTime.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(17, 426)
-        Me.TextBoxOBSBroadcastTime.Name = "TextBoxOBSBroadcastTime"
-        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(100, 26)
-        Me.TextBoxOBSBroadcastTime.TabIndex = 297
-        Me.TextBoxOBSBroadcastTime.Text = "..."
-        Me.TextBoxOBSBroadcastTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncB
-        '
-        Me.LabelEncB.AutoSize = True
-        Me.LabelEncB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncB.ForeColor = System.Drawing.Color.White
-        Me.LabelEncB.Location = New System.Drawing.Point(61, 129)
-        Me.LabelEncB.Name = "LabelEncB"
-        Me.LabelEncB.Size = New System.Drawing.Size(57, 19)
-        Me.LabelEncB.TabIndex = 252
-        Me.LabelEncB.Text = "Focus"
-        Me.LabelEncB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(17, 116)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(40, 40)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox2.TabIndex = 251
-        Me.PictureBox2.TabStop = False
-        '
-        'TextEncBStatus
-        '
-        Me.TextEncBStatus.BackColor = System.Drawing.Color.Black
-        Me.TextEncBStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextEncBStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextEncBStatus.ForeColor = System.Drawing.Color.Yellow
-        Me.TextEncBStatus.Location = New System.Drawing.Point(17, 162)
-        Me.TextEncBStatus.Name = "TextEncBStatus"
-        Me.TextEncBStatus.Size = New System.Drawing.Size(100, 29)
-        Me.TextEncBStatus.TabIndex = 250
-        Me.TextEncBStatus.Text = "17"
-        Me.TextEncBStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncA
-        '
-        Me.LabelEncA.AutoSize = True
-        Me.LabelEncA.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncA.ForeColor = System.Drawing.Color.White
-        Me.LabelEncA.Location = New System.Drawing.Point(61, 43)
-        Me.LabelEncA.Name = "LabelEncA"
-        Me.LabelEncA.Size = New System.Drawing.Size(32, 19)
-        Me.LabelEncA.TabIndex = 249
-        Me.LabelEncA.Text = "Iris"
-        Me.LabelEncA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(17, 30)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(40, 40)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 115
-        Me.PictureBox1.TabStop = False
-        '
-        'TextEncAStatus
-        '
-        Me.TextEncAStatus.BackColor = System.Drawing.Color.Black
-        Me.TextEncAStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextEncAStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextEncAStatus.ForeColor = System.Drawing.Color.Yellow
-        Me.TextEncAStatus.Location = New System.Drawing.Point(17, 76)
-        Me.TextEncAStatus.Name = "TextEncAStatus"
-        Me.TextEncAStatus.Size = New System.Drawing.Size(100, 29)
-        Me.TextEncAStatus.TabIndex = 114
-        Me.TextEncAStatus.Text = "17"
-        Me.TextEncAStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'LabelEncStatus
-        '
-        Me.LabelEncStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.LabelEncStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LabelEncStatus.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelEncStatus.Location = New System.Drawing.Point(17, 6)
-        Me.LabelEncStatus.Name = "LabelEncStatus"
-        Me.LabelEncStatus.Size = New System.Drawing.Size(91, 21)
-        Me.LabelEncStatus.TabIndex = 1
-        Me.LabelEncStatus.Text = "CAM?"
-        Me.LabelEncStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ShapeContainer4
-        '
-        Me.ShapeContainer4.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer4.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer4.Name = "ShapeContainer4"
-        Me.ShapeContainer4.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape12})
-        Me.ShapeContainer4.Size = New System.Drawing.Size(120, 600)
-        Me.ShapeContainer4.TabIndex = 0
-        Me.ShapeContainer4.TabStop = False
-        '
-        'LineShape12
-        '
-        Me.LineShape12.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShape12.BorderWidth = 2
-        Me.LineShape12.Name = "LineShape12"
-        Me.LineShape12.X1 = 6
-        Me.LineShape12.X2 = 6
-        Me.LineShape12.Y1 = 0
-        Me.LineShape12.Y2 = 600
-        '
-        'MsgBoxPanel
-        '
-        Me.MsgBoxPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.MsgBoxPanel.Controls.Add(Me.MsgBoxLabel)
-        Me.MsgBoxPanel.Controls.Add(Me.MsgboxClose)
-        Me.MsgBoxPanel.Location = New System.Drawing.Point(1068, 95)
-        Me.MsgBoxPanel.Name = "MsgBoxPanel"
-        Me.MsgBoxPanel.Size = New System.Drawing.Size(146, 98)
-        Me.MsgBoxPanel.TabIndex = 325
-        Me.MsgBoxPanel.Visible = False
-        '
-        'MsgBoxLabel
-        '
-        Me.MsgBoxLabel.AutoSize = True
-        Me.MsgBoxLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MsgBoxLabel.ForeColor = System.Drawing.Color.Yellow
-        Me.MsgBoxLabel.Location = New System.Drawing.Point(8, 23)
-        Me.MsgBoxLabel.Name = "MsgBoxLabel"
-        Me.MsgBoxLabel.Size = New System.Drawing.Size(0, 24)
-        Me.MsgBoxLabel.TabIndex = 1
-        '
-        'MsgboxClose
-        '
-        Me.MsgboxClose.AutoSize = True
-        Me.MsgboxClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MsgboxClose.ForeColor = System.Drawing.Color.Yellow
-        Me.MsgboxClose.Location = New System.Drawing.Point(116, 0)
-        Me.MsgboxClose.Name = "MsgboxClose"
-        Me.MsgboxClose.Size = New System.Drawing.Size(27, 25)
-        Me.MsgboxClose.TabIndex = 0
-        Me.MsgboxClose.Text = "X"
-        '
-        'LineShapeCapT
-        '
-        Me.LineShapeCapT.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeCapT.BorderWidth = 2
-        Me.LineShapeCapT.Name = "LineShapeCapT"
-        Me.LineShapeCapT.X1 = 98
-        Me.LineShapeCapT.X2 = 264
-        Me.LineShapeCapT.Y1 = 249
-        Me.LineShapeCapT.Y2 = 249
-        '
-        'ShapeContainer3
-        '
-        Me.ShapeContainer3.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer3.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer3.Name = "ShapeContainer3"
-        Me.ShapeContainer3.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeCapR, Me.LineShapeCapL, Me.LineShapeCapB, Me.LineShapeCapT})
-        Me.ShapeContainer3.Size = New System.Drawing.Size(784, 600)
-        Me.ShapeContainer3.TabIndex = 340
-        Me.ShapeContainer3.TabStop = False
-        '
-        'LineShapeCapB
-        '
-        Me.LineShapeCapB.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeCapB.BorderWidth = 2
-        Me.LineShapeCapB.Name = "LineShapeCapB"
-        Me.LineShapeCapB.X1 = 98
-        Me.LineShapeCapB.X2 = 264
-        Me.LineShapeCapB.Y1 = 282
-        Me.LineShapeCapB.Y2 = 282
-        '
-        'LineShapeCapL
-        '
-        Me.LineShapeCapL.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeCapL.BorderWidth = 2
-        Me.LineShapeCapL.Name = "LineShapeCapL"
-        Me.LineShapeCapL.X1 = 98
-        Me.LineShapeCapL.X2 = 98
-        Me.LineShapeCapL.Y1 = 248
-        Me.LineShapeCapL.Y2 = 282
-        '
-        'LineShapeCapR
-        '
-        Me.LineShapeCapR.BorderColor = System.Drawing.Color.Yellow
-        Me.LineShapeCapR.BorderWidth = 2
-        Me.LineShapeCapR.Name = "LineShapeCapR"
-        Me.LineShapeCapR.X1 = 264
-        Me.LineShapeCapR.X2 = 264
-        Me.LineShapeCapR.Y1 = 248
-        Me.LineShapeCapR.Y2 = 282
-        '
-        'BtnCNxt
-        '
-        Me.BtnCNxt.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnCNxt.Image = CType(resources.GetObject("BtnCNxt.Image"), System.Drawing.Image)
-        Me.BtnCNxt.Location = New System.Drawing.Point(9, 307)
-        Me.BtnCNxt.Name = "BtnCNxt"
-        Me.BtnCNxt.Size = New System.Drawing.Size(80, 80)
-        Me.BtnCNxt.TabIndex = 339
-        Me.BtnCNxt.Text = ""
-        Me.BtnCNxt.UseVisualStyleBackColor = True
-        '
-        'BtnCPrev
-        '
-        Me.BtnCPrev.Font = New System.Drawing.Font("Wingdings", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnCPrev.Image = CType(resources.GetObject("BtnCPrev.Image"), System.Drawing.Image)
-        Me.BtnCPrev.Location = New System.Drawing.Point(9, 227)
-        Me.BtnCPrev.Name = "BtnCPrev"
-        Me.BtnCPrev.Size = New System.Drawing.Size(80, 80)
-        Me.BtnCPrev.TabIndex = 338
-        Me.BtnCPrev.Text = ""
-        Me.BtnCPrev.UseVisualStyleBackColor = True
-        '
-        'BtnSlowPanL
-        '
-        Me.BtnSlowPanL.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnSlowPanL.Image = CType(resources.GetObject("BtnSlowPanL.Image"), System.Drawing.Image)
-        Me.BtnSlowPanL.Location = New System.Drawing.Point(437, 426)
-        Me.BtnSlowPanL.Name = "BtnSlowPanL"
-        Me.BtnSlowPanL.Size = New System.Drawing.Size(80, 80)
-        Me.BtnSlowPanL.TabIndex = 337
-        Me.BtnSlowPanL.Text = "    Slow     pan L"
-        Me.BtnSlowPanL.UseVisualStyleBackColor = True
-        '
-        'BtnStop
-        '
-        Me.BtnStop.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnStop.Image = CType(resources.GetObject("BtnStop.Image"), System.Drawing.Image)
-        Me.BtnStop.Location = New System.Drawing.Point(523, 506)
-        Me.BtnStop.Name = "BtnStop"
-        Me.BtnStop.Size = New System.Drawing.Size(80, 80)
-        Me.BtnStop.TabIndex = 336
-        Me.BtnStop.Text = "Stop All"
-        Me.BtnStop.UseVisualStyleBackColor = True
-        '
-        'BtnSlowPanR
-        '
-        Me.BtnSlowPanR.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnSlowPanR.Image = CType(resources.GetObject("BtnSlowPanR.Image"), System.Drawing.Image)
-        Me.BtnSlowPanR.Location = New System.Drawing.Point(523, 426)
-        Me.BtnSlowPanR.Name = "BtnSlowPanR"
-        Me.BtnSlowPanR.Size = New System.Drawing.Size(80, 80)
-        Me.BtnSlowPanR.TabIndex = 335
-        Me.BtnSlowPanR.Text = "    Slow     pan R"
-        Me.BtnSlowPanR.UseVisualStyleBackColor = True
-        '
-        'BtnMovePreset
-        '
-        Me.BtnMovePreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnMovePreset.Image = CType(resources.GetObject("BtnMovePreset.Image"), System.Drawing.Image)
-        Me.BtnMovePreset.Location = New System.Drawing.Point(272, 193)
-        Me.BtnMovePreset.Name = "BtnMovePreset"
-        Me.BtnMovePreset.Size = New System.Drawing.Size(80, 80)
-        Me.BtnMovePreset.TabIndex = 333
-        Me.BtnMovePreset.Text = "Move"
-        Me.BtnMovePreset.UseVisualStyleBackColor = True
-        '
-        'BtnEditPreset
-        '
-        Me.BtnEditPreset.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnEditPreset.Image = CType(resources.GetObject("BtnEditPreset.Image"), System.Drawing.Image)
-        Me.BtnEditPreset.Location = New System.Drawing.Point(272, 106)
-        Me.BtnEditPreset.Name = "BtnEditPreset"
-        Me.BtnEditPreset.Size = New System.Drawing.Size(80, 80)
-        Me.BtnEditPreset.TabIndex = 332
-        Me.BtnEditPreset.Text = "Edit"
-        Me.BtnEditPreset.UseVisualStyleBackColor = True
-        '
-        'BtnPresetSave
-        '
-        Me.BtnPresetSave.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnPresetSave.Image = CType(resources.GetObject("BtnPresetSave.Image"), System.Drawing.Image)
-        Me.BtnPresetSave.Location = New System.Drawing.Point(272, 20)
-        Me.BtnPresetSave.Name = "BtnPresetSave"
-        Me.BtnPresetSave.Size = New System.Drawing.Size(80, 80)
-        Me.BtnPresetSave.TabIndex = 331
-        Me.BtnPresetSave.Text = "Save"
-        Me.BtnPresetSave.UseVisualStyleBackColor = True
         '
         'BtnMNext
         '
@@ -1960,6 +1639,217 @@ Partial Class MainForm
         Me.BtnPreset16.Text = "16"
         Me.BtnPreset16.UseVisualStyleBackColor = True
         '
+        'ShapeContainer3
+        '
+        Me.ShapeContainer3.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer3.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer3.Name = "ShapeContainer3"
+        Me.ShapeContainer3.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeCapR, Me.LineShapeCapL, Me.LineShapeCapB, Me.LineShapeCapT})
+        Me.ShapeContainer3.Size = New System.Drawing.Size(784, 600)
+        Me.ShapeContainer3.TabIndex = 340
+        Me.ShapeContainer3.TabStop = False
+        '
+        'LineShapeCapR
+        '
+        Me.LineShapeCapR.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeCapR.BorderWidth = 2
+        Me.LineShapeCapR.Name = "LineShapeCapR"
+        Me.LineShapeCapR.X1 = 264
+        Me.LineShapeCapR.X2 = 264
+        Me.LineShapeCapR.Y1 = 248
+        Me.LineShapeCapR.Y2 = 282
+        '
+        'LineShapeCapL
+        '
+        Me.LineShapeCapL.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeCapL.BorderWidth = 2
+        Me.LineShapeCapL.Name = "LineShapeCapL"
+        Me.LineShapeCapL.X1 = 98
+        Me.LineShapeCapL.X2 = 98
+        Me.LineShapeCapL.Y1 = 248
+        Me.LineShapeCapL.Y2 = 282
+        '
+        'LineShapeCapB
+        '
+        Me.LineShapeCapB.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeCapB.BorderWidth = 2
+        Me.LineShapeCapB.Name = "LineShapeCapB"
+        Me.LineShapeCapB.X1 = 98
+        Me.LineShapeCapB.X2 = 264
+        Me.LineShapeCapB.Y1 = 282
+        Me.LineShapeCapB.Y2 = 282
+        '
+        'LineShapeCapT
+        '
+        Me.LineShapeCapT.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeCapT.BorderWidth = 2
+        Me.LineShapeCapT.Name = "LineShapeCapT"
+        Me.LineShapeCapT.X1 = 98
+        Me.LineShapeCapT.X2 = 264
+        Me.LineShapeCapT.Y1 = 249
+        Me.LineShapeCapT.Y2 = 249
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.ModeBtnSettings)
+        Me.Panel1.Controls.Add(Me.ModeBtnCam)
+        Me.Panel1.Controls.Add(Me.ModeBtnPresets)
+        Me.Panel1.Controls.Add(Me.ShapeContainer2)
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(120, 600)
+        Me.Panel1.TabIndex = 321
+        '
+        'ModeBtnSettings
+        '
+        Me.ModeBtnSettings.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnSettings.Image = CType(resources.GetObject("ModeBtnSettings.Image"), System.Drawing.Image)
+        Me.ModeBtnSettings.Location = New System.Drawing.Point(8, 225)
+        Me.ModeBtnSettings.Name = "ModeBtnSettings"
+        Me.ModeBtnSettings.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnSettings.TabIndex = 159
+        Me.ModeBtnSettings.Text = "System Settings"
+        Me.ModeBtnSettings.UseVisualStyleBackColor = True
+        '
+        'ModeBtnCam
+        '
+        Me.ModeBtnCam.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnCam.Image = CType(resources.GetObject("ModeBtnCam.Image"), System.Drawing.Image)
+        Me.ModeBtnCam.Location = New System.Drawing.Point(8, 116)
+        Me.ModeBtnCam.Name = "ModeBtnCam"
+        Me.ModeBtnCam.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnCam.TabIndex = 158
+        Me.ModeBtnCam.Text = "Camera Settings"
+        Me.ModeBtnCam.UseVisualStyleBackColor = True
+        '
+        'ModeBtnPresets
+        '
+        Me.ModeBtnPresets.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ModeBtnPresets.Image = CType(resources.GetObject("ModeBtnPresets.Image"), System.Drawing.Image)
+        Me.ModeBtnPresets.Location = New System.Drawing.Point(8, 9)
+        Me.ModeBtnPresets.Name = "ModeBtnPresets"
+        Me.ModeBtnPresets.Size = New System.Drawing.Size(100, 100)
+        Me.ModeBtnPresets.TabIndex = 157
+        Me.ModeBtnPresets.Text = "Live"
+        Me.ModeBtnPresets.UseVisualStyleBackColor = True
+        '
+        'ShapeContainer2
+        '
+        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer2.Name = "ShapeContainer2"
+        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShapeMode4, Me.LineShapeMode3, Me.LineShapeMode2, Me.LineShapeMode1})
+        Me.ShapeContainer2.Size = New System.Drawing.Size(120, 600)
+        Me.ShapeContainer2.TabIndex = 160
+        Me.ShapeContainer2.TabStop = False
+        '
+        'LineShapeMode4
+        '
+        Me.LineShapeMode4.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode4.BorderWidth = 2
+        Me.LineShapeMode4.Name = "LineShapeMode4"
+        Me.LineShapeMode4.X1 = 0
+        Me.LineShapeMode4.X2 = 110
+        Me.LineShapeMode4.Y1 = 380
+        Me.LineShapeMode4.Y2 = 380
+        '
+        'LineShapeMode3
+        '
+        Me.LineShapeMode3.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode3.BorderWidth = 2
+        Me.LineShapeMode3.Name = "LineShapeMode3"
+        Me.LineShapeMode3.X1 = 0
+        Me.LineShapeMode3.X2 = 110
+        Me.LineShapeMode3.Y1 = 334
+        Me.LineShapeMode3.Y2 = 334
+        '
+        'LineShapeMode2
+        '
+        Me.LineShapeMode2.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode2.BorderWidth = 2
+        Me.LineShapeMode2.Name = "LineShapeMode2"
+        Me.LineShapeMode2.X1 = 110
+        Me.LineShapeMode2.X2 = 110
+        Me.LineShapeMode2.Y1 = 0
+        Me.LineShapeMode2.Y2 = 600
+        '
+        'LineShapeMode1
+        '
+        Me.LineShapeMode1.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShapeMode1.BorderWidth = 2
+        Me.LineShapeMode1.Name = "LineShapeMode1"
+        Me.LineShapeMode1.X1 = 110
+        Me.LineShapeMode1.X2 = 110
+        Me.LineShapeMode1.Y1 = 0
+        Me.LineShapeMode1.Y2 = 600
+        '
+        'CamPanel
+        '
+        Me.CamPanel.Controls.Add(Me.Label23)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam4Rec)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam3Rec)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam2Rec)
+        Me.CamPanel.Controls.Add(Me.Button8)
+        Me.CamPanel.Controls.Add(Me.TextBoxCam1Rec)
+        Me.CamPanel.Controls.Add(Me.TextPlayerTime)
+        Me.CamPanel.Controls.Add(Me.BtnCam4Rec)
+        Me.CamPanel.Controls.Add(Me.BtnCam3Rec)
+        Me.CamPanel.Controls.Add(Me.BtnCam2Rec)
+        Me.CamPanel.Controls.Add(Me.BtnAgcAuto)
+        Me.CamPanel.Controls.Add(Me.BtnCam1Rec)
+        Me.CamPanel.Controls.Add(Me.BtnWBAuto)
+        Me.CamPanel.Controls.Add(Me.BtnIrisAuto)
+        Me.CamPanel.Controls.Add(Me.Label25)
+        Me.CamPanel.Controls.Add(Me.Button6)
+        Me.CamPanel.Controls.Add(Me.Button4)
+        Me.CamPanel.Controls.Add(Me.Button3)
+        Me.CamPanel.Controls.Add(Me.Button2)
+        Me.CamPanel.Controls.Add(Me.BtnFocusUp)
+        Me.CamPanel.Controls.Add(Me.BtnFocusDn)
+        Me.CamPanel.Controls.Add(Me.BtnFocusLock)
+        Me.CamPanel.Controls.Add(Me.BtnFocusAuto)
+        Me.CamPanel.Controls.Add(Me.Label12)
+        Me.CamPanel.Controls.Add(Me.Label10)
+        Me.CamPanel.Controls.Add(Me.Label11)
+        Me.CamPanel.Controls.Add(Me.BtnWbBlueUp)
+        Me.CamPanel.Controls.Add(Me.BtnSlow)
+        Me.CamPanel.Controls.Add(Me.BtnWbBlueDn)
+        Me.CamPanel.Controls.Add(Me.BtnFast)
+        Me.CamPanel.Controls.Add(Me.BtnWbRedUp)
+        Me.CamPanel.Controls.Add(Me.BtnWbRedDn)
+        Me.CamPanel.Controls.Add(Me.Label21)
+        Me.CamPanel.Controls.Add(Me.Label9)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamDR)
+        Me.CamPanel.Controls.Add(Me.BtnShutterUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamD)
+        Me.CamPanel.Controls.Add(Me.BtnShutterDn)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamDL)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamR)
+        Me.CamPanel.Controls.Add(Me.Label8)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamL)
+        Me.CamPanel.Controls.Add(Me.BtnGainUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamUR)
+        Me.CamPanel.Controls.Add(Me.BtnGainDown)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamU)
+        Me.CamPanel.Controls.Add(Me.BtnAGCUp)
+        Me.CamPanel.Controls.Add(Me.MyButtonCamUL)
+        Me.CamPanel.Controls.Add(Me.BtnAGCDown)
+        Me.CamPanel.Controls.Add(Me.Label20)
+        Me.CamPanel.Controls.Add(Me.Label19)
+        Me.CamPanel.Controls.Add(Me.BtnIrisUp)
+        Me.CamPanel.Controls.Add(Me.TextBox9)
+        Me.CamPanel.Controls.Add(Me.TextBox8)
+        Me.CamPanel.Controls.Add(Me.TextBox7)
+        Me.CamPanel.Controls.Add(Me.TextBox6)
+        Me.CamPanel.Controls.Add(Me.TextBox5)
+        Me.CamPanel.Controls.Add(Me.BtnIrisDown)
+        Me.CamPanel.Controls.Add(Me.TextBox4)
+        Me.CamPanel.Controls.Add(Me.OverrideBtn)
+        Me.CamPanel.Location = New System.Drawing.Point(131, 12)
+        Me.CamPanel.Name = "CamPanel"
+        Me.CamPanel.Size = New System.Drawing.Size(784, 600)
+        Me.CamPanel.TabIndex = 322
+        '
         'BtnCam4Rec
         '
         Me.BtnCam4Rec.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2147,6 +2037,582 @@ Partial Class MainForm
         Me.OverrideBtn.Text = "Over ride"
         Me.OverrideBtn.UseVisualStyleBackColor = True
         '
+        'SettingsPanel
+        '
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxCam4Dis)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxCam3Dis)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxCam2Dis)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxCam1Dis)
+        Me.SettingsPanel.Controls.Add(Me.Label2)
+        Me.SettingsPanel.Controls.Add(Me.Label3)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxCam5Dis)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupOsd)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupDown)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupUp)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupEnter)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupMenu)
+        Me.SettingsPanel.Controls.Add(Me.LblCamStatus5)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam5)
+        Me.SettingsPanel.Controls.Add(Me.Label6)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxStandby)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxProfile)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupFolderBrowse)
+        Me.SettingsPanel.Controls.Add(Me.Label7)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxPresetFolder)
+        Me.SettingsPanel.Controls.Add(Me.LblCamStatus4)
+        Me.SettingsPanel.Controls.Add(Me.LblCamStatus3)
+        Me.SettingsPanel.Controls.Add(Me.LblCamStatus2)
+        Me.SettingsPanel.Controls.Add(Me.LblCamStatus1)
+        Me.SettingsPanel.Controls.Add(Me.Label31)
+        Me.SettingsPanel.Controls.Add(Me.BtnSetupFilenameBrowse)
+        Me.SettingsPanel.Controls.Add(Me.Label32)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxPresetFilename)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam4)
+        Me.SettingsPanel.Controls.Add(Me.Label33)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam3)
+        Me.SettingsPanel.Controls.Add(Me.Label34)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam2)
+        Me.SettingsPanel.Controls.Add(Me.Label35)
+        Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam1)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxAutoSwap)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxTally)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxInvert4)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxInvert3)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxInvert2)
+        Me.SettingsPanel.Controls.Add(Me.CheckBoxInvert1)
+        Me.SettingsPanel.Controls.Add(Me.Label36)
+        Me.SettingsPanel.Controls.Add(Me.ComboBoxSetupComport)
+        Me.SettingsPanel.Controls.Add(Me.Label37)
+        Me.SettingsPanel.Controls.Add(Me.Label13)
+        Me.SettingsPanel.Location = New System.Drawing.Point(806, 720)
+        Me.SettingsPanel.Name = "SettingsPanel"
+        Me.SettingsPanel.Size = New System.Drawing.Size(784, 600)
+        Me.SettingsPanel.TabIndex = 323
+        '
+        'CheckBoxCam4Dis
+        '
+        Me.CheckBoxCam4Dis.AutoSize = True
+        Me.CheckBoxCam4Dis.Checked = True
+        Me.CheckBoxCam4Dis.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxCam4Dis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCam4Dis.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxCam4Dis.Location = New System.Drawing.Point(272, 159)
+        Me.CheckBoxCam4Dis.Name = "CheckBoxCam4Dis"
+        Me.CheckBoxCam4Dis.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBoxCam4Dis.TabIndex = 259
+        Me.CheckBoxCam4Dis.UseVisualStyleBackColor = True
+        '
+        'CheckBoxCam3Dis
+        '
+        Me.CheckBoxCam3Dis.AutoSize = True
+        Me.CheckBoxCam3Dis.Checked = True
+        Me.CheckBoxCam3Dis.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxCam3Dis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCam3Dis.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxCam3Dis.Location = New System.Drawing.Point(272, 133)
+        Me.CheckBoxCam3Dis.Name = "CheckBoxCam3Dis"
+        Me.CheckBoxCam3Dis.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBoxCam3Dis.TabIndex = 258
+        Me.CheckBoxCam3Dis.UseVisualStyleBackColor = True
+        '
+        'CheckBoxCam2Dis
+        '
+        Me.CheckBoxCam2Dis.AutoSize = True
+        Me.CheckBoxCam2Dis.Checked = True
+        Me.CheckBoxCam2Dis.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxCam2Dis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCam2Dis.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxCam2Dis.Location = New System.Drawing.Point(272, 107)
+        Me.CheckBoxCam2Dis.Name = "CheckBoxCam2Dis"
+        Me.CheckBoxCam2Dis.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBoxCam2Dis.TabIndex = 257
+        Me.CheckBoxCam2Dis.UseVisualStyleBackColor = True
+        '
+        'CheckBoxCam1Dis
+        '
+        Me.CheckBoxCam1Dis.AutoSize = True
+        Me.CheckBoxCam1Dis.Checked = True
+        Me.CheckBoxCam1Dis.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxCam1Dis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCam1Dis.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxCam1Dis.Location = New System.Drawing.Point(272, 81)
+        Me.CheckBoxCam1Dis.Name = "CheckBoxCam1Dis"
+        Me.CheckBoxCam1Dis.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBoxCam1Dis.TabIndex = 256
+        Me.CheckBoxCam1Dis.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.Yellow
+        Me.Label2.Location = New System.Drawing.Point(254, 59)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(95, 16)
+        Me.Label2.TabIndex = 255
+        Me.Label2.Text = "Cam disable"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.Yellow
+        Me.Label3.Location = New System.Drawing.Point(74, 52)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(141, 16)
+        Me.Label3.TabIndex = 254
+        Me.Label3.Text = "Camera IP address"
+        '
+        'CheckBoxCam5Dis
+        '
+        Me.CheckBoxCam5Dis.AutoSize = True
+        Me.CheckBoxCam5Dis.Checked = True
+        Me.CheckBoxCam5Dis.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxCam5Dis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCam5Dis.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxCam5Dis.Location = New System.Drawing.Point(272, 185)
+        Me.CheckBoxCam5Dis.Name = "CheckBoxCam5Dis"
+        Me.CheckBoxCam5Dis.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBoxCam5Dis.TabIndex = 253
+        Me.CheckBoxCam5Dis.UseVisualStyleBackColor = True
+        '
+        'BtnSetupOsd
+        '
+        Me.BtnSetupOsd.Location = New System.Drawing.Point(272, 213)
+        Me.BtnSetupOsd.Name = "BtnSetupOsd"
+        Me.BtnSetupOsd.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupOsd.TabIndex = 252
+        Me.BtnSetupOsd.Text = "osd"
+        Me.BtnSetupOsd.UseVisualStyleBackColor = True
+        '
+        'BtnSetupDown
+        '
+        Me.BtnSetupDown.Location = New System.Drawing.Point(460, 213)
+        Me.BtnSetupDown.Name = "BtnSetupDown"
+        Me.BtnSetupDown.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupDown.TabIndex = 251
+        Me.BtnSetupDown.Text = "down"
+        Me.BtnSetupDown.UseVisualStyleBackColor = True
+        '
+        'BtnSetupUp
+        '
+        Me.BtnSetupUp.Location = New System.Drawing.Point(413, 213)
+        Me.BtnSetupUp.Name = "BtnSetupUp"
+        Me.BtnSetupUp.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupUp.TabIndex = 250
+        Me.BtnSetupUp.Text = "up"
+        Me.BtnSetupUp.UseVisualStyleBackColor = True
+        '
+        'BtnSetupEnter
+        '
+        Me.BtnSetupEnter.Location = New System.Drawing.Point(365, 213)
+        Me.BtnSetupEnter.Name = "BtnSetupEnter"
+        Me.BtnSetupEnter.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupEnter.TabIndex = 249
+        Me.BtnSetupEnter.Text = "enter"
+        Me.BtnSetupEnter.UseVisualStyleBackColor = True
+        '
+        'BtnSetupMenu
+        '
+        Me.BtnSetupMenu.Location = New System.Drawing.Point(319, 213)
+        Me.BtnSetupMenu.Name = "BtnSetupMenu"
+        Me.BtnSetupMenu.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupMenu.TabIndex = 248
+        Me.BtnSetupMenu.Text = "menu"
+        Me.BtnSetupMenu.UseVisualStyleBackColor = True
+        '
+        'LblCamStatus5
+        '
+        Me.LblCamStatus5.AutoSize = True
+        Me.LblCamStatus5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCamStatus5.ForeColor = System.Drawing.Color.Yellow
+        Me.LblCamStatus5.Location = New System.Drawing.Point(370, 182)
+        Me.LblCamStatus5.Name = "LblCamStatus5"
+        Me.LblCamStatus5.Size = New System.Drawing.Size(28, 16)
+        Me.LblCamStatus5.TabIndex = 247
+        Me.LblCamStatus5.Text = "OK"
+        '
+        'TextBoxIPCam5
+        '
+        Me.TextBoxIPCam5.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIPCam5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIPCam5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIPCam5.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIPCam5.Location = New System.Drawing.Point(77, 182)
+        Me.TextBoxIPCam5.Name = "TextBoxIPCam5"
+        Me.TextBoxIPCam5.Size = New System.Drawing.Size(157, 22)
+        Me.TextBoxIPCam5.TabIndex = 246
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.Yellow
+        Me.Label6.Location = New System.Drawing.Point(24, 189)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(47, 16)
+        Me.Label6.TabIndex = 245
+        Me.Label6.Text = "Cam5"
+        '
+        'CheckBoxStandby
+        '
+        Me.CheckBoxStandby.AutoSize = True
+        Me.CheckBoxStandby.Checked = True
+        Me.CheckBoxStandby.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxStandby.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxStandby.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxStandby.Location = New System.Drawing.Point(23, 385)
+        Me.CheckBoxStandby.Name = "CheckBoxStandby"
+        Me.CheckBoxStandby.Size = New System.Drawing.Size(197, 20)
+        Me.CheckBoxStandby.TabIndex = 244
+        Me.CheckBoxStandby.Text = "Standby cameras on exit"
+        Me.CheckBoxStandby.UseVisualStyleBackColor = True
+        '
+        'CheckBoxProfile
+        '
+        Me.CheckBoxProfile.AutoSize = True
+        Me.CheckBoxProfile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxProfile.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxProfile.Location = New System.Drawing.Point(23, 334)
+        Me.CheckBoxProfile.Name = "CheckBoxProfile"
+        Me.CheckBoxProfile.Size = New System.Drawing.Size(225, 20)
+        Me.CheckBoxProfile.TabIndex = 243
+        Me.CheckBoxProfile.Text = "Ask to load profile on startup"
+        Me.CheckBoxProfile.UseVisualStyleBackColor = True
+        '
+        'BtnSetupFolderBrowse
+        '
+        Me.BtnSetupFolderBrowse.Location = New System.Drawing.Point(479, 265)
+        Me.BtnSetupFolderBrowse.Name = "BtnSetupFolderBrowse"
+        Me.BtnSetupFolderBrowse.Size = New System.Drawing.Size(72, 23)
+        Me.BtnSetupFolderBrowse.TabIndex = 242
+        Me.BtnSetupFolderBrowse.Text = "Browse"
+        Me.BtnSetupFolderBrowse.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.Yellow
+        Me.Label7.Location = New System.Drawing.Point(275, 247)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(156, 16)
+        Me.Label7.TabIndex = 241
+        Me.Label7.Text = "Folder for presets file"
+        '
+        'TextBoxPresetFolder
+        '
+        Me.TextBoxPresetFolder.BackColor = System.Drawing.Color.Black
+        Me.TextBoxPresetFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxPresetFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPresetFolder.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxPresetFolder.Location = New System.Drawing.Point(272, 266)
+        Me.TextBoxPresetFolder.Name = "TextBoxPresetFolder"
+        Me.TextBoxPresetFolder.Size = New System.Drawing.Size(203, 22)
+        Me.TextBoxPresetFolder.TabIndex = 240
+        '
+        'LblCamStatus4
+        '
+        Me.LblCamStatus4.AutoSize = True
+        Me.LblCamStatus4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCamStatus4.ForeColor = System.Drawing.Color.Yellow
+        Me.LblCamStatus4.Location = New System.Drawing.Point(370, 156)
+        Me.LblCamStatus4.Name = "LblCamStatus4"
+        Me.LblCamStatus4.Size = New System.Drawing.Size(28, 16)
+        Me.LblCamStatus4.TabIndex = 239
+        Me.LblCamStatus4.Text = "OK"
+        '
+        'LblCamStatus3
+        '
+        Me.LblCamStatus3.AutoSize = True
+        Me.LblCamStatus3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCamStatus3.ForeColor = System.Drawing.Color.Yellow
+        Me.LblCamStatus3.Location = New System.Drawing.Point(370, 133)
+        Me.LblCamStatus3.Name = "LblCamStatus3"
+        Me.LblCamStatus3.Size = New System.Drawing.Size(28, 16)
+        Me.LblCamStatus3.TabIndex = 238
+        Me.LblCamStatus3.Text = "OK"
+        '
+        'LblCamStatus2
+        '
+        Me.LblCamStatus2.AutoSize = True
+        Me.LblCamStatus2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCamStatus2.ForeColor = System.Drawing.Color.Yellow
+        Me.LblCamStatus2.Location = New System.Drawing.Point(370, 107)
+        Me.LblCamStatus2.Name = "LblCamStatus2"
+        Me.LblCamStatus2.Size = New System.Drawing.Size(28, 16)
+        Me.LblCamStatus2.TabIndex = 237
+        Me.LblCamStatus2.Text = "OK"
+        '
+        'LblCamStatus1
+        '
+        Me.LblCamStatus1.AutoSize = True
+        Me.LblCamStatus1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCamStatus1.ForeColor = System.Drawing.Color.Yellow
+        Me.LblCamStatus1.Location = New System.Drawing.Point(370, 81)
+        Me.LblCamStatus1.Name = "LblCamStatus1"
+        Me.LblCamStatus1.Size = New System.Drawing.Size(28, 16)
+        Me.LblCamStatus1.TabIndex = 236
+        Me.LblCamStatus1.Text = "OK"
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label31.ForeColor = System.Drawing.Color.Yellow
+        Me.Label31.Location = New System.Drawing.Point(370, 59)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(84, 16)
+        Me.Label31.TabIndex = 235
+        Me.Label31.Text = "Cam status"
+        '
+        'BtnSetupFilenameBrowse
+        '
+        Me.BtnSetupFilenameBrowse.Location = New System.Drawing.Point(479, 322)
+        Me.BtnSetupFilenameBrowse.Name = "BtnSetupFilenameBrowse"
+        Me.BtnSetupFilenameBrowse.Size = New System.Drawing.Size(72, 23)
+        Me.BtnSetupFilenameBrowse.TabIndex = 234
+        Me.BtnSetupFilenameBrowse.Text = "Browse"
+        Me.BtnSetupFilenameBrowse.UseVisualStyleBackColor = True
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label32.ForeColor = System.Drawing.Color.Yellow
+        Me.Label32.Location = New System.Drawing.Point(277, 305)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(124, 16)
+        Me.Label32.TabIndex = 233
+        Me.Label32.Text = "Presets filename"
+        '
+        'TextBoxPresetFilename
+        '
+        Me.TextBoxPresetFilename.BackColor = System.Drawing.Color.Black
+        Me.TextBoxPresetFilename.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxPresetFilename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPresetFilename.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxPresetFilename.Location = New System.Drawing.Point(272, 323)
+        Me.TextBoxPresetFilename.Name = "TextBoxPresetFilename"
+        Me.TextBoxPresetFilename.Size = New System.Drawing.Size(203, 22)
+        Me.TextBoxPresetFilename.TabIndex = 232
+        '
+        'TextBoxIPCam4
+        '
+        Me.TextBoxIPCam4.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIPCam4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIPCam4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIPCam4.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIPCam4.Location = New System.Drawing.Point(77, 156)
+        Me.TextBoxIPCam4.Name = "TextBoxIPCam4"
+        Me.TextBoxIPCam4.Size = New System.Drawing.Size(157, 22)
+        Me.TextBoxIPCam4.TabIndex = 231
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.ForeColor = System.Drawing.Color.Yellow
+        Me.Label33.Location = New System.Drawing.Point(24, 163)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(47, 16)
+        Me.Label33.TabIndex = 230
+        Me.Label33.Text = "Cam4"
+        '
+        'TextBoxIPCam3
+        '
+        Me.TextBoxIPCam3.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIPCam3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIPCam3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIPCam3.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIPCam3.Location = New System.Drawing.Point(77, 130)
+        Me.TextBoxIPCam3.Name = "TextBoxIPCam3"
+        Me.TextBoxIPCam3.Size = New System.Drawing.Size(157, 22)
+        Me.TextBoxIPCam3.TabIndex = 229
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.ForeColor = System.Drawing.Color.Yellow
+        Me.Label34.Location = New System.Drawing.Point(24, 137)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(47, 16)
+        Me.Label34.TabIndex = 228
+        Me.Label34.Text = "Cam3"
+        '
+        'TextBoxIPCam2
+        '
+        Me.TextBoxIPCam2.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIPCam2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIPCam2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIPCam2.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIPCam2.Location = New System.Drawing.Point(77, 104)
+        Me.TextBoxIPCam2.Name = "TextBoxIPCam2"
+        Me.TextBoxIPCam2.Size = New System.Drawing.Size(157, 22)
+        Me.TextBoxIPCam2.TabIndex = 227
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.ForeColor = System.Drawing.Color.Yellow
+        Me.Label35.Location = New System.Drawing.Point(24, 111)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(47, 16)
+        Me.Label35.TabIndex = 226
+        Me.Label35.Text = "Cam2"
+        '
+        'TextBoxIPCam1
+        '
+        Me.TextBoxIPCam1.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIPCam1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIPCam1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIPCam1.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIPCam1.Location = New System.Drawing.Point(77, 78)
+        Me.TextBoxIPCam1.Name = "TextBoxIPCam1"
+        Me.TextBoxIPCam1.Size = New System.Drawing.Size(157, 22)
+        Me.TextBoxIPCam1.TabIndex = 225
+        '
+        'CheckBoxAutoSwap
+        '
+        Me.CheckBoxAutoSwap.AutoSize = True
+        Me.CheckBoxAutoSwap.Checked = True
+        Me.CheckBoxAutoSwap.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxAutoSwap.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxAutoSwap.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxAutoSwap.Location = New System.Drawing.Point(23, 311)
+        Me.CheckBoxAutoSwap.Name = "CheckBoxAutoSwap"
+        Me.CheckBoxAutoSwap.Size = New System.Drawing.Size(211, 20)
+        Me.CheckBoxAutoSwap.TabIndex = 224
+        Me.CheckBoxAutoSwap.Text = "Auto swap back to preview"
+        Me.CheckBoxAutoSwap.UseVisualStyleBackColor = True
+        '
+        'CheckBoxTally
+        '
+        Me.CheckBoxTally.AutoSize = True
+        Me.CheckBoxTally.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxTally.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxTally.Location = New System.Drawing.Point(23, 359)
+        Me.CheckBoxTally.Name = "CheckBoxTally"
+        Me.CheckBoxTally.Size = New System.Drawing.Size(150, 20)
+        Me.CheckBoxTally.TabIndex = 223
+        Me.CheckBoxTally.Text = "Enable tally lights"
+        Me.CheckBoxTally.UseVisualStyleBackColor = True
+        '
+        'CheckBoxInvert4
+        '
+        Me.CheckBoxInvert4.AutoSize = True
+        Me.CheckBoxInvert4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxInvert4.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxInvert4.Location = New System.Drawing.Point(472, 156)
+        Me.CheckBoxInvert4.Name = "CheckBoxInvert4"
+        Me.CheckBoxInvert4.Size = New System.Drawing.Size(108, 20)
+        Me.CheckBoxInvert4.TabIndex = 222
+        Me.CheckBoxInvert4.Text = "Cam4 invert"
+        Me.CheckBoxInvert4.UseVisualStyleBackColor = True
+        '
+        'CheckBoxInvert3
+        '
+        Me.CheckBoxInvert3.AutoSize = True
+        Me.CheckBoxInvert3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxInvert3.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxInvert3.Location = New System.Drawing.Point(472, 130)
+        Me.CheckBoxInvert3.Name = "CheckBoxInvert3"
+        Me.CheckBoxInvert3.Size = New System.Drawing.Size(108, 20)
+        Me.CheckBoxInvert3.TabIndex = 221
+        Me.CheckBoxInvert3.Text = "Cam3 invert"
+        Me.CheckBoxInvert3.UseVisualStyleBackColor = True
+        '
+        'CheckBoxInvert2
+        '
+        Me.CheckBoxInvert2.AutoSize = True
+        Me.CheckBoxInvert2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxInvert2.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxInvert2.Location = New System.Drawing.Point(472, 104)
+        Me.CheckBoxInvert2.Name = "CheckBoxInvert2"
+        Me.CheckBoxInvert2.Size = New System.Drawing.Size(108, 20)
+        Me.CheckBoxInvert2.TabIndex = 220
+        Me.CheckBoxInvert2.Text = "Cam2 invert"
+        Me.CheckBoxInvert2.UseVisualStyleBackColor = True
+        '
+        'CheckBoxInvert1
+        '
+        Me.CheckBoxInvert1.AutoSize = True
+        Me.CheckBoxInvert1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxInvert1.ForeColor = System.Drawing.Color.Yellow
+        Me.CheckBoxInvert1.Location = New System.Drawing.Point(472, 78)
+        Me.CheckBoxInvert1.Name = "CheckBoxInvert1"
+        Me.CheckBoxInvert1.Size = New System.Drawing.Size(108, 20)
+        Me.CheckBoxInvert1.TabIndex = 219
+        Me.CheckBoxInvert1.Text = "Cam1 invert"
+        Me.CheckBoxInvert1.UseVisualStyleBackColor = True
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.ForeColor = System.Drawing.Color.Yellow
+        Me.Label36.Location = New System.Drawing.Point(24, 244)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(172, 16)
+        Me.Label36.TabIndex = 218
+        Me.Label36.Text = "PTZ Controller com port"
+        '
+        'ComboBoxSetupComport
+        '
+        Me.ComboBoxSetupComport.BackColor = System.Drawing.Color.Black
+        Me.ComboBoxSetupComport.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboBoxSetupComport.ForeColor = System.Drawing.Color.Yellow
+        Me.ComboBoxSetupComport.FormattingEnabled = True
+        Me.ComboBoxSetupComport.Location = New System.Drawing.Point(27, 263)
+        Me.ComboBoxSetupComport.Name = "ComboBoxSetupComport"
+        Me.ComboBoxSetupComport.Size = New System.Drawing.Size(164, 24)
+        Me.ComboBoxSetupComport.TabIndex = 217
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.ForeColor = System.Drawing.Color.Yellow
+        Me.Label37.Location = New System.Drawing.Point(24, 85)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(47, 16)
+        Me.Label37.TabIndex = 216
+        Me.Label37.Text = "Cam1"
+        '
+        'StatPanel
+        '
+        Me.StatPanel.Controls.Add(Me.TextBoxOBSRecTime)
+        Me.StatPanel.Controls.Add(Me.BtnOBSRecord)
+        Me.StatPanel.Controls.Add(Me.BtnOBSBroadcast)
+        Me.StatPanel.Controls.Add(Me.TextBoxOBSBroadcastTime)
+        Me.StatPanel.Controls.Add(Me.LabelEncB)
+        Me.StatPanel.Controls.Add(Me.PictureBox2)
+        Me.StatPanel.Controls.Add(Me.TextEncBStatus)
+        Me.StatPanel.Controls.Add(Me.LabelEncA)
+        Me.StatPanel.Controls.Add(Me.PictureBox1)
+        Me.StatPanel.Controls.Add(Me.TextEncAStatus)
+        Me.StatPanel.Controls.Add(Me.LabelEncStatus)
+        Me.StatPanel.Controls.Add(Me.ShapeContainer4)
+        Me.StatPanel.Location = New System.Drawing.Point(904, 0)
+        Me.StatPanel.Name = "StatPanel"
+        Me.StatPanel.Size = New System.Drawing.Size(120, 600)
+        Me.StatPanel.TabIndex = 324
+        '
+        'TextBoxOBSRecTime
+        '
+        Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
+        Me.TextBoxOBSRecTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxOBSRecTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSRecTime.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxOBSRecTime.Location = New System.Drawing.Point(17, 566)
+        Me.TextBoxOBSRecTime.Name = "TextBoxOBSRecTime"
+        Me.TextBoxOBSRecTime.Size = New System.Drawing.Size(100, 26)
+        Me.TextBoxOBSRecTime.TabIndex = 300
+        Me.TextBoxOBSRecTime.Text = "..."
+        Me.TextBoxOBSRecTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
         'BtnOBSRecord
         '
         Me.BtnOBSRecord.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2169,38 +2635,152 @@ Partial Class MainForm
         Me.BtnOBSBroadcast.Text = "Broad cast"
         Me.BtnOBSBroadcast.UseVisualStyleBackColor = True
         '
-        'ModeBtnSettings
+        'TextBoxOBSBroadcastTime
         '
-        Me.ModeBtnSettings.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnSettings.Image = CType(resources.GetObject("ModeBtnSettings.Image"), System.Drawing.Image)
-        Me.ModeBtnSettings.Location = New System.Drawing.Point(8, 225)
-        Me.ModeBtnSettings.Name = "ModeBtnSettings"
-        Me.ModeBtnSettings.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnSettings.TabIndex = 159
-        Me.ModeBtnSettings.Text = "System Settings"
-        Me.ModeBtnSettings.UseVisualStyleBackColor = True
+        Me.TextBoxOBSBroadcastTime.BackColor = System.Drawing.Color.Black
+        Me.TextBoxOBSBroadcastTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxOBSBroadcastTime.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxOBSBroadcastTime.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxOBSBroadcastTime.Location = New System.Drawing.Point(17, 426)
+        Me.TextBoxOBSBroadcastTime.Name = "TextBoxOBSBroadcastTime"
+        Me.TextBoxOBSBroadcastTime.Size = New System.Drawing.Size(100, 26)
+        Me.TextBoxOBSBroadcastTime.TabIndex = 297
+        Me.TextBoxOBSBroadcastTime.Text = "..."
+        Me.TextBoxOBSBroadcastTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'ModeBtnCam
+        'LabelEncB
         '
-        Me.ModeBtnCam.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnCam.Image = CType(resources.GetObject("ModeBtnCam.Image"), System.Drawing.Image)
-        Me.ModeBtnCam.Location = New System.Drawing.Point(8, 116)
-        Me.ModeBtnCam.Name = "ModeBtnCam"
-        Me.ModeBtnCam.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnCam.TabIndex = 158
-        Me.ModeBtnCam.Text = "Camera Settings"
-        Me.ModeBtnCam.UseVisualStyleBackColor = True
+        Me.LabelEncB.AutoSize = True
+        Me.LabelEncB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncB.ForeColor = System.Drawing.Color.White
+        Me.LabelEncB.Location = New System.Drawing.Point(61, 129)
+        Me.LabelEncB.Name = "LabelEncB"
+        Me.LabelEncB.Size = New System.Drawing.Size(57, 19)
+        Me.LabelEncB.TabIndex = 252
+        Me.LabelEncB.Text = "Focus"
+        Me.LabelEncB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ModeBtnPresets
+        'PictureBox2
         '
-        Me.ModeBtnPresets.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ModeBtnPresets.Image = CType(resources.GetObject("ModeBtnPresets.Image"), System.Drawing.Image)
-        Me.ModeBtnPresets.Location = New System.Drawing.Point(8, 9)
-        Me.ModeBtnPresets.Name = "ModeBtnPresets"
-        Me.ModeBtnPresets.Size = New System.Drawing.Size(100, 100)
-        Me.ModeBtnPresets.TabIndex = 157
-        Me.ModeBtnPresets.Text = "Live"
-        Me.ModeBtnPresets.UseVisualStyleBackColor = True
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(17, 116)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(40, 40)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox2.TabIndex = 251
+        Me.PictureBox2.TabStop = False
+        '
+        'TextEncBStatus
+        '
+        Me.TextEncBStatus.BackColor = System.Drawing.Color.Black
+        Me.TextEncBStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextEncBStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextEncBStatus.ForeColor = System.Drawing.Color.Yellow
+        Me.TextEncBStatus.Location = New System.Drawing.Point(17, 162)
+        Me.TextEncBStatus.Name = "TextEncBStatus"
+        Me.TextEncBStatus.Size = New System.Drawing.Size(100, 29)
+        Me.TextEncBStatus.TabIndex = 250
+        Me.TextEncBStatus.Text = "17"
+        Me.TextEncBStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'LabelEncA
+        '
+        Me.LabelEncA.AutoSize = True
+        Me.LabelEncA.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncA.ForeColor = System.Drawing.Color.White
+        Me.LabelEncA.Location = New System.Drawing.Point(61, 43)
+        Me.LabelEncA.Name = "LabelEncA"
+        Me.LabelEncA.Size = New System.Drawing.Size(32, 19)
+        Me.LabelEncA.TabIndex = 249
+        Me.LabelEncA.Text = "Iris"
+        Me.LabelEncA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(17, 30)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(40, 40)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 115
+        Me.PictureBox1.TabStop = False
+        '
+        'TextEncAStatus
+        '
+        Me.TextEncAStatus.BackColor = System.Drawing.Color.Black
+        Me.TextEncAStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextEncAStatus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextEncAStatus.ForeColor = System.Drawing.Color.Yellow
+        Me.TextEncAStatus.Location = New System.Drawing.Point(17, 76)
+        Me.TextEncAStatus.Name = "TextEncAStatus"
+        Me.TextEncAStatus.Size = New System.Drawing.Size(100, 29)
+        Me.TextEncAStatus.TabIndex = 114
+        Me.TextEncAStatus.Text = "17"
+        Me.TextEncAStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'LabelEncStatus
+        '
+        Me.LabelEncStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.LabelEncStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LabelEncStatus.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEncStatus.Location = New System.Drawing.Point(17, 6)
+        Me.LabelEncStatus.Name = "LabelEncStatus"
+        Me.LabelEncStatus.Size = New System.Drawing.Size(91, 21)
+        Me.LabelEncStatus.TabIndex = 1
+        Me.LabelEncStatus.Text = "CAM?"
+        Me.LabelEncStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'ShapeContainer4
+        '
+        Me.ShapeContainer4.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer4.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer4.Name = "ShapeContainer4"
+        Me.ShapeContainer4.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape12})
+        Me.ShapeContainer4.Size = New System.Drawing.Size(120, 600)
+        Me.ShapeContainer4.TabIndex = 0
+        Me.ShapeContainer4.TabStop = False
+        '
+        'LineShape12
+        '
+        Me.LineShape12.BorderColor = System.Drawing.Color.Yellow
+        Me.LineShape12.BorderWidth = 2
+        Me.LineShape12.Name = "LineShape12"
+        Me.LineShape12.X1 = 6
+        Me.LineShape12.X2 = 6
+        Me.LineShape12.Y1 = 0
+        Me.LineShape12.Y2 = 600
+        '
+        'MsgBoxPanel
+        '
+        Me.MsgBoxPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.MsgBoxPanel.Controls.Add(Me.MsgBoxLabel)
+        Me.MsgBoxPanel.Controls.Add(Me.MsgboxClose)
+        Me.MsgBoxPanel.Location = New System.Drawing.Point(1068, 95)
+        Me.MsgBoxPanel.Name = "MsgBoxPanel"
+        Me.MsgBoxPanel.Size = New System.Drawing.Size(146, 98)
+        Me.MsgBoxPanel.TabIndex = 325
+        Me.MsgBoxPanel.Visible = False
+        '
+        'MsgBoxLabel
+        '
+        Me.MsgBoxLabel.AutoSize = True
+        Me.MsgBoxLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MsgBoxLabel.ForeColor = System.Drawing.Color.Yellow
+        Me.MsgBoxLabel.Location = New System.Drawing.Point(8, 23)
+        Me.MsgBoxLabel.Name = "MsgBoxLabel"
+        Me.MsgBoxLabel.Size = New System.Drawing.Size(0, 24)
+        Me.MsgBoxLabel.TabIndex = 1
+        '
+        'MsgboxClose
+        '
+        Me.MsgboxClose.AutoSize = True
+        Me.MsgboxClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MsgboxClose.ForeColor = System.Drawing.Color.Yellow
+        Me.MsgboxClose.Location = New System.Drawing.Point(116, 0)
+        Me.MsgboxClose.Name = "MsgboxClose"
+        Me.MsgboxClose.Size = New System.Drawing.Size(27, 25)
+        Me.MsgboxClose.TabIndex = 0
+        Me.MsgboxClose.Text = "X"
         '
         'BtnInp5
         '
@@ -2661,7 +3241,7 @@ Partial Class MainForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1280, 1339)
+        Me.ClientSize = New System.Drawing.Size(1626, 1460)
         Me.Controls.Add(Me.MsgBoxPanel)
         Me.Controls.Add(Me.PresetPanel)
         Me.Controls.Add(Me.CamPanel)
@@ -2961,4 +3541,48 @@ Partial Class MainForm
     Private WithEvents LineShapeCapL As PowerPacks.LineShape
     Private WithEvents LineShapeCapB As PowerPacks.LineShape
     Private WithEvents LineShapeCapT As PowerPacks.LineShape
+    Friend WithEvents CheckBoxCam4Dis As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxCam3Dis As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxCam2Dis As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxCam1Dis As System.Windows.Forms.CheckBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents CheckBoxCam5Dis As System.Windows.Forms.CheckBox
+    Friend WithEvents BtnSetupOsd As System.Windows.Forms.Button
+    Friend WithEvents BtnSetupDown As System.Windows.Forms.Button
+    Friend WithEvents BtnSetupUp As System.Windows.Forms.Button
+    Friend WithEvents BtnSetupEnter As System.Windows.Forms.Button
+    Friend WithEvents BtnSetupMenu As System.Windows.Forms.Button
+    Friend WithEvents LblCamStatus5 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxIPCam5 As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents CheckBoxStandby As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxProfile As System.Windows.Forms.CheckBox
+    Friend WithEvents BtnSetupFolderBrowse As System.Windows.Forms.Button
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxPresetFolder As System.Windows.Forms.TextBox
+    Friend WithEvents LblCamStatus4 As System.Windows.Forms.Label
+    Friend WithEvents LblCamStatus3 As System.Windows.Forms.Label
+    Friend WithEvents LblCamStatus2 As System.Windows.Forms.Label
+    Friend WithEvents LblCamStatus1 As System.Windows.Forms.Label
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents BtnSetupFilenameBrowse As System.Windows.Forms.Button
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxPresetFilename As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxIPCam4 As System.Windows.Forms.TextBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxIPCam3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label34 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxIPCam2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label35 As System.Windows.Forms.Label
+    Friend WithEvents TextBoxIPCam1 As System.Windows.Forms.TextBox
+    Friend WithEvents CheckBoxAutoSwap As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxTally As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxInvert4 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxInvert3 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxInvert2 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBoxInvert1 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label36 As System.Windows.Forms.Label
+    Friend WithEvents ComboBoxSetupComport As System.Windows.Forms.ComboBox
+    Friend WithEvents Label37 As System.Windows.Forms.Label
 End Class

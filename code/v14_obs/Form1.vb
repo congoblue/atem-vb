@@ -172,6 +172,7 @@ Public Class MainForm
     ' Main form load / dispose
     '--------------------------------------------------------------------------------------------------------------
     Private Sub MainForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
         Dim i As Integer
 
         'hold down ctrl key on boot to skip camera connections 
@@ -2975,6 +2976,7 @@ Public Class MainForm
             ModeBtnSettings.BackColor = Color.Red
             PresetPanel.Visible = False
             CamPanel.Visible = False
+            UpdateSetupScreen() 'load the current status
             SettingsPanel.Visible = True
             SettingsPanel.Top = 0 : SettingsPanel.Left = 120
             LineShapeMode1.Y2 = 220
@@ -3024,6 +3026,102 @@ Public Class MainForm
 
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
         SetEncoderAllocation(2)
+    End Sub
+
+
+    '----------------------------------------------------------
+    ' Setup screen functions
+    ' 
+    '----------------------------------------------------------
+
+    '---Populate setup screen with current values
+    Sub UpdateSetupScreen()
+        Dim i As Integer
+        For Each s In SerialPort.GetPortNames()
+            ComboBoxSetupComport.Items.Add(s)
+        Next s
+        TextBoxIPCam1.Text = (GetSetting("Atemswitcher", "CamIP", "1", "192.168.1.91"))
+        TextBoxIPCam2.Text = (GetSetting("Atemswitcher", "CamIP", "2", "192.168.1.92"))
+        TextBoxIPCam3.Text = (GetSetting("Atemswitcher", "CamIP", "3", "192.168.1.93"))
+        TextBoxIPCam4.Text = (GetSetting("Atemswitcher", "CamIP", "4", "192.168.1.94"))
+        TextBoxIPCam5.Text = (GetSetting("Atemswitcher", "CamIP", "5", "192.168.1.95"))
+
+        TextBoxPresetFilename.Text = Globals.PresetFileName
+        TextBoxPresetFolder.Text = Globals.PresetFilePath
+        i = ComboBoxSetupComport.FindString(GetSetting("Atemswitcher", "Comm", "2", "COM2"))
+        ComboBoxSetupComport.SelectedIndex = i
+
+        If Globals.TallyMode Then CheckBoxTally.Checked = True
+        If Globals.AutoSwap Then CheckBoxAutoSwap.Checked = True
+        If GetSetting("Atemswitcher", "Set", "Askprofile", True) = True Then CheckBoxProfile.Checked = True
+        If GetSetting("Atemswitcher", "Set", "CamStandby", True) = True Then CheckBoxStandby.Checked = True
+
+        If GetSetting("Atemswitcher", "Set", "Cam1Dis", False) = True Then CheckBoxCam1Dis.Checked = True Else CheckBoxCam1Dis.Checked = False
+        If GetSetting("Atemswitcher", "Set", "Cam2Dis", False) = True Then CheckBoxCam2Dis.Checked = True Else CheckBoxCam2Dis.Checked = False
+        If GetSetting("Atemswitcher", "Set", "Cam3Dis", False) = True Then CheckBoxCam3Dis.Checked = True Else CheckBoxCam3Dis.Checked = False
+        If GetSetting("Atemswitcher", "Set", "Cam4Dis", False) = True Then CheckBoxCam4Dis.Checked = True Else CheckBoxCam4Dis.Checked = False
+        If GetSetting("Atemswitcher", "Set", "Cam5Dis", False) = True Then CheckBoxCam5Dis.Checked = True Else CheckBoxCam5Dis.Checked = False
+
+        If Globals.CamInvert(1) Then CheckBoxInvert1.Checked = True
+        If Globals.CamInvert(2) Then CheckBoxInvert2.Checked = True
+        If Globals.CamInvert(3) Then CheckBoxInvert3.Checked = True
+        If Globals.CamInvert(4) Then CheckBoxInvert4.Checked = True
+
+        If Globals.CamStatus(1) = True Then LblCamStatus1.Text = "FAIL"
+        If Globals.CamStatus(2) = True Then LblCamStatus2.Text = "FAIL"
+        If Globals.CamStatus(3) = True Then LblCamStatus3.Text = "FAIL"
+        If Globals.CamStatus(4) = True Then LblCamStatus4.Text = "FAIL"
+        If Globals.CamStatus(5) = True Then LblCamStatus5.Text = "FAIL"
+    End Sub
+
+
+    '----Camera OSD buttons
+    Private Sub ButtonOsdMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupMenu.Click
+        SendCamQueryNoResponse(7, "aw_cam?cmd=DPG")
+    End Sub
+
+    Private Sub ButtonOSD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupOsd.Click
+        SendCamQueryNoResponse(7, "aw_cam?cmd=DUS:1")
+    End Sub
+
+    Private Sub ButtonOsdEnter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupEnter.Click
+        SendCamQueryNoResponse(7, "aw_cam?cmd=DIT")
+    End Sub
+
+    Private Sub ButtonOsdUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupUp.Click
+        SendCamQueryNoResponse(7, "aw_cam?cmd=DUP")
+    End Sub
+
+    Private Sub ButtonOsdDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupDown.Click
+        SendCamQueryNoResponse(7, "aw_cam?cmd=DDW")
+    End Sub
+
+    '----Setup file folder select
+    Private Sub SetupFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupFilenameBrowse.Click
+        Dim fd As OpenFileDialog = New OpenFileDialog()
+
+        fd.Title = "Select presets file"
+        fd.InitialDirectory = Globals.PresetFilePath
+        fd.Filter = "Presets files (*.aps)|*.aps|All files (*.*)|*.*"
+        fd.FilterIndex = 1
+        fd.RestoreDirectory = True
+
+        If fd.ShowDialog() = DialogResult.OK Then
+            Globals.PresetFileName = fd.SafeFileName 'this is the filename without the path
+            TextBoxPresetFilename.Text = Globals.PresetFileName
+        End If
+    End Sub
+
+    Private Sub SetupFolder_Click(sender As System.Object, e As System.EventArgs) Handles BtnSetupFolderBrowse.Click
+
+        Dim dialog As New FolderBrowserDialog()
+        dialog.RootFolder = Environment.SpecialFolder.MyComputer
+        dialog.SelectedPath = Globals.PresetFilePath
+        dialog.Description = "Select folder for presets file"
+        If dialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Globals.PresetFilePath = dialog.SelectedPath & "\"
+            TextBoxPresetFolder.Text = Globals.PresetFilePath
+        End If
     End Sub
 
 End Class
