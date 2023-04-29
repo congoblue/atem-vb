@@ -1693,29 +1693,28 @@ Public Class MainForm
         setactive()
     End Sub
 
+    '-------------------------------------------------------------------------------------------------
+    ' Camera manual settings
+    '
+    '-------------------------------------------------------------------------------------------------
 
-    Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisAuto.Click
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:1", "aw_cam") 'auto iris
-        CamIris(ad) = 9999 'flag auto
-        TextBox4.Text = "Auto"
-    End Sub
+
     Private Sub BtnIrisDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisDown.Click
         Dim op As String
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If CamIris(ad) = 9999 Then 'was auto mode
-            If ad <> 7 Then
+            If ad <> 5 Then
                 op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
                 CamIris(ad) = Val("&H" & Mid(op, 5))
             Else
                 CamIris(ad) = &H555
             End If
             mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
+            MyButtonAutoIris.BackColor = Color.White
         End If
-        If ad <> 7 Then
-            If CamIris(ad) > 10 Then CamIris(ad) = CamIris(ad) - 10 : Else CamIris(ad) = 0
+        If ad <> 5 Then
+            If CamIris(ad) > 10 Then CamIris(ad) = CamIris(ad) - 10 Else CamIris(ad) = 0
             TextBox4.Text = CamIris(ad)
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
         Else
@@ -1730,15 +1729,16 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If CamIris(ad) = 9999 Then 'was auto mode
-            If ad <> 7 Then
+            If ad <> 5 Then
                 op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
                 CamIris(ad) = Val("&H" & Mid(op, 5))
             Else
                 CamIris(ad) = &H555
             End If
             mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
+            MyButtonAutoIris.BackColor = Color.White
         End If
-        If ad <> 7 Then
+        If ad <> 5 Then
             If CamIris(ad) < (&H3FF - 10) Then CamIris(ad) = CamIris(ad) + 10 Else CamIris(ad) = &H3FF
             TextBox4.Text = CamIris(ad)
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
@@ -1748,12 +1748,32 @@ Public Class MainForm
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "%23AXI" & String.Format("{0:X3}", CamIris(ad)), "aw_ptz")
         End If
     End Sub
-
+    Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoIris.Click
+        Dim op As String
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If MyButtonAutoIris.BackColor = Color.Red Then
+            If ad <> 5 Then
+                op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
+                CamIris(ad) = Val("&H" & Mid(op, 5))
+            Else
+                CamIris(ad) = &H555
+            End If
+            TextBox4.Text = CamIris(ad)
+            mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
+            MyButtonAutoIris.BackColor = Color.White
+        Else
+            mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:1", "aw_cam") 'auto iris
+            CamIris(ad) = 9999 'flag auto
+            TextBox4.Text = "Auto"
+            MyButtonAutoIris.BackColor = Color.Red
+        End If
+    End Sub
 
     Private Sub BtnAGCDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAGCDown.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If ad = 7 Then Return 'not provided on this camera
+        If ad = 5 Then Return 'not provided on this camera
         'op = SendCamCmdAddrNoHash(ad, "QGU") 'get gain setting
         'mLog.Text = op
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
@@ -1761,12 +1781,13 @@ Public Class MainForm
         If CamAgc(ad) > &H8 Then CamAgc(ad) = CamAgc(ad) - 3
         If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
         mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
+        MyButtonAutoAgc.BackColor = Color.White
     End Sub
 
     Private Sub BtnAGCUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAGCUp.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If ad = 7 Then Return 'not provided on this camera
+        If ad = 5 Then Return 'not provided on this camera
         'op = SendCamCmdAddrNoHash(ad, "QGU") 'get gain setting
         'mLog.Text = op
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
@@ -1774,15 +1795,25 @@ Public Class MainForm
         If CamAgc(ad) < &H38 Then CamAgc(ad) = CamAgc(ad) + 3
         If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
         mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
+        MyButtonAutoAgc.BackColor = Color.White
     End Sub
-    Private Sub BtnAgcAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAgcAuto.Click
+    Private Sub BtnAgcAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoAgc.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If ad = 7 Then Return 'not provided on this camera
-        CamAgc(ad) = 128
-        If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
-        mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
+        If ad = 5 Then Return 'not provided on this camera
+        If MyButtonAutoAgc.BackColor = Color.Red Then
+            CamAgc(ad) = &H38
+            If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
+            MyButtonAutoAgc.BackColor = Color.White
+        Else
+            CamAgc(ad) = 128
+            If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
+            MyButtonAutoAgc.BackColor = Color.Red
+        End If
     End Sub
+
     Private Sub BtnGainDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnGainDown.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
@@ -1817,17 +1848,10 @@ Public Class MainForm
         mLog.Text = SendCamCmdAddrNoHash(ad, "OSD:48:" & Format((10 + CamShutter(ad)) * 64 / 20, "00"), "aw_cam")
     End Sub
 
-
-    Private Sub BtnWbBlueDn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueDn.Click
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        If ad <> 7 Then
-            mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
-            If CamWBBlue(ad) > 0 Then CamWBBlue(ad) = CamWBBlue(ad) - 1
+    Sub SetWbDescription(ad As Integer, wb As Integer)
+        If ad <> 5 Then
             TextBox9.Text = 2400 + CamWBBlue(ad) * 100
-            mLog.Text = mLog.Text + SendCamCmdNoHash("OSD:B1:" & String.Format("{0:X3}", CamWBBlue(ad)), "aw_cam")
         Else
-            If CamWBBlue(ad) > 1 Then CamWBBlue(ad) = CamWBBlue(ad) - 1
             If CamWBBlue(ad) = 1 Then TextBox9.Text = "A"
             If CamWBBlue(ad) = 2 Then TextBox9.Text = "B"
             If CamWBBlue(ad) = 3 Then TextBox9.Text = "Auto"
@@ -1836,43 +1860,61 @@ Public Class MainForm
             If CamWBBlue(ad) = 6 Then TextBox9.Text = "4500"
             If CamWBBlue(ad) = 7 Then TextBox9.Text = "6000"
             If CamWBBlue(ad) = 8 Then TextBox9.Text = "2800"
+        End If
+    End Sub
+    Private Sub BtnWbBlueDn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueDn.Click
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad <> 5 Then
+            mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
+            If CamWBBlue(ad) > 0 Then CamWBBlue(ad) = CamWBBlue(ad) - 1
+            mLog.Text = mLog.Text + SendCamCmdNoHash("OSD:B1:" & String.Format("{0:X3}", CamWBBlue(ad)), "aw_cam")
+        Else
+            If CamWBBlue(ad) > 1 Then CamWBBlue(ad) = CamWBBlue(ad) - 1
             mLog.Text = mLog.Text + SendCamCmdNoHash("OAW:" & CamWBBlue(ad), "aw_cam")
         End If
+        SetWbDescription(ad, CamWBBlue(ad))
+        MyButtonAutoWB.BackColor = Color.White
     End Sub
 
     Private Sub BtnWbBlueUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueUp.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        If ad <> 7 Then
+        If ad <> 5 Then
             mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
             If CamWBBlue(ad) < &H4B Then CamWBBlue(ad) = CamWBBlue(ad) + 1
-            TextBox9.Text = 2400 + CamWBBlue(ad) * 100
             mLog.Text = mLog.Text + SendCamCmdNoHash("OSD:B1:" & String.Format("{0:X3}", CamWBBlue(ad)), "aw_cam")
         Else
             If CamWBBlue(ad) < 8 Then CamWBBlue(ad) = CamWBBlue(ad) + 1
-            If CamWBBlue(ad) = 1 Then TextBox9.Text = "A"
-            If CamWBBlue(ad) = 2 Then TextBox9.Text = "B"
-            If CamWBBlue(ad) = 3 Then TextBox9.Text = "Auto"
-            If CamWBBlue(ad) = 4 Then TextBox9.Text = "3200K"
-            If CamWBBlue(ad) = 5 Then TextBox9.Text = "5600K"
-            If CamWBBlue(ad) = 6 Then TextBox9.Text = "4500K"
-            If CamWBBlue(ad) = 7 Then TextBox9.Text = "6000K"
-            If CamWBBlue(ad) = 8 Then TextBox9.Text = "2800K"
             mLog.Text = mLog.Text + SendCamCmdNoHash("OAW:" & CamWBBlue(ad), "aw_cam")
         End If
+        SetWbDescription(ad, CamWBBlue(ad))
+        MyButtonAutoWB.BackColor = Color.White
     End Sub
-    Private Sub BtnWBAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWBAuto.Click
+    Private Sub BtnWBAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoWB.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:0", "aw_cam")
-        TextBox9.Text = "Auto"
+        If MyButtonAutoWB.BackColor = Color.Red Then
+            If ad <> 5 Then
+                mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
+                mLog.Text = mLog.Text + SendCamCmdNoHash("OSD:B1:" & String.Format("{0:X3}", CamWBBlue(ad)), "aw_cam")
+            Else
+                mLog.Text = mLog.Text + SendCamCmdNoHash("OAW:" & CamWBBlue(ad), "aw_cam")
+            End If
+            MyButtonAutoWB.BackColor = Color.White
+        Else
+            mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:0", "aw_cam")
+            TextBox9.Text = "Auto"
+            MyButtonAutoWB.BackColor = Color.Red
+        End If
     End Sub
     Private Sub BtnFocusAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFocusAuto.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
         SendCamCmdAddr(ad, "D11")
         CamFocusManual(ad) = 0
-        BtnFocusAuto.BackColor = Color.Green : BtnFocusLock.BackColor = Color.White
+        TextBoxFocus.Text = "Auto"
+        BtnFocusAuto.BackColor = Color.Red : BtnFocusLock.BackColor = Color.White
     End Sub
 
     Private Sub BtnFocusLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFocusLock.Click
@@ -1880,7 +1922,8 @@ Public Class MainForm
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
         SendCamCmdAddr(ad, "D10")
         CamFocusManual(ad) = 1
-        BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
+        TextBoxFocus.Text = "Lock"
+        BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
     End Sub
 
     Private Sub BtnFocusUp_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.MouseDown
@@ -1889,9 +1932,10 @@ Public Class MainForm
         If CamFocusManual(ad) = 0 Then
             SendCamCmdAddr(ad, "D10")
             CamFocusManual(ad) = 1
-            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
+            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
         End If
         SendCamCmdAddr(ad, "F60")
+        TextBoxFocus.Text = "Man"
     End Sub
 
     Private Sub BtnFocusUp_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.MouseUp
@@ -1906,9 +1950,10 @@ Public Class MainForm
         If CamFocusManual(ad) = 0 Then
             SendCamCmdAddr(ad, "D10")
             CamFocusManual(ad) = 1
-            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
+            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
         End If
         SendCamCmdAddr(ad, "F40")
+        TextBoxFocus.Text = "Man"
     End Sub
 
     Private Sub BtnFocusDn_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusDn.MouseUp
@@ -1928,20 +1973,35 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub CamFullTele_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonFullTele.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         mLog.Text = SendCamCmdAddr(ad, "Z99") 'max speed zoom tele
     End Sub
 
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+    Private Sub CamFullWide_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonFullWide.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         mLog.Text = SendCamCmdAddr(ad, "Z01") 'max speed zoom wide
     End Sub
 
 
-    Private Sub Button6_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseDown
+    Private Sub CamTele_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamTele.MouseDown
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If BtnFast.BackColor = Color.Green Then
+            mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med tele
+        Else
+            mLog.Text = SendCamCmdAddr(ad, "Z55") 'zoom med tele
+        End If
+    End Sub
+    Private Sub CamTele_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamTele.MouseUp
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
+    End Sub
+
+    Private Sub CamWide_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamWide.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If BtnFast.BackColor = Color.Green Then
@@ -1950,25 +2010,7 @@ Public Class MainForm
             mLog.Text = SendCamCmdAddr(ad, "Z45") 'zoom med wide
         End If
     End Sub
-
-
-    Private Sub Button2_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button2.MouseDown
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        If BtnFast.BackColor = Color.Green Then
-            mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med wide
-        Else
-            mLog.Text = SendCamCmdAddr(ad, "Z55") 'zoom med wide
-        End If
-    End Sub
-
-    Private Sub Button6_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button6.MouseUp
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
-    End Sub
-
-    Private Sub Button2_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Button2.MouseUp
+    Private Sub CamWide_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamWide.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
@@ -3269,6 +3311,7 @@ Public Class MainForm
         If fd.ShowDialog() = DialogResult.OK Then
             Globals.PresetFileName = fd.SafeFileName 'this is the filename without the path
             TextBoxPresetFilename.Text = Globals.PresetFileName
+            ReadPresetFile()
         End If
     End Sub
 
@@ -3282,6 +3325,16 @@ Public Class MainForm
             Globals.PresetFilePath = dialog.SelectedPath & "\"
             TextBoxPresetFolder.Text = Globals.PresetFilePath
         End If
+    End Sub
+
+    Private Sub BtnSetupSaveNew_Click(sender As Object, e As EventArgs) Handles BtnSetupSaveNew.Click
+        If TextBoxPresetNewFile.Text = "" Then ShowMsgBox("Enter a filename for the new preset file.")
+        TextBoxPresetNewFile.Text = StrConv(TextBoxPresetNewFile.Text, VbStrConv.Lowercase)
+        If Not InStr(TextBoxPresetNewFile.Text, ".apr") Then
+            TextBoxPresetNewFile.Text = TextBoxPresetNewFile.Text & ".apr"
+        End If
+        Globals.PresetFileName = TextBoxPresetNewFile.Text
+        WritePresetFile()
     End Sub
 
 End Class
