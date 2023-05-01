@@ -104,6 +104,7 @@ Public Class MainForm
     Dim MovePresetFrom As Integer = 0
     Dim PresetLoadStart As Integer = 0
     Dim PresetLoadFileCount As Integer = 0
+    Dim EncoderAllocation(2) As Integer
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -129,6 +130,9 @@ Public Class MainForm
     Dim SerialInBufPtr As Byte
     Dim ControlKeyState As Integer
     Dim PrevControlKeyState As Integer = 0
+
+    Dim PrevEncoderA As Integer
+    Dim PrevEncoderB As Integer
 
     Dim prevmdir As Integer
     Dim prevxspeed As Integer
@@ -255,6 +259,7 @@ Public Class MainForm
         SetDefaultPresets()
         'ReadPresetFile()
         ShowMode(1)
+        ShowEncoderAllocations()
 
         'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
 
@@ -554,7 +559,6 @@ Public Class MainForm
         url = "http://" & Globals.CamIP(caddr) & "/cgi-bin/" & cmd
         webClient.DownloadString(url)
     End Sub
-
 
 
     '----------------------Read camera states back from cameras-----------------------------------------------------
@@ -950,17 +954,20 @@ Public Class MainForm
     Sub ShowCamValues()
         Dim ad As Integer
         If (PTZLive = False) Then ad = addr Else ad = liveaddr
-        If CamIris(ad) <> 9999 Then TextBox4.Text = CamIris(ad) Else TextBox4.Text = "Auto"
-        If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
-        TextBox6.Text = CamShutter(ad)
-        TextBox7.Text = CamGain(ad) * 6 & "dB"
+        If CamIris(ad) <> 9999 Then TextBoxIris.Text = CamIris(ad) Else TextBoxIris.Text = "Auto"
+        If (CamAgc(ad) <= &H38) Then TextBoxAgc.Text = CamAgc(ad) - 8 & "dB" Else TextBoxAgc.Text = "Auto"
+        TextBoxAeShift.Text = CamShutter(ad)
+        TextBoxAgcLimit.Text = CamGain(ad) * 6 & "dB"
         TextBox8.Text = CamWBRed(ad)
-        TextBox9.Text = 2400 + CamWBBlue(ad) * 100
+        TextBoxWB.Text = 2400 + CamWBBlue(ad) * 100
         If CamFocusManual(ad) = 0 Then
             BtnFocusAuto.BackColor = Color.Green : BtnFocusLock.BackColor = Color.White
         Else
             BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
         End If
+        PrevEncoderA = EncoderA
+        PrevEncoderB = EncoderB
+        ShowEncoderValues()
     End Sub
     '-----------------------------------------------------
     ' Set Leds on controller buttons
@@ -1698,75 +1705,76 @@ Public Class MainForm
     '
     '-------------------------------------------------------------------------------------------------
 
+    Sub SetIris(ad As Integer, v As Integer)
+        Dim op As String
+        If ad <> 5 Then op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
 
-    Private Sub BtnIrisDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisDown.Click
-        Dim op As String
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        If CamIris(ad) = 9999 Then 'was auto mode
-            If ad <> 5 Then
-                op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
-                CamIris(ad) = Val("&H" & Mid(op, 5))
-            Else
-                CamIris(ad) = &H555
+        If v <> 9999 Then 'not auto mode
+            If CamIris(ad) = 9999 Then 'if was auto previously
+                mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
+                MyButtonAutoIris.BackColor = Color.White
+                If ad <> 5 Then
+                    If CamIgnore(ad) = True Then
+                        v = &H1FF
+                    Else
+                        op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get actual iris setting
+                        v = Val("&H" & Mid(op, 5))
+                    End If
+                Else
+                    v = &H555 'cam5 can't read iris state
+                End If
             End If
-            mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
-            MyButtonAutoIris.BackColor = Color.White
-        End If
-        If ad <> 5 Then
-            If CamIris(ad) > 10 Then CamIris(ad) = CamIris(ad) - 10 Else CamIris(ad) = 0
-            TextBox4.Text = CamIris(ad)
-            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
-        Else
-            If CamIris(ad) > &H555 + 64 Then CamIris(ad) = CamIris(ad) - 64
-            TextBox4.Text = CamIris(ad)
-            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "%23AXI" & String.Format("{0:X3}", CamIris(ad)), "aw_ptz")
-        End If
-    End Sub
-
-    Private Sub BtnIrisUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisUp.Click
-        Dim op As String
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        If CamIris(ad) = 9999 Then 'was auto mode
-            If ad <> 5 Then
-                op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
-                CamIris(ad) = Val("&H" & Mid(op, 5))
-            Else
-                CamIris(ad) = &H555
-            End If
-            mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
-            MyButtonAutoIris.BackColor = Color.White
-        End If
-        If ad <> 5 Then
-            If CamIris(ad) < (&H3FF - 10) Then CamIris(ad) = CamIris(ad) + 10 Else CamIris(ad) = &H3FF
-            TextBox4.Text = CamIris(ad)
-            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
-        Else
-            If CamIris(ad) < &HFFF - 64 Then CamIris(ad) = CamIris(ad) + 64
-            TextBox4.Text = CamIris(ad)
-            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "%23AXI" & String.Format("{0:X3}", CamIris(ad)), "aw_ptz")
-        End If
-    End Sub
-    Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoIris.Click
-        Dim op As String
-        Dim ad As Integer
-        If PTZLive = False Then ad = addr Else ad = liveaddr
-        If MyButtonAutoIris.BackColor = Color.Red Then
-            If ad <> 5 Then
-                op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
-                CamIris(ad) = Val("&H" & Mid(op, 5))
-            Else
-                CamIris(ad) = &H555
-            End If
-            TextBox4.Text = CamIris(ad)
-            mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:0", "aw_cam") 'man iris
-            MyButtonAutoIris.BackColor = Color.White
         Else
             mLog.Text = SendCamCmdAddrNoHash(ad, "ORS:1", "aw_cam") 'auto iris
             CamIris(ad) = 9999 'flag auto
-            TextBox4.Text = "Auto"
+            TextBoxIris.Text = "Auto"
+            ShowEncoderValues()
             MyButtonAutoIris.BackColor = Color.Red
+            Exit Sub
+        End If
+
+        CamIris(ad) = v
+        If ad <> 5 Then
+            If (CamIris(ad) < 0) Then CamIris(ad) = 0
+            If (CamIris(ad) > &H3FF) Then CamIris(ad) = &H3FF
+            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "ORV:" & String.Format("{0:X3}", CamIris(ad)), "aw_cam")
+        Else
+            If (CamIris(ad) < &H555) Then CamIris(ad) = &H555
+            If (CamIris(ad) > &HFFF) Then CamIris(ad) = &HFFF
+            mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "%23AXI" & String.Format("{0:X3}", CamIris(ad)), "aw_ptz")
+        End If
+        TextBoxIris.Text = CamIris(ad)
+        ShowEncoderValues()
+    End Sub
+
+    Private Sub BtnIrisDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisDown.Click
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad <> 5 Then
+            CamIris(ad) = CamIris(ad) - 10
+        Else
+            CamIris(ad) = CamIris(ad) - 64
+        End If
+        SetIris(ad, CamIris(ad))
+    End Sub
+
+    Private Sub BtnIrisUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisUp.Click
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad <> 5 Then
+            CamIris(ad) = CamIris(ad) + 10
+        Else
+            CamIris(ad) = CamIris(ad) + 64
+        End If
+        SetIris(ad, CamIris(ad))
+    End Sub
+    Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoIris.Click
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If CamIris(ad) = 9999 Then 'iris was in auto mode
+            SetIris(ad, 9998)
+        Else
+            SetIris(ad, 9999)
         End If
     End Sub
 
@@ -1779,7 +1787,7 @@ Public Class MainForm
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
         If CamAgc(ad) > &H38 Then CamAgc(ad) = &H38
         If CamAgc(ad) > &H8 Then CamAgc(ad) = CamAgc(ad) - 3
-        If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+        If (CamAgc(ad) <= &H38) Then TextBoxAgc.Text = CamAgc(ad) - 8 & "dB" Else TextBoxAgc.Text = "Auto"
         mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
         MyButtonAutoAgc.BackColor = Color.White
     End Sub
@@ -1793,7 +1801,7 @@ Public Class MainForm
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
         If CamAgc(ad) > &H38 Then CamAgc(ad) = &H38
         If CamAgc(ad) < &H38 Then CamAgc(ad) = CamAgc(ad) + 3
-        If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+        If (CamAgc(ad) <= &H38) Then TextBoxAgc.Text = CamAgc(ad) - 8 & "dB" Else TextBoxAgc.Text = "Auto"
         mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
         MyButtonAutoAgc.BackColor = Color.White
     End Sub
@@ -1803,12 +1811,12 @@ Public Class MainForm
         If ad = 5 Then Return 'not provided on this camera
         If MyButtonAutoAgc.BackColor = Color.Red Then
             CamAgc(ad) = &H38
-            If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+            If (CamAgc(ad) <= &H38) Then TextBoxAgc.Text = CamAgc(ad) - 8 & "dB" Else TextBoxAgc.Text = "Auto"
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
             MyButtonAutoAgc.BackColor = Color.White
         Else
             CamAgc(ad) = 128
-            If (CamAgc(ad) <= &H38) Then TextBox5.Text = CamAgc(ad) - 8 & "dB" Else TextBox5.Text = "Auto"
+            If (CamAgc(ad) <= &H38) Then TextBoxAgc.Text = CamAgc(ad) - 8 & "dB" Else TextBoxAgc.Text = "Auto"
             mLog.Text = mLog.Text & SendCamCmdAddrNoHash(ad, "OGU:" & String.Format("{0:X2}", CamAgc(ad)), "aw_cam")
             MyButtonAutoAgc.BackColor = Color.Red
         End If
@@ -1819,7 +1827,7 @@ Public Class MainForm
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 7 Then Return 'not provided on this camera
         If CamGain(ad) > 1 Then CamGain(ad) = CamGain(ad) - 1
-        TextBox7.Text = CamGain(ad) * 6 & "dB"
+        TextBoxAgcLimit.Text = CamGain(ad) * 6 & "dB"
         mLog.Text = SendCamCmdAddrNoHash(ad, "OSD:69:" & String.Format("{0:X2}", CamGain(ad)), "aw_cam")
     End Sub
 
@@ -1828,7 +1836,7 @@ Public Class MainForm
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 7 Then Return 'not provided on this camera
         If CamGain(ad) < 8 Then CamGain(ad) = CamGain(ad) + 1
-        TextBox7.Text = CamGain(ad) * 6 & "dB"
+        TextBoxAgcLimit.Text = CamGain(ad) * 6 & "dB"
         mLog.Text = SendCamCmdAddrNoHash(ad, "OSD:69:" & String.Format("{0:X2}", CamGain(ad)), "aw_cam")
     End Sub
 
@@ -1836,7 +1844,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If CamShutter(ad) > -10 Then CamShutter(ad) = CamShutter(ad) - 1
-        TextBox6.Text = CamShutter(ad)
+        TextBoxAeShift.Text = CamShutter(ad)
         mLog.Text = SendCamCmdAddrNoHash(ad, "OSD:48:" & Format((10 + CamShutter(ad)) * 64 / 20, "00"), "aw_cam") 'gain is -10 to +10 but number is 0-64
     End Sub
 
@@ -1844,22 +1852,22 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If CamShutter(ad) < 10 Then CamShutter(ad) = CamShutter(ad) + 1
-        TextBox6.Text = CamShutter(ad)
+        TextBoxAeShift.Text = CamShutter(ad)
         mLog.Text = SendCamCmdAddrNoHash(ad, "OSD:48:" & Format((10 + CamShutter(ad)) * 64 / 20, "00"), "aw_cam")
     End Sub
 
     Sub SetWbDescription(ad As Integer, wb As Integer)
         If ad <> 5 Then
-            TextBox9.Text = 2400 + CamWBBlue(ad) * 100
+            TextBoxWB.Text = 2400 + CamWBBlue(ad) * 100
         Else
-            If CamWBBlue(ad) = 1 Then TextBox9.Text = "A"
-            If CamWBBlue(ad) = 2 Then TextBox9.Text = "B"
-            If CamWBBlue(ad) = 3 Then TextBox9.Text = "Auto"
-            If CamWBBlue(ad) = 4 Then TextBox9.Text = "3200"
-            If CamWBBlue(ad) = 5 Then TextBox9.Text = "5600"
-            If CamWBBlue(ad) = 6 Then TextBox9.Text = "4500"
-            If CamWBBlue(ad) = 7 Then TextBox9.Text = "6000"
-            If CamWBBlue(ad) = 8 Then TextBox9.Text = "2800"
+            If CamWBBlue(ad) = 1 Then TextBoxWB.Text = "A"
+            If CamWBBlue(ad) = 2 Then TextBoxWB.Text = "B"
+            If CamWBBlue(ad) = 3 Then TextBoxWB.Text = "Auto"
+            If CamWBBlue(ad) = 4 Then TextBoxWB.Text = "3200"
+            If CamWBBlue(ad) = 5 Then TextBoxWB.Text = "5600"
+            If CamWBBlue(ad) = 6 Then TextBoxWB.Text = "4500"
+            If CamWBBlue(ad) = 7 Then TextBoxWB.Text = "6000"
+            If CamWBBlue(ad) = 8 Then TextBoxWB.Text = "2800"
         End If
     End Sub
     Private Sub BtnWbBlueDn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueDn.Click
@@ -1901,10 +1909,11 @@ Public Class MainForm
             Else
                 mLog.Text = mLog.Text + SendCamCmdNoHash("OAW:" & CamWBBlue(ad), "aw_cam")
             End If
+            SetWbDescription(ad, CamWBBlue(ad))
             MyButtonAutoWB.BackColor = Color.White
         Else
             mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:0", "aw_cam")
-            TextBox9.Text = "Auto"
+            TextBoxWB.Text = "Auto"
             MyButtonAutoWB.BackColor = Color.Red
         End If
     End Sub
@@ -2134,22 +2143,8 @@ Public Class MainForm
     End Sub
 
 
-    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
-        CamIgnore(1) = False
-        CamIgnore(2) = False
-        CamIgnore(3) = False
-        CamIgnore(4) = False
-        CamCmdPending = False
-    End Sub
 
-    Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click
-        websocket.Close()   'try reconnecting to OBS
-        OpenWebSocket()
-        While WebsocketReinitTimer > 0
-            Application.DoEvents()
-        End While
-        ReadMediaSources()
-    End Sub
+
 
     Private Sub OverrideBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OverrideBtn.Click
         If CamOverride <> 0 Then
@@ -2529,11 +2524,23 @@ Public Class MainForm
                     If LastKey = 12 Then BtnMediaOverlay.PerformClick()
                     If LastKey = 13 Then BtnTransition.PerformClick()
                     If LastKey = 14 Then BtnCut.PerformClick()
-
-
+                    If LastKey = 15 Then EncoderClick(1)
+                    If LastKey = 16 Then EncoderClick(2)
+                    KeyHit = False
                 End If
 
             End If
+
+            If EncoderA <> PrevEncoderA Then
+                SetEncoderValue(1, EncoderA - PrevEncoderA)
+                PrevEncoderA = EncoderA
+            End If
+
+            If EncoderB <> PrevEncoderB Then
+                SetEncoderValue(2, EncoderB - PrevEncoderB)
+                PrevEncoderB = EncoderB
+            End If
+
         End If
 
 
@@ -2730,8 +2737,9 @@ Public Class MainForm
         If (gotrx > 0) Then gotrx = gotrx - 1
 
         'timer to autoconnect on startup
-        If (startuptimer < 70) Then startuptimer = startuptimer + 1
+        If (startuptimer < 100) Then startuptimer = startuptimer + 1
         If startuptimer = 69 Then GroupBox1.Hide()
+        If startuptimer = 99 Then MsgBoxPanel.Visible = False
         If (startuptimer = 5) Then 'open com ports
             Timer1.Enabled = False
             If GetSetting("Atemswitcher", "Set", "Askprofile", True) = True Then
@@ -2812,11 +2820,11 @@ Public Class MainForm
             Label22.Text = Label22.Text & "Initialise Camera 5..." 'send power on command to he2 and check we get a response
             GroupBox1.Refresh()
             If Globals.Cam5Dis = False Then
-                If SendCamQuery(7, "aw_ptz?cmd=%23O1&res=1") <> "" Then CamIgnore(7) = False Else CamIgnore(7) = True
-                If CamIgnore(7) = False Then Label22.Text = Label22.Text & "Done" & vbCrLf Else Label22.Text = Label22.Text & "Fail" & vbCrLf
+                If SendCamQuery(5, "aw_ptz?cmd=%23O1&res=1") <> "" Then CamIgnore(5) = False Else CamIgnore(5) = True
+                If CamIgnore(5) = False Then Label22.Text = Label22.Text & "Done" & vbCrLf Else Label22.Text = Label22.Text & "Fail" & vbCrLf
             Else
                 Label22.Text = Label22.Text & "Ignore" & vbCrLf
-                CamIgnore(7) = True
+                CamIgnore(5) = True
             End If
             Label22.Text = Label22.Text & "Waiting for cameras to come out of standby..."
             Timer1.Enabled = True
@@ -3150,8 +3158,77 @@ Public Class MainForm
     ' encoders
     ' click on encoder status area to change encoder allocation
     '----------------------------------------------------------
+    Sub ShowEncoderAllocations()
+        Select Case EncoderAllocation(1)
+            Case 0 : LabelEncA.Text = "Focus"
+            Case 1 : LabelEncA.Text = "Iris"
+            Case 2 : LabelEncA.Text = "AGC"
+            Case 3 : LabelEncA.Text = "AGC Limit"
+            Case 4 : LabelEncA.Text = "AE Shift"
+        End Select
+        Select Case EncoderAllocation(2)
+            Case 0 : LabelEncB.Text = "Focus"
+            Case 1 : LabelEncB.Text = "Iris"
+            Case 2 : LabelEncB.Text = "AGC"
+            Case 3 : LabelEncB.Text = "AGC Limit"
+            Case 4 : LabelEncB.Text = "AE Shift"
+        End Select
+    End Sub
+    Sub ShowEncoderValues()
+        Select Case EncoderAllocation(1)
+            Case 0 : TextEncAStatus.Text = TextBoxFocus.Text
+            Case 1 : TextEncAStatus.Text = TextBoxIris.Text
+            Case 2 : TextEncAStatus.Text = TextBoxAgc.Text
+            Case 3 : TextEncAStatus.Text = TextBoxAgcLimit.Text
+            Case 4 : TextEncAStatus.Text = TextBoxAeShift.Text
+        End Select
+        Select Case EncoderAllocation(2)
+            Case 0 : TextEncBStatus.Text = TextBoxFocus.Text
+            Case 1 : TextEncBStatus.Text = TextBoxIris.Text
+            Case 2 : TextEncBStatus.Text = TextBoxAgc.Text
+            Case 3 : TextEncBStatus.Text = TextBoxAgcLimit.Text
+            Case 4 : TextEncBStatus.Text = TextBoxAeShift.Text
+        End Select
+    End Sub
     Sub SetEncoderAllocation(num)
-
+        PanelEncSelect.Left = 740 'move onto the screen
+        PanelEncSelect.Top = 7
+        PanelEncSelect.Visible = True
+        ButtonEncFocus.BackColor = SystemColors.ButtonFace
+        ButtonEncIris.BackColor = SystemColors.ButtonFace
+        ButtonEncAgc.BackColor = SystemColors.ButtonFace
+        ButtonEncAgcLimit.BackColor = SystemColors.ButtonFace
+        ButtonEncAeShift.BackColor = SystemColors.ButtonFace
+        Select Case EncoderAllocation(num)
+            Case 0 : ButtonEncFocus.BackColor = Color.YellowGreen
+            Case 1 : ButtonEncIris.BackColor = Color.YellowGreen
+            Case 2 : ButtonEncAgc.BackColor = Color.YellowGreen
+            Case 3 : ButtonEncAgcLimit.BackColor = Color.YellowGreen
+            Case 4 : ButtonEncAeShift.BackColor = Color.YellowGreen
+        End Select
+        LabelEnc.Text = num
+    End Sub
+    Sub SetEncoderValue(enc As Integer, v As Integer)
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        Select Case EncoderAllocation(enc)
+            Case 0 : TextEncAStatus.Text = TextBoxFocus.Text
+            Case 1 : SetIris(ad, v + CamIris(ad))
+            Case 2 : TextEncAStatus.Text = TextBoxAgc.Text
+            Case 3 : TextEncAStatus.Text = TextBoxAgcLimit.Text
+            Case 4 : TextEncAStatus.Text = TextBoxAeShift.Text
+        End Select
+    End Sub
+    Sub EncoderClick(enc As Integer)
+        Dim ad As Integer
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        Select Case EncoderAllocation(enc)
+            Case 0 : TextEncAStatus.Text = TextBoxFocus.Text
+            Case 1 : MyButtonAutoIris.PerformClick()
+            Case 2 : TextEncAStatus.Text = TextBoxAgc.Text
+            Case 3 : TextEncAStatus.Text = TextBoxAgcLimit.Text
+            Case 4 : TextEncAStatus.Text = TextBoxAeShift.Text
+        End Select
     End Sub
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
         SetEncoderAllocation(1)
@@ -3168,16 +3245,41 @@ Public Class MainForm
     Private Sub TextEncBStatus_Click(sender As Object, e As EventArgs) Handles TextEncBStatus.Click
         SetEncoderAllocation(2)
     End Sub
-
     Private Sub LabelEncB_Click(sender As Object, e As EventArgs) Handles LabelEncB.Click
         SetEncoderAllocation(2)
     End Sub
-
+    Private Sub ButtonEncFocus_Click(sender As Object, e As EventArgs) Handles ButtonEncFocus.Click, ButtonEncIris.Click, ButtonEncAgc.Click, ButtonEncAgcLimit.Click, ButtonEncAeShift.Click
+        PanelEncSelect.Visible = False 'off the screen
+        Dim num = CInt(LabelEnc.Text)
+        Select Case sender.name
+            Case "ButtonEncFocus" : EncoderAllocation(num) = 0
+            Case "ButtonEncIris" : EncoderAllocation(num) = 1
+            Case "ButtonEncAgc" : EncoderAllocation(num) = 2
+            Case "ButtonEncAgcLimit" : EncoderAllocation(num) = 3
+            Case "ButtonEncAeShift" : EncoderAllocation(num) = 4
+        End Select
+        ShowEncoderAllocations()
+        ShowEncoderValues()
+    End Sub
 
     '----------------------------------------------------------
     ' Setup screen functions
     ' 
     '----------------------------------------------------------
+
+    Sub UpdateCameraLinkStatus()
+        Globals.CamStatus(1) = CamIgnore(1)
+        Globals.CamStatus(2) = CamIgnore(2)
+        Globals.CamStatus(3) = CamIgnore(3)
+        Globals.CamStatus(4) = CamIgnore(4)
+        Globals.CamStatus(5) = CamIgnore(5)
+
+        If Globals.CamStatus(1) = True Then LblCamStatus1.Text = "FAIL" Else LblCamStatus1.Text = "OK"
+        If Globals.CamStatus(2) = True Then LblCamStatus2.Text = "FAIL" Else LblCamStatus2.Text = "OK"
+        If Globals.CamStatus(3) = True Then LblCamStatus3.Text = "FAIL" Else LblCamStatus3.Text = "OK"
+        If Globals.CamStatus(4) = True Then LblCamStatus4.Text = "FAIL" Else LblCamStatus4.Text = "OK"
+        If Globals.CamStatus(5) = True Then LblCamStatus5.Text = "FAIL" Else LblCamStatus5.Text = "OK"
+    End Sub
 
     '---Populate setup screen with current values
     Sub UpdateSetupScreen()
@@ -3212,17 +3314,7 @@ Public Class MainForm
         If Globals.CamInvert(3) Then CheckBoxInvert3.Checked = True
         If Globals.CamInvert(4) Then CheckBoxInvert4.Checked = True
 
-        Globals.CamStatus(1) = CamIgnore(1)
-        Globals.CamStatus(2) = CamIgnore(2)
-        Globals.CamStatus(3) = CamIgnore(3)
-        Globals.CamStatus(4) = CamIgnore(4)
-        Globals.CamStatus(5) = CamIgnore(5)
-
-        If Globals.CamStatus(1) = True Then LblCamStatus1.Text = "FAIL"
-        If Globals.CamStatus(2) = True Then LblCamStatus2.Text = "FAIL"
-        If Globals.CamStatus(3) = True Then LblCamStatus3.Text = "FAIL"
-        If Globals.CamStatus(4) = True Then LblCamStatus4.Text = "FAIL"
-        If Globals.CamStatus(5) = True Then LblCamStatus5.Text = "FAIL"
+        UpdateCameraLinkStatus()
     End Sub
 
     '----Update globals / registry with edited values
@@ -3241,8 +3333,8 @@ Public Class MainForm
         SaveSetting("Atemswitcher", "Set", "Caminvert2", CheckBoxInvert2.Checked)
         SaveSetting("Atemswitcher", "Set", "Caminvert3", CheckBoxInvert3.Checked)
         SaveSetting("Atemswitcher", "Set", "Caminvert4", CheckBoxInvert4.Checked)
-        SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBox5.Text)
-        SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBox6.Text)
+        SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBoxAgc.Text)
+        SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBoxAeShift.Text)
 
         SaveSetting("Atemswitcher", "Set", "Cam1Dis", CheckBoxCam1Dis.Checked)
         SaveSetting("Atemswitcher", "Set", "Cam2Dis", CheckBoxCam2Dis.Checked)
@@ -3335,6 +3427,36 @@ Public Class MainForm
         End If
         Globals.PresetFileName = TextBoxPresetNewFile.Text
         WritePresetFile()
+    End Sub
+
+    Private Sub ButtonRetryCam_Click(sender As Object, e As EventArgs) Handles ButtonRetryCam.Click
+        CamIgnore(1) = False
+        CamIgnore(2) = False
+        CamIgnore(3) = False
+        CamIgnore(4) = False
+        UpdateCameraLinkStatus()
+        CamCmdPending = False
+        If Globals.Cam1Dis = False Then ReadbackCameraStates(1)
+        UpdateCameraLinkStatus()
+        If Globals.Cam2Dis = False Then ReadbackCameraStates(2)
+        UpdateCameraLinkStatus()
+        If Globals.Cam3Dis = False Then ReadbackCameraStates(3)
+        UpdateCameraLinkStatus()
+        If Globals.Cam4Dis = False Then ReadbackCameraStates(4)
+        UpdateCameraLinkStatus()
+        If Globals.Cam5Dis = False Then
+            If SendCamQuery(5, "aw_ptz?cmd=%23O1&res=1") <> "" Then CamIgnore(5) = False Else CamIgnore(5) = True
+        End If
+        UpdateCameraLinkStatus()
+    End Sub
+
+    Private Sub ButtonRetryOBS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRetryOBS.Click
+        websocket.Close()   'try reconnecting to OBS
+        OpenWebSocket()
+        While WebsocketReinitTimer > 0
+            Application.DoEvents()
+        End While
+        ReadMediaSources()
     End Sub
 
 End Class

@@ -32,13 +32,13 @@ Partial Class MainForm
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.TextBoxIris = New System.Windows.Forms.TextBox()
         Me.BtnIrisDown = New System.Windows.Forms.Button()
-        Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
-        Me.TextBox7 = New System.Windows.Forms.TextBox()
+        Me.TextBoxAgc = New System.Windows.Forms.TextBox()
+        Me.TextBoxAeShift = New System.Windows.Forms.TextBox()
+        Me.TextBoxAgcLimit = New System.Windows.Forms.TextBox()
         Me.TextBox8 = New System.Windows.Forms.TextBox()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.TextBoxWB = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.ButtonSetup = New System.Windows.Forms.Button()
@@ -78,10 +78,6 @@ Partial Class MainForm
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.BtnIrisAuto = New System.Windows.Forms.Button()
-        Me.BtnWBAuto = New System.Windows.Forms.Button()
-        Me.BtnAgcAuto = New System.Windows.Forms.Button()
-        Me.Button5 = New System.Windows.Forms.Button()
         Me.LabelProfile = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -95,7 +91,7 @@ Partial Class MainForm
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.TextBoxPipSrc = New System.Windows.Forms.TextBox()
-        Me.Button9 = New System.Windows.Forms.Button()
+        Me.ButtonRetryOBS = New System.Windows.Forms.Button()
         Me.PresetPanel = New System.Windows.Forms.Panel()
         Me.BtnCNxt = New AtemController.MyButton()
         Me.BtnCPrev = New AtemController.MyButton()
@@ -155,6 +151,10 @@ Partial Class MainForm
         Me.LineShapeMode2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShapeMode1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.CamPanel = New System.Windows.Forms.Panel()
+        Me.MyButtonAutoWB = New AtemController.MyButton()
+        Me.MyButtonAutoAgc = New AtemController.MyButton()
+        Me.MyButtonAutoIris = New AtemController.MyButton()
+        Me.TextBoxFocus = New System.Windows.Forms.TextBox()
         Me.MyButtonFullTele = New AtemController.MyButton()
         Me.MyButtonFullWide = New AtemController.MyButton()
         Me.MyButtonCamTele = New AtemController.MyButton()
@@ -178,6 +178,8 @@ Partial Class MainForm
         Me.MyButtonCamUL = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
         Me.SettingsPanel = New System.Windows.Forms.Panel()
+        Me.ButtonRetryCam = New System.Windows.Forms.Button()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.BtnSetupSaveNew = New System.Windows.Forms.Button()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.TextBoxPresetNewFile = New System.Windows.Forms.TextBox()
@@ -246,6 +248,13 @@ Partial Class MainForm
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.PresetLoadClose = New System.Windows.Forms.Label()
+        Me.PanelEncSelect = New System.Windows.Forms.Panel()
+        Me.LabelEnc = New System.Windows.Forms.Label()
+        Me.ButtonEncAeShift = New System.Windows.Forms.Button()
+        Me.ButtonEncAgcLimit = New System.Windows.Forms.Button()
+        Me.ButtonEncAgc = New System.Windows.Forms.Button()
+        Me.ButtonEncIris = New System.Windows.Forms.Button()
+        Me.ButtonEncFocus = New System.Windows.Forms.Button()
         Me.BtnInp5 = New AtemController.MyButton()
         Me.AuxSel12 = New AtemController.MyButton()
         Me.Aux3Btn12 = New AtemController.MyButton()
@@ -285,10 +294,6 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
-        Me.TextBoxFocus = New System.Windows.Forms.TextBox()
-        Me.MyButtonAutoIris = New AtemController.MyButton()
-        Me.MyButtonAutoAgc = New AtemController.MyButton()
-        Me.MyButtonAutoWB = New AtemController.MyButton()
         Me.GroupBox1.SuspendLayout()
         Me.PresetPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -299,6 +304,7 @@ Partial Class MainForm
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MsgBoxPanel.SuspendLayout()
         Me.PresetLoadPanel.SuspendLayout()
+        Me.PanelEncSelect.SuspendLayout()
         Me.SuspendLayout()
         '
         'eVISMacrosAppHost
@@ -386,18 +392,18 @@ Partial Class MainForm
         Me.TextBox2.Text = "1.0"
         Me.TextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox4
+        'TextBoxIris
         '
-        Me.TextBox4.BackColor = System.Drawing.Color.Black
-        Me.TextBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox4.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox4.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox4.Location = New System.Drawing.Point(395, 93)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(60, 29)
-        Me.TextBox4.TabIndex = 113
-        Me.TextBox4.Text = "17"
-        Me.TextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxIris.BackColor = System.Drawing.Color.Black
+        Me.TextBoxIris.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxIris.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxIris.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxIris.Location = New System.Drawing.Point(395, 93)
+        Me.TextBoxIris.Name = "TextBoxIris"
+        Me.TextBoxIris.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxIris.TabIndex = 113
+        Me.TextBoxIris.Text = "17"
+        Me.TextBoxIris.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'BtnIrisDown
         '
@@ -409,44 +415,44 @@ Partial Class MainForm
         Me.BtnIrisDown.Text = "q"
         Me.BtnIrisDown.UseVisualStyleBackColor = True
         '
-        'TextBox5
+        'TextBoxAgc
         '
-        Me.TextBox5.BackColor = System.Drawing.Color.Black
-        Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox5.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox5.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox5.Location = New System.Drawing.Point(461, 93)
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(60, 29)
-        Me.TextBox5.TabIndex = 116
-        Me.TextBox5.Text = "8"
-        Me.TextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxAgc.BackColor = System.Drawing.Color.Black
+        Me.TextBoxAgc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxAgc.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxAgc.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxAgc.Location = New System.Drawing.Point(461, 93)
+        Me.TextBoxAgc.Name = "TextBoxAgc"
+        Me.TextBoxAgc.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxAgc.TabIndex = 116
+        Me.TextBoxAgc.Text = "8"
+        Me.TextBoxAgc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox6
+        'TextBoxAeShift
         '
-        Me.TextBox6.BackColor = System.Drawing.Color.Black
-        Me.TextBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox6.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox6.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox6.Location = New System.Drawing.Point(593, 93)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(60, 29)
-        Me.TextBox6.TabIndex = 119
-        Me.TextBox6.Text = "6"
-        Me.TextBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxAeShift.BackColor = System.Drawing.Color.Black
+        Me.TextBoxAeShift.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxAeShift.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxAeShift.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxAeShift.Location = New System.Drawing.Point(593, 93)
+        Me.TextBoxAeShift.Name = "TextBoxAeShift"
+        Me.TextBoxAeShift.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxAeShift.TabIndex = 119
+        Me.TextBoxAeShift.Text = "6"
+        Me.TextBoxAeShift.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox7
+        'TextBoxAgcLimit
         '
-        Me.TextBox7.BackColor = System.Drawing.Color.Black
-        Me.TextBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox7.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox7.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox7.Location = New System.Drawing.Point(527, 93)
-        Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(60, 29)
-        Me.TextBox7.TabIndex = 122
-        Me.TextBox7.Text = "10"
-        Me.TextBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxAgcLimit.BackColor = System.Drawing.Color.Black
+        Me.TextBoxAgcLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxAgcLimit.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxAgcLimit.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxAgcLimit.Location = New System.Drawing.Point(527, 93)
+        Me.TextBoxAgcLimit.Name = "TextBoxAgcLimit"
+        Me.TextBoxAgcLimit.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxAgcLimit.TabIndex = 122
+        Me.TextBoxAgcLimit.Text = "10"
+        Me.TextBoxAgcLimit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TextBox8
         '
@@ -462,18 +468,18 @@ Partial Class MainForm
         Me.TextBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.TextBox8.Visible = False
         '
-        'TextBox9
+        'TextBoxWB
         '
-        Me.TextBox9.BackColor = System.Drawing.Color.Black
-        Me.TextBox9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox9.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox9.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBox9.Location = New System.Drawing.Point(660, 93)
-        Me.TextBox9.Name = "TextBox9"
-        Me.TextBox9.Size = New System.Drawing.Size(60, 29)
-        Me.TextBox9.TabIndex = 129
-        Me.TextBox9.Text = "190"
-        Me.TextBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.TextBoxWB.BackColor = System.Drawing.Color.Black
+        Me.TextBoxWB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxWB.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxWB.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxWB.Location = New System.Drawing.Point(660, 93)
+        Me.TextBoxWB.Name = "TextBoxWB"
+        Me.TextBoxWB.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxWB.TabIndex = 129
+        Me.TextBoxWB.Text = "190"
+        Me.TextBoxWB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label14
         '
@@ -865,46 +871,6 @@ Partial Class MainForm
         Me.Label13.TabIndex = 215
         Me.Label13.Text = "v14.2"
         '
-        'BtnIrisAuto
-        '
-        Me.BtnIrisAuto.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnIrisAuto.Location = New System.Drawing.Point(405, 278)
-        Me.BtnIrisAuto.Name = "BtnIrisAuto"
-        Me.BtnIrisAuto.Size = New System.Drawing.Size(50, 35)
-        Me.BtnIrisAuto.TabIndex = 232
-        Me.BtnIrisAuto.Text = "Auto"
-        Me.BtnIrisAuto.UseVisualStyleBackColor = True
-        '
-        'BtnWBAuto
-        '
-        Me.BtnWBAuto.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnWBAuto.Location = New System.Drawing.Point(659, 288)
-        Me.BtnWBAuto.Name = "BtnWBAuto"
-        Me.BtnWBAuto.Size = New System.Drawing.Size(50, 35)
-        Me.BtnWBAuto.TabIndex = 235
-        Me.BtnWBAuto.Text = "Auto"
-        Me.BtnWBAuto.UseVisualStyleBackColor = True
-        '
-        'BtnAgcAuto
-        '
-        Me.BtnAgcAuto.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnAgcAuto.Location = New System.Drawing.Point(475, 270)
-        Me.BtnAgcAuto.Name = "BtnAgcAuto"
-        Me.BtnAgcAuto.Size = New System.Drawing.Size(50, 35)
-        Me.BtnAgcAuto.TabIndex = 238
-        Me.BtnAgcAuto.Text = "Auto"
-        Me.BtnAgcAuto.UseVisualStyleBackColor = True
-        '
-        'Button5
-        '
-        Me.Button5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button5.Location = New System.Drawing.Point(39, 92)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(46, 42)
-        Me.Button5.TabIndex = 247
-        Me.Button5.Text = "Retry cam"
-        Me.Button5.UseVisualStyleBackColor = True
-        '
         'LabelProfile
         '
         Me.LabelProfile.AutoSize = True
@@ -932,7 +898,7 @@ Partial Class MainForm
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.Label22)
-        Me.GroupBox1.Location = New System.Drawing.Point(1268, 302)
+        Me.GroupBox1.Location = New System.Drawing.Point(1237, 69)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(403, 252)
         Me.GroupBox1.TabIndex = 258
@@ -1053,15 +1019,15 @@ Partial Class MainForm
         Me.TextBoxPipSrc.Text = "Words"
         Me.TextBoxPipSrc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'Button9
+        'ButtonRetryOBS
         '
-        Me.Button9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button9.Location = New System.Drawing.Point(39, 140)
-        Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(46, 42)
-        Me.Button9.TabIndex = 315
-        Me.Button9.Text = "Retry OBS"
-        Me.Button9.UseVisualStyleBackColor = True
+        Me.ButtonRetryOBS.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRetryOBS.Location = New System.Drawing.Point(459, 204)
+        Me.ButtonRetryOBS.Name = "ButtonRetryOBS"
+        Me.ButtonRetryOBS.Size = New System.Drawing.Size(80, 50)
+        Me.ButtonRetryOBS.TabIndex = 315
+        Me.ButtonRetryOBS.Text = "Retry OBS"
+        Me.ButtonRetryOBS.UseVisualStyleBackColor = True
         '
         'PresetPanel
         '
@@ -1766,10 +1732,7 @@ Partial Class MainForm
         Me.CamPanel.Controls.Add(Me.BtnCam4Rec)
         Me.CamPanel.Controls.Add(Me.BtnCam3Rec)
         Me.CamPanel.Controls.Add(Me.BtnCam2Rec)
-        Me.CamPanel.Controls.Add(Me.BtnAgcAuto)
         Me.CamPanel.Controls.Add(Me.BtnCam1Rec)
-        Me.CamPanel.Controls.Add(Me.BtnWBAuto)
-        Me.CamPanel.Controls.Add(Me.BtnIrisAuto)
         Me.CamPanel.Controls.Add(Me.BtnFocusUp)
         Me.CamPanel.Controls.Add(Me.BtnFocusDn)
         Me.CamPanel.Controls.Add(Me.BtnFocusLock)
@@ -1803,18 +1766,64 @@ Partial Class MainForm
         Me.CamPanel.Controls.Add(Me.Label20)
         Me.CamPanel.Controls.Add(Me.Label19)
         Me.CamPanel.Controls.Add(Me.BtnIrisUp)
-        Me.CamPanel.Controls.Add(Me.TextBox9)
+        Me.CamPanel.Controls.Add(Me.TextBoxWB)
         Me.CamPanel.Controls.Add(Me.TextBox8)
-        Me.CamPanel.Controls.Add(Me.TextBox7)
-        Me.CamPanel.Controls.Add(Me.TextBox6)
-        Me.CamPanel.Controls.Add(Me.TextBox5)
+        Me.CamPanel.Controls.Add(Me.TextBoxAgcLimit)
+        Me.CamPanel.Controls.Add(Me.TextBoxAeShift)
+        Me.CamPanel.Controls.Add(Me.TextBoxAgc)
         Me.CamPanel.Controls.Add(Me.BtnIrisDown)
-        Me.CamPanel.Controls.Add(Me.TextBox4)
+        Me.CamPanel.Controls.Add(Me.TextBoxIris)
         Me.CamPanel.Controls.Add(Me.OverrideBtn)
         Me.CamPanel.Location = New System.Drawing.Point(131, 12)
         Me.CamPanel.Name = "CamPanel"
         Me.CamPanel.Size = New System.Drawing.Size(784, 600)
         Me.CamPanel.TabIndex = 322
+        '
+        'MyButtonAutoWB
+        '
+        Me.MyButtonAutoWB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyButtonAutoWB.Image = CType(resources.GetObject("MyButtonAutoWB.Image"), System.Drawing.Image)
+        Me.MyButtonAutoWB.Location = New System.Drawing.Point(659, 180)
+        Me.MyButtonAutoWB.Name = "MyButtonAutoWB"
+        Me.MyButtonAutoWB.Size = New System.Drawing.Size(60, 60)
+        Me.MyButtonAutoWB.TabIndex = 306
+        Me.MyButtonAutoWB.Text = "Auto WB"
+        Me.MyButtonAutoWB.UseVisualStyleBackColor = True
+        '
+        'MyButtonAutoAgc
+        '
+        Me.MyButtonAutoAgc.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyButtonAutoAgc.Image = CType(resources.GetObject("MyButtonAutoAgc.Image"), System.Drawing.Image)
+        Me.MyButtonAutoAgc.Location = New System.Drawing.Point(461, 180)
+        Me.MyButtonAutoAgc.Name = "MyButtonAutoAgc"
+        Me.MyButtonAutoAgc.Size = New System.Drawing.Size(60, 60)
+        Me.MyButtonAutoAgc.TabIndex = 305
+        Me.MyButtonAutoAgc.Text = "Auto AGC"
+        Me.MyButtonAutoAgc.UseVisualStyleBackColor = True
+        '
+        'MyButtonAutoIris
+        '
+        Me.MyButtonAutoIris.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyButtonAutoIris.Image = CType(resources.GetObject("MyButtonAutoIris.Image"), System.Drawing.Image)
+        Me.MyButtonAutoIris.Location = New System.Drawing.Point(395, 180)
+        Me.MyButtonAutoIris.Name = "MyButtonAutoIris"
+        Me.MyButtonAutoIris.Size = New System.Drawing.Size(60, 60)
+        Me.MyButtonAutoIris.TabIndex = 304
+        Me.MyButtonAutoIris.Text = "Auto Iris"
+        Me.MyButtonAutoIris.UseVisualStyleBackColor = True
+        '
+        'TextBoxFocus
+        '
+        Me.TextBoxFocus.BackColor = System.Drawing.Color.Black
+        Me.TextBoxFocus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBoxFocus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxFocus.ForeColor = System.Drawing.Color.Yellow
+        Me.TextBoxFocus.Location = New System.Drawing.Point(329, 93)
+        Me.TextBoxFocus.Name = "TextBoxFocus"
+        Me.TextBoxFocus.Size = New System.Drawing.Size(60, 29)
+        Me.TextBoxFocus.TabIndex = 303
+        Me.TextBoxFocus.Text = "17"
+        Me.TextBoxFocus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'MyButtonFullTele
         '
@@ -1942,7 +1951,7 @@ Partial Class MainForm
         '
         Me.BtnSlow.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSlow.Image = CType(resources.GetObject("BtnSlow.Image"), System.Drawing.Image)
-        Me.BtnSlow.Location = New System.Drawing.Point(86, 238)
+        Me.BtnSlow.Location = New System.Drawing.Point(133, 238)
         Me.BtnSlow.Name = "BtnSlow"
         Me.BtnSlow.Size = New System.Drawing.Size(60, 60)
         Me.BtnSlow.TabIndex = 234
@@ -1953,7 +1962,7 @@ Partial Class MainForm
         '
         Me.BtnFast.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnFast.Image = CType(resources.GetObject("BtnFast.Image"), System.Drawing.Image)
-        Me.BtnFast.Location = New System.Drawing.Point(22, 238)
+        Me.BtnFast.Location = New System.Drawing.Point(48, 238)
         Me.BtnFast.Name = "BtnFast"
         Me.BtnFast.Size = New System.Drawing.Size(60, 60)
         Me.BtnFast.TabIndex = 233
@@ -2052,15 +2061,18 @@ Partial Class MainForm
         '
         Me.OverrideBtn.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.OverrideBtn.Image = CType(resources.GetObject("OverrideBtn.Image"), System.Drawing.Image)
-        Me.OverrideBtn.Location = New System.Drawing.Point(149, 238)
+        Me.OverrideBtn.Location = New System.Drawing.Point(623, 488)
         Me.OverrideBtn.Name = "OverrideBtn"
         Me.OverrideBtn.Size = New System.Drawing.Size(60, 60)
         Me.OverrideBtn.TabIndex = 238
         Me.OverrideBtn.Text = "Over ride"
         Me.OverrideBtn.UseVisualStyleBackColor = True
+        Me.OverrideBtn.Visible = False
         '
         'SettingsPanel
         '
+        Me.SettingsPanel.Controls.Add(Me.ButtonRetryCam)
+        Me.SettingsPanel.Controls.Add(Me.Label25)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupSaveNew)
         Me.SettingsPanel.Controls.Add(Me.Label26)
         Me.SettingsPanel.Controls.Add(Me.TextBoxPresetNewFile)
@@ -2072,6 +2084,7 @@ Partial Class MainForm
         Me.SettingsPanel.Controls.Add(Me.Label3)
         Me.SettingsPanel.Controls.Add(Me.CheckBoxCam5Dis)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupOsd)
+        Me.SettingsPanel.Controls.Add(Me.ButtonRetryOBS)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupDown)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupUp)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupEnter)
@@ -2114,9 +2127,29 @@ Partial Class MainForm
         Me.SettingsPanel.Size = New System.Drawing.Size(784, 600)
         Me.SettingsPanel.TabIndex = 323
         '
+        'ButtonRetryCam
+        '
+        Me.ButtonRetryCam.Location = New System.Drawing.Point(373, 204)
+        Me.ButtonRetryCam.Name = "ButtonRetryCam"
+        Me.ButtonRetryCam.Size = New System.Drawing.Size(80, 50)
+        Me.ButtonRetryCam.TabIndex = 264
+        Me.ButtonRetryCam.Text = "Retry cameras"
+        Me.ButtonRetryCam.UseVisualStyleBackColor = True
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.ForeColor = System.Drawing.Color.Yellow
+        Me.Label25.Location = New System.Drawing.Point(24, 281)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(179, 16)
+        Me.Label25.TabIndex = 263
+        Me.Label25.Text = "Camera onscreen menus"
+        '
         'BtnSetupSaveNew
         '
-        Me.BtnSetupSaveNew.Location = New System.Drawing.Point(566, 423)
+        Me.BtnSetupSaveNew.Location = New System.Drawing.Point(566, 496)
         Me.BtnSetupSaveNew.Name = "BtnSetupSaveNew"
         Me.BtnSetupSaveNew.Size = New System.Drawing.Size(53, 23)
         Me.BtnSetupSaveNew.TabIndex = 262
@@ -2128,7 +2161,7 @@ Partial Class MainForm
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label26.ForeColor = System.Drawing.Color.Yellow
-        Me.Label26.Location = New System.Drawing.Point(277, 408)
+        Me.Label26.Location = New System.Drawing.Point(277, 481)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(203, 16)
         Me.Label26.TabIndex = 261
@@ -2140,10 +2173,11 @@ Partial Class MainForm
         Me.TextBoxPresetNewFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBoxPresetNewFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPresetNewFile.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxPresetNewFile.Location = New System.Drawing.Point(272, 426)
+        Me.TextBoxPresetNewFile.Location = New System.Drawing.Point(272, 499)
         Me.TextBoxPresetNewFile.Name = "TextBoxPresetNewFile"
         Me.TextBoxPresetNewFile.Size = New System.Drawing.Size(288, 22)
         Me.TextBoxPresetNewFile.TabIndex = 260
+        Me.TextBoxPresetNewFile.Text = "newpreset.aps"
         '
         'CheckBoxCam4Dis
         '
@@ -2234,45 +2268,45 @@ Partial Class MainForm
         '
         'BtnSetupOsd
         '
-        Me.BtnSetupOsd.Location = New System.Drawing.Point(272, 217)
+        Me.BtnSetupOsd.Location = New System.Drawing.Point(22, 300)
         Me.BtnSetupOsd.Name = "BtnSetupOsd"
-        Me.BtnSetupOsd.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupOsd.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupOsd.TabIndex = 252
         Me.BtnSetupOsd.Text = "osd"
         Me.BtnSetupOsd.UseVisualStyleBackColor = True
         '
         'BtnSetupDown
         '
-        Me.BtnSetupDown.Location = New System.Drawing.Point(460, 217)
+        Me.BtnSetupDown.Location = New System.Drawing.Point(326, 300)
         Me.BtnSetupDown.Name = "BtnSetupDown"
-        Me.BtnSetupDown.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupDown.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupDown.TabIndex = 251
         Me.BtnSetupDown.Text = "down"
         Me.BtnSetupDown.UseVisualStyleBackColor = True
         '
         'BtnSetupUp
         '
-        Me.BtnSetupUp.Location = New System.Drawing.Point(413, 217)
+        Me.BtnSetupUp.Location = New System.Drawing.Point(250, 300)
         Me.BtnSetupUp.Name = "BtnSetupUp"
-        Me.BtnSetupUp.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupUp.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupUp.TabIndex = 250
         Me.BtnSetupUp.Text = "up"
         Me.BtnSetupUp.UseVisualStyleBackColor = True
         '
         'BtnSetupEnter
         '
-        Me.BtnSetupEnter.Location = New System.Drawing.Point(365, 217)
+        Me.BtnSetupEnter.Location = New System.Drawing.Point(174, 300)
         Me.BtnSetupEnter.Name = "BtnSetupEnter"
-        Me.BtnSetupEnter.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupEnter.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupEnter.TabIndex = 249
         Me.BtnSetupEnter.Text = "enter"
         Me.BtnSetupEnter.UseVisualStyleBackColor = True
         '
         'BtnSetupMenu
         '
-        Me.BtnSetupMenu.Location = New System.Drawing.Point(319, 217)
+        Me.BtnSetupMenu.Location = New System.Drawing.Point(98, 300)
         Me.BtnSetupMenu.Name = "BtnSetupMenu"
-        Me.BtnSetupMenu.Size = New System.Drawing.Size(41, 31)
+        Me.BtnSetupMenu.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupMenu.TabIndex = 248
         Me.BtnSetupMenu.Text = "menu"
         Me.BtnSetupMenu.UseVisualStyleBackColor = True
@@ -2317,7 +2351,7 @@ Partial Class MainForm
         Me.CheckBoxStandby.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CheckBoxStandby.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBoxStandby.ForeColor = System.Drawing.Color.Yellow
-        Me.CheckBoxStandby.Location = New System.Drawing.Point(23, 432)
+        Me.CheckBoxStandby.Location = New System.Drawing.Point(23, 505)
         Me.CheckBoxStandby.Name = "CheckBoxStandby"
         Me.CheckBoxStandby.Size = New System.Drawing.Size(197, 20)
         Me.CheckBoxStandby.TabIndex = 244
@@ -2329,7 +2363,7 @@ Partial Class MainForm
         Me.CheckBoxProfile.AutoSize = True
         Me.CheckBoxProfile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBoxProfile.ForeColor = System.Drawing.Color.Yellow
-        Me.CheckBoxProfile.Location = New System.Drawing.Point(23, 381)
+        Me.CheckBoxProfile.Location = New System.Drawing.Point(23, 454)
         Me.CheckBoxProfile.Name = "CheckBoxProfile"
         Me.CheckBoxProfile.Size = New System.Drawing.Size(225, 20)
         Me.CheckBoxProfile.TabIndex = 243
@@ -2338,7 +2372,7 @@ Partial Class MainForm
         '
         'BtnSetupFolderBrowse
         '
-        Me.BtnSetupFolderBrowse.Location = New System.Drawing.Point(566, 312)
+        Me.BtnSetupFolderBrowse.Location = New System.Drawing.Point(566, 385)
         Me.BtnSetupFolderBrowse.Name = "BtnSetupFolderBrowse"
         Me.BtnSetupFolderBrowse.Size = New System.Drawing.Size(53, 23)
         Me.BtnSetupFolderBrowse.TabIndex = 242
@@ -2350,7 +2384,7 @@ Partial Class MainForm
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.Yellow
-        Me.Label7.Location = New System.Drawing.Point(275, 294)
+        Me.Label7.Location = New System.Drawing.Point(275, 367)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(156, 16)
         Me.Label7.TabIndex = 241
@@ -2362,7 +2396,7 @@ Partial Class MainForm
         Me.TextBoxPresetFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBoxPresetFolder.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPresetFolder.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxPresetFolder.Location = New System.Drawing.Point(272, 313)
+        Me.TextBoxPresetFolder.Location = New System.Drawing.Point(272, 386)
         Me.TextBoxPresetFolder.Name = "TextBoxPresetFolder"
         Me.TextBoxPresetFolder.Size = New System.Drawing.Size(288, 22)
         Me.TextBoxPresetFolder.TabIndex = 240
@@ -2424,7 +2458,7 @@ Partial Class MainForm
         '
         'BtnSetupFilenameBrowse
         '
-        Me.BtnSetupFilenameBrowse.Location = New System.Drawing.Point(566, 367)
+        Me.BtnSetupFilenameBrowse.Location = New System.Drawing.Point(566, 440)
         Me.BtnSetupFilenameBrowse.Name = "BtnSetupFilenameBrowse"
         Me.BtnSetupFilenameBrowse.Size = New System.Drawing.Size(53, 23)
         Me.BtnSetupFilenameBrowse.TabIndex = 234
@@ -2436,7 +2470,7 @@ Partial Class MainForm
         Me.Label32.AutoSize = True
         Me.Label32.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label32.ForeColor = System.Drawing.Color.Yellow
-        Me.Label32.Location = New System.Drawing.Point(277, 352)
+        Me.Label32.Location = New System.Drawing.Point(277, 425)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(184, 16)
         Me.Label32.TabIndex = 233
@@ -2448,7 +2482,7 @@ Partial Class MainForm
         Me.TextBoxPresetFilename.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBoxPresetFilename.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPresetFilename.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxPresetFilename.Location = New System.Drawing.Point(272, 370)
+        Me.TextBoxPresetFilename.Location = New System.Drawing.Point(272, 443)
         Me.TextBoxPresetFilename.Name = "TextBoxPresetFilename"
         Me.TextBoxPresetFilename.Size = New System.Drawing.Size(288, 22)
         Me.TextBoxPresetFilename.TabIndex = 232
@@ -2537,7 +2571,7 @@ Partial Class MainForm
         Me.CheckBoxAutoSwap.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CheckBoxAutoSwap.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBoxAutoSwap.ForeColor = System.Drawing.Color.Yellow
-        Me.CheckBoxAutoSwap.Location = New System.Drawing.Point(23, 358)
+        Me.CheckBoxAutoSwap.Location = New System.Drawing.Point(23, 431)
         Me.CheckBoxAutoSwap.Name = "CheckBoxAutoSwap"
         Me.CheckBoxAutoSwap.Size = New System.Drawing.Size(211, 20)
         Me.CheckBoxAutoSwap.TabIndex = 224
@@ -2549,7 +2583,7 @@ Partial Class MainForm
         Me.CheckBoxTally.AutoSize = True
         Me.CheckBoxTally.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBoxTally.ForeColor = System.Drawing.Color.Yellow
-        Me.CheckBoxTally.Location = New System.Drawing.Point(23, 406)
+        Me.CheckBoxTally.Location = New System.Drawing.Point(23, 479)
         Me.CheckBoxTally.Name = "CheckBoxTally"
         Me.CheckBoxTally.Size = New System.Drawing.Size(150, 20)
         Me.CheckBoxTally.TabIndex = 223
@@ -2609,7 +2643,7 @@ Partial Class MainForm
         Me.Label36.AutoSize = True
         Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label36.ForeColor = System.Drawing.Color.Yellow
-        Me.Label36.Location = New System.Drawing.Point(24, 291)
+        Me.Label36.Location = New System.Drawing.Point(24, 364)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(172, 16)
         Me.Label36.TabIndex = 218
@@ -2621,7 +2655,7 @@ Partial Class MainForm
         Me.ComboBoxSetupComport.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ComboBoxSetupComport.ForeColor = System.Drawing.Color.Yellow
         Me.ComboBoxSetupComport.FormattingEnabled = True
-        Me.ComboBoxSetupComport.Location = New System.Drawing.Point(27, 310)
+        Me.ComboBoxSetupComport.Location = New System.Drawing.Point(27, 383)
         Me.ComboBoxSetupComport.Name = "ComboBoxSetupComport"
         Me.ComboBoxSetupComport.Size = New System.Drawing.Size(164, 24)
         Me.ComboBoxSetupComport.TabIndex = 217
@@ -2709,9 +2743,11 @@ Partial Class MainForm
         Me.LabelEncB.AutoSize = True
         Me.LabelEncB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelEncB.ForeColor = System.Drawing.Color.White
-        Me.LabelEncB.Location = New System.Drawing.Point(61, 129)
+        Me.LabelEncB.Location = New System.Drawing.Point(60, 119)
+        Me.LabelEncB.MaximumSize = New System.Drawing.Size(58, 0)
+        Me.LabelEncB.MinimumSize = New System.Drawing.Size(0, 35)
         Me.LabelEncB.Name = "LabelEncB"
-        Me.LabelEncB.Size = New System.Drawing.Size(57, 19)
+        Me.LabelEncB.Size = New System.Drawing.Size(57, 35)
         Me.LabelEncB.TabIndex = 252
         Me.LabelEncB.Text = "Focus"
         Me.LabelEncB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2744,9 +2780,11 @@ Partial Class MainForm
         Me.LabelEncA.AutoSize = True
         Me.LabelEncA.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelEncA.ForeColor = System.Drawing.Color.White
-        Me.LabelEncA.Location = New System.Drawing.Point(61, 43)
+        Me.LabelEncA.Location = New System.Drawing.Point(61, 32)
+        Me.LabelEncA.MaximumSize = New System.Drawing.Size(58, 0)
+        Me.LabelEncA.MinimumSize = New System.Drawing.Size(0, 35)
         Me.LabelEncA.Name = "LabelEncA"
-        Me.LabelEncA.Size = New System.Drawing.Size(32, 19)
+        Me.LabelEncA.Size = New System.Drawing.Size(32, 35)
         Me.LabelEncA.TabIndex = 249
         Me.LabelEncA.Text = "Iris"
         Me.LabelEncA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2881,6 +2919,81 @@ Partial Class MainForm
         Me.PresetLoadClose.Size = New System.Drawing.Size(27, 25)
         Me.PresetLoadClose.TabIndex = 0
         Me.PresetLoadClose.Text = "X"
+        '
+        'PanelEncSelect
+        '
+        Me.PanelEncSelect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PanelEncSelect.Controls.Add(Me.LabelEnc)
+        Me.PanelEncSelect.Controls.Add(Me.ButtonEncAeShift)
+        Me.PanelEncSelect.Controls.Add(Me.ButtonEncAgcLimit)
+        Me.PanelEncSelect.Controls.Add(Me.ButtonEncAgc)
+        Me.PanelEncSelect.Controls.Add(Me.ButtonEncIris)
+        Me.PanelEncSelect.Controls.Add(Me.ButtonEncFocus)
+        Me.PanelEncSelect.Location = New System.Drawing.Point(1044, 334)
+        Me.PanelEncSelect.Name = "PanelEncSelect"
+        Me.PanelEncSelect.Size = New System.Drawing.Size(160, 330)
+        Me.PanelEncSelect.TabIndex = 326
+        Me.PanelEncSelect.Visible = False
+        '
+        'LabelEnc
+        '
+        Me.LabelEnc.AutoSize = True
+        Me.LabelEnc.Location = New System.Drawing.Point(10, 245)
+        Me.LabelEnc.Name = "LabelEnc"
+        Me.LabelEnc.Size = New System.Drawing.Size(45, 13)
+        Me.LabelEnc.TabIndex = 5
+        Me.LabelEnc.Text = "Label25"
+        Me.LabelEnc.Visible = False
+        '
+        'ButtonEncAeShift
+        '
+        Me.ButtonEncAeShift.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEncAeShift.Location = New System.Drawing.Point(12, 261)
+        Me.ButtonEncAeShift.Name = "ButtonEncAeShift"
+        Me.ButtonEncAeShift.Size = New System.Drawing.Size(136, 50)
+        Me.ButtonEncAeShift.TabIndex = 4
+        Me.ButtonEncAeShift.Text = "AE Shift"
+        Me.ButtonEncAeShift.UseVisualStyleBackColor = True
+        '
+        'ButtonEncAgcLimit
+        '
+        Me.ButtonEncAgcLimit.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEncAgcLimit.Location = New System.Drawing.Point(12, 199)
+        Me.ButtonEncAgcLimit.Name = "ButtonEncAgcLimit"
+        Me.ButtonEncAgcLimit.Size = New System.Drawing.Size(136, 50)
+        Me.ButtonEncAgcLimit.TabIndex = 3
+        Me.ButtonEncAgcLimit.Text = "AGC Limit"
+        Me.ButtonEncAgcLimit.UseVisualStyleBackColor = True
+        '
+        'ButtonEncAgc
+        '
+        Me.ButtonEncAgc.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEncAgc.Location = New System.Drawing.Point(12, 137)
+        Me.ButtonEncAgc.Name = "ButtonEncAgc"
+        Me.ButtonEncAgc.Size = New System.Drawing.Size(136, 50)
+        Me.ButtonEncAgc.TabIndex = 2
+        Me.ButtonEncAgc.Text = "AGC"
+        Me.ButtonEncAgc.UseVisualStyleBackColor = True
+        '
+        'ButtonEncIris
+        '
+        Me.ButtonEncIris.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEncIris.Location = New System.Drawing.Point(12, 75)
+        Me.ButtonEncIris.Name = "ButtonEncIris"
+        Me.ButtonEncIris.Size = New System.Drawing.Size(136, 50)
+        Me.ButtonEncIris.TabIndex = 1
+        Me.ButtonEncIris.Text = "Iris"
+        Me.ButtonEncIris.UseVisualStyleBackColor = True
+        '
+        'ButtonEncFocus
+        '
+        Me.ButtonEncFocus.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEncFocus.Location = New System.Drawing.Point(12, 13)
+        Me.ButtonEncFocus.Name = "ButtonEncFocus"
+        Me.ButtonEncFocus.Size = New System.Drawing.Size(136, 50)
+        Me.ButtonEncFocus.TabIndex = 0
+        Me.ButtonEncFocus.Text = "Focus"
+        Me.ButtonEncFocus.UseVisualStyleBackColor = True
         '
         'BtnInp5
         '
@@ -3336,58 +3449,13 @@ Partial Class MainForm
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
         '
-        'TextBoxFocus
-        '
-        Me.TextBoxFocus.BackColor = System.Drawing.Color.Black
-        Me.TextBoxFocus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBoxFocus.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxFocus.ForeColor = System.Drawing.Color.Yellow
-        Me.TextBoxFocus.Location = New System.Drawing.Point(329, 93)
-        Me.TextBoxFocus.Name = "TextBoxFocus"
-        Me.TextBoxFocus.Size = New System.Drawing.Size(60, 29)
-        Me.TextBoxFocus.TabIndex = 303
-        Me.TextBoxFocus.Text = "17"
-        Me.TextBoxFocus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'MyButtonAutoIris
-        '
-        Me.MyButtonAutoIris.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyButtonAutoIris.Image = CType(resources.GetObject("MyButtonAutoIris.Image"), System.Drawing.Image)
-        Me.MyButtonAutoIris.Location = New System.Drawing.Point(395, 180)
-        Me.MyButtonAutoIris.Name = "MyButtonAutoIris"
-        Me.MyButtonAutoIris.Size = New System.Drawing.Size(60, 60)
-        Me.MyButtonAutoIris.TabIndex = 304
-        Me.MyButtonAutoIris.Text = "Auto Iris"
-        Me.MyButtonAutoIris.UseVisualStyleBackColor = True
-        '
-        'MyButtonAutoAgc
-        '
-        Me.MyButtonAutoAgc.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyButtonAutoAgc.Image = CType(resources.GetObject("MyButtonAutoAgc.Image"), System.Drawing.Image)
-        Me.MyButtonAutoAgc.Location = New System.Drawing.Point(461, 180)
-        Me.MyButtonAutoAgc.Name = "MyButtonAutoAgc"
-        Me.MyButtonAutoAgc.Size = New System.Drawing.Size(60, 60)
-        Me.MyButtonAutoAgc.TabIndex = 305
-        Me.MyButtonAutoAgc.Text = "Auto AGC"
-        Me.MyButtonAutoAgc.UseVisualStyleBackColor = True
-        '
-        'MyButtonAutoWB
-        '
-        Me.MyButtonAutoWB.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyButtonAutoWB.Image = CType(resources.GetObject("MyButtonAutoWB.Image"), System.Drawing.Image)
-        Me.MyButtonAutoWB.Location = New System.Drawing.Point(659, 180)
-        Me.MyButtonAutoWB.Name = "MyButtonAutoWB"
-        Me.MyButtonAutoWB.Size = New System.Drawing.Size(60, 60)
-        Me.MyButtonAutoWB.TabIndex = 306
-        Me.MyButtonAutoWB.Text = "Auto WB"
-        Me.MyButtonAutoWB.UseVisualStyleBackColor = True
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1626, 1460)
+        Me.Controls.Add(Me.PanelEncSelect)
         Me.Controls.Add(Me.PresetLoadPanel)
         Me.Controls.Add(Me.MsgBoxPanel)
         Me.Controls.Add(Me.PresetPanel)
@@ -3400,7 +3468,6 @@ Partial Class MainForm
         Me.Controls.Add(Me.bConnect)
         Me.Controls.Add(Me.chkLogMessages)
         Me.Controls.Add(Me.mLog)
-        Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.BtnInp5)
         Me.Controls.Add(Me.AuxSel12)
         Me.Controls.Add(Me.Aux3Btn12)
@@ -3420,7 +3487,6 @@ Partial Class MainForm
         Me.Controls.Add(Me.Aux3Btn7)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.LabelProfile)
-        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Auxsel3)
         Me.Controls.Add(Me.Auxsel2)
         Me.Controls.Add(Me.Auxsel1)
@@ -3476,6 +3542,8 @@ Partial Class MainForm
         Me.MsgBoxPanel.PerformLayout()
         Me.PresetLoadPanel.ResumeLayout(False)
         Me.PresetLoadPanel.PerformLayout()
+        Me.PanelEncSelect.ResumeLayout(False)
+        Me.PanelEncSelect.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -3488,13 +3556,13 @@ Partial Class MainForm
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxIris As System.Windows.Forms.TextBox
     Friend WithEvents BtnIrisDown As System.Windows.Forms.Button
-    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxAgc As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxAeShift As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxAgcLimit As System.Windows.Forms.TextBox
     Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox9 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxWB As System.Windows.Forms.TextBox
     Friend WithEvents BtnCam1 As AtemController.MyButton
     Friend WithEvents BtnCam2 As AtemController.MyButton
     Friend WithEvents BtnCam3 As AtemController.MyButton
@@ -3569,18 +3637,14 @@ Partial Class MainForm
     Friend WithEvents Auxsel1 As AtemController.MyButton
     Friend WithEvents Auxsel2 As AtemController.MyButton
     Friend WithEvents Auxsel3 As AtemController.MyButton
-    Friend WithEvents BtnIrisAuto As System.Windows.Forms.Button
     Friend WithEvents BtnSlow As AtemController.MyButton
     Friend WithEvents BtnFast As AtemController.MyButton
-    Friend WithEvents BtnWBAuto As System.Windows.Forms.Button
     Friend WithEvents BtnLive As AtemController.MyButton
     Friend WithEvents BtnLivePTZ As AtemController.MyButton
-    Friend WithEvents BtnAgcAuto As System.Windows.Forms.Button
     Friend WithEvents BtnPreload As AtemController.MyButton
     Friend WithEvents BtnLiveSlow As AtemController.MyButton
     Friend WithEvents BtnLiveFast As AtemController.MyButton
     Friend WithEvents Auxsel4 As AtemController.MyButton
-    Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents LabelProfile As System.Windows.Forms.Label
     Friend WithEvents OverrideBtn As AtemController.MyButton
     Friend WithEvents Auxsel5 As AtemController.MyButton
@@ -3622,7 +3686,7 @@ Partial Class MainForm
     Friend WithEvents Aux3Btn12 As AtemController.MyButton
     Friend WithEvents AuxSel12 As AtemController.MyButton
     Friend WithEvents BtnInp5 As AtemController.MyButton
-    Friend WithEvents Button9 As System.Windows.Forms.Button
+    Friend WithEvents ButtonRetryOBS As System.Windows.Forms.Button
     Private WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Private WithEvents LineShape5 As Microsoft.VisualBasic.PowerPacks.LineShape
     Private WithEvents LineShape4 As Microsoft.VisualBasic.PowerPacks.LineShape
@@ -3745,4 +3809,13 @@ Partial Class MainForm
     Friend WithEvents MyButtonAutoAgc As AtemController.MyButton
     Friend WithEvents MyButtonAutoIris As AtemController.MyButton
     Friend WithEvents TextBoxFocus As System.Windows.Forms.TextBox
+    Friend WithEvents PanelEncSelect As System.Windows.Forms.Panel
+    Friend WithEvents ButtonEncAeShift As System.Windows.Forms.Button
+    Friend WithEvents ButtonEncAgcLimit As System.Windows.Forms.Button
+    Friend WithEvents ButtonEncAgc As System.Windows.Forms.Button
+    Friend WithEvents ButtonEncIris As System.Windows.Forms.Button
+    Friend WithEvents ButtonEncFocus As System.Windows.Forms.Button
+    Friend WithEvents LabelEnc As System.Windows.Forms.Label
+    Friend WithEvents ButtonRetryCam As System.Windows.Forms.Button
+    Friend WithEvents Label25 As System.Windows.Forms.Label
 End Class
