@@ -62,8 +62,8 @@ Partial Class MainForm
         Me.BtnGainDown = New System.Windows.Forms.Button()
         Me.BtnGainUp = New System.Windows.Forms.Button()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.BtnShutterDn = New System.Windows.Forms.Button()
-        Me.BtnShutterUp = New System.Windows.Forms.Button()
+        Me.BtnAEShiftDn = New System.Windows.Forms.Button()
+        Me.BtnAEShiftUp = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.BtnWbBlueUp = New System.Windows.Forms.Button()
@@ -707,25 +707,25 @@ Partial Class MainForm
         Me.Label8.TabIndex = 195
         Me.Label8.Text = "AGC Limit"
         '
-        'BtnShutterDn
+        'BtnAEShiftDn
         '
-        Me.BtnShutterDn.Font = New System.Drawing.Font("Wingdings 3", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnShutterDn.Location = New System.Drawing.Point(593, 128)
-        Me.BtnShutterDn.Name = "BtnShutterDn"
-        Me.BtnShutterDn.Size = New System.Drawing.Size(60, 40)
-        Me.BtnShutterDn.TabIndex = 196
-        Me.BtnShutterDn.Text = "q"
-        Me.BtnShutterDn.UseVisualStyleBackColor = True
+        Me.BtnAEShiftDn.Font = New System.Drawing.Font("Wingdings 3", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.BtnAEShiftDn.Location = New System.Drawing.Point(593, 128)
+        Me.BtnAEShiftDn.Name = "BtnAEShiftDn"
+        Me.BtnAEShiftDn.Size = New System.Drawing.Size(60, 40)
+        Me.BtnAEShiftDn.TabIndex = 196
+        Me.BtnAEShiftDn.Text = "q"
+        Me.BtnAEShiftDn.UseVisualStyleBackColor = True
         '
-        'BtnShutterUp
+        'BtnAEShiftUp
         '
-        Me.BtnShutterUp.Font = New System.Drawing.Font("Wingdings 3", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.BtnShutterUp.Location = New System.Drawing.Point(593, 47)
-        Me.BtnShutterUp.Name = "BtnShutterUp"
-        Me.BtnShutterUp.Size = New System.Drawing.Size(60, 40)
-        Me.BtnShutterUp.TabIndex = 197
-        Me.BtnShutterUp.Text = "p"
-        Me.BtnShutterUp.UseVisualStyleBackColor = True
+        Me.BtnAEShiftUp.Font = New System.Drawing.Font("Wingdings 3", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.BtnAEShiftUp.Location = New System.Drawing.Point(593, 47)
+        Me.BtnAEShiftUp.Name = "BtnAEShiftUp"
+        Me.BtnAEShiftUp.Size = New System.Drawing.Size(60, 40)
+        Me.BtnAEShiftUp.TabIndex = 197
+        Me.BtnAEShiftUp.Text = "p"
+        Me.BtnAEShiftUp.UseVisualStyleBackColor = True
         '
         'Label9
         '
@@ -1749,9 +1749,9 @@ Partial Class MainForm
         Me.CamPanel.Controls.Add(Me.Label21)
         Me.CamPanel.Controls.Add(Me.Label9)
         Me.CamPanel.Controls.Add(Me.MyButtonCamDR)
-        Me.CamPanel.Controls.Add(Me.BtnShutterUp)
+        Me.CamPanel.Controls.Add(Me.BtnAEShiftUp)
         Me.CamPanel.Controls.Add(Me.MyButtonCamD)
-        Me.CamPanel.Controls.Add(Me.BtnShutterDn)
+        Me.CamPanel.Controls.Add(Me.BtnAEShiftDn)
         Me.CamPanel.Controls.Add(Me.MyButtonCamDL)
         Me.CamPanel.Controls.Add(Me.MyButtonCamR)
         Me.CamPanel.Controls.Add(Me.Label8)
@@ -3608,8 +3608,8 @@ Partial Class MainForm
     Friend WithEvents BtnGainDown As System.Windows.Forms.Button
     Friend WithEvents BtnGainUp As System.Windows.Forms.Button
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents BtnShutterDn As System.Windows.Forms.Button
-    Friend WithEvents BtnShutterUp As System.Windows.Forms.Button
+    Friend WithEvents BtnAEShiftDn As System.Windows.Forms.Button
+    Friend WithEvents BtnAEShiftUp As System.Windows.Forms.Button
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents BtnWbBlueUp As System.Windows.Forms.Button
