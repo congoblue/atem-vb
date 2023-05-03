@@ -57,6 +57,7 @@ Public Class MainForm
     Dim CamWBRed(8) As Integer
     Dim CamWBBlue(8) As Integer
     Dim CamFocusManual(8) As Integer
+    Dim CamFocus(8) As Integer
     Dim ProgCloseTimer As Integer = 0
     Dim OverlayWasActive As Integer = 0
     Dim CamIgnore(8) As Boolean
@@ -276,8 +277,16 @@ Public Class MainForm
 
     '---Select preset file to load (touch friendly)
     Sub SelectPresetFile()
-        Dim di As New IO.DirectoryInfo(Globals.PresetFilePath)
-        Dim aryFi As IO.FileInfo() = di.GetFiles("*.aps")
+        Exit Sub
+        Dim aryFi As IO.FileInfo()
+        Try
+            Dim di As New IO.DirectoryInfo(Globals.PresetFilePath)
+            aryFi = di.GetFiles("*.aps")
+        Catch
+            MsgBox("Preset file error")
+            Dim di As New IO.DirectoryInfo("C:\")
+            aryFi = di.GetFiles("*.aps")
+        End Try
         Dim fi As IO.FileInfo
         Dim btnct As Integer = 0
         Dim i As Integer
@@ -582,6 +591,8 @@ Public Class MainForm
         If Val("&H" & Mid(op, 5)) = 1 Then CamIris(ta) = 9999 'flag auto mode
         op = SendCamCmdAddr(ta, "D1") 'get focus auto/man
         If Val("&H" & Mid(op, 3)) = 1 Then CamFocusManual(ta) = 0 Else CamFocusManual(ta) = 1 'flag auto mode if return=1
+        op = SendCamCmdAddr(ta, "GF")
+        CamFocus(ta) = Val("&H" & Mid(op, 3))
     End Sub
 
     '----------------------Read presets back from file-----------------------------------------------------
@@ -963,10 +974,13 @@ Public Class MainForm
         TextBoxAgcLimit.Text = CamAGCLimit(ad) * 6 & "dB"
         TextBox8.Text = CamWBRed(ad)
         TextBoxWB.Text = 2400 + CamWBBlue(ad) * 100
+
         If CamFocusManual(ad) = 0 Then
-            BtnFocusAuto.BackColor = Color.Green : BtnFocusLock.BackColor = Color.White
+            BtnFocusAuto.BackColor = Color.Red : BtnFocusLock.BackColor = Color.White
+            TextBoxFocus.Text = "Auto"
         Else
-            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Green
+            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
+            TextBoxFocus.Text = CamFocus(ad)
         End If
         EncoderAReset = 1 : EncoderBReset = 1
         PrevEncoderA = 0
@@ -1948,7 +1962,18 @@ Public Class MainForm
         End If
     End Sub
     Sub SetFocus(ad As Integer, v As Integer)
-
+        If (v < &H555) Then v = &H555
+        If (v > &HFFF) Then v = &HFFF
+        If CamFocusManual(ad) = 0 Then 'if was in auto mode set to manual
+            SendCamCmdAddr(ad, "D10")
+            CamFocusManual(ad) = 1
+            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
+        End If
+        CamFocus(ad) = v
+        'axf sets absolute focus position 555-FFF
+        mLog.Text = SendCamCmdAddr(ad, "AXF" & String.Format("{0:X2}", CamFocus(ad))) '&h555-&hFFF
+        TextBoxFocus.Text = CamFocus(ad)
+        ShowEncoderValues()
     End Sub
     Private Sub BtnFocusAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFocusAuto.Click
         Dim ad As Integer
@@ -1957,53 +1982,35 @@ Public Class MainForm
         CamFocusManual(ad) = 0
         TextBoxFocus.Text = "Auto"
         BtnFocusAuto.BackColor = Color.Red : BtnFocusLock.BackColor = Color.White
+        ShowEncoderValues()
     End Sub
 
     Private Sub BtnFocusLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFocusLock.Click
         Dim ad As Integer
+        Dim op As String
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
         SendCamCmdAddr(ad, "D10")
         CamFocusManual(ad) = 1
-        TextBoxFocus.Text = "Lock"
+        op = SendCamCmdAddr(ad, "GF")
+        CamFocus(ad) = Val("&H" & Mid(op, 3))
+        TextBoxFocus.Text = CamFocus(ad)
         BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
+        ShowEncoderValues()
     End Sub
 
-    Private Sub BtnFocusUp_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.MouseDown
+    Private Sub BtnFocusUp_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
-        If CamFocusManual(ad) = 0 Then
-            SendCamCmdAddr(ad, "D10")
-            CamFocusManual(ad) = 1
-            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
-        End If
-        SendCamCmdAddr(ad, "F60")
-        TextBoxFocus.Text = "Man"
+        CamFocus(ad) = CamFocus(ad) + 10
+        SetFocus(ad, CamFocus(ad))
     End Sub
 
-    Private Sub BtnFocusUp_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.MouseUp
+    Private Sub BtnFocusDn_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusDn.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
-        SendCamCmdAddr(ad, "F50")
+        CamFocus(ad) = CamFocus(ad) - 10
+        SetFocus(ad, CamFocus(ad))
     End Sub
-
-    Private Sub BtnFocusDn_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusDn.MouseDown
-        Dim ad As Integer
-        If (PTZLive = True) Then ad = liveaddr Else ad = addr
-        If CamFocusManual(ad) = 0 Then
-            SendCamCmdAddr(ad, "D10")
-            CamFocusManual(ad) = 1
-            BtnFocusAuto.BackColor = Color.White : BtnFocusLock.BackColor = Color.Red
-        End If
-        SendCamCmdAddr(ad, "F40")
-        TextBoxFocus.Text = "Man"
-    End Sub
-
-    Private Sub BtnFocusDn_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusDn.MouseUp
-        Dim ad As Integer
-        If (PTZLive = True) Then ad = liveaddr Else ad = addr
-        SendCamCmdAddr(ad, "F50")
-    End Sub
-
 
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -2532,8 +2539,11 @@ Public Class MainForm
             If EncoderB > 32767 Then EncoderB = EncoderB - 65536
             If EncoderB = 0 Then EncoderBReset = 0
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
+            JoyX = JoyX * 255 / 208
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
+            JoyY = JoyY * 255 / 202
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
+            JoyZ = JoyZ * 255 / 194
             SendSerial() 'send back the button illumination info
 
             If (ControlKeyState <> PrevControlKeyState) Then
@@ -2580,6 +2590,73 @@ Public Class MainForm
                 PrevEncoderB = EncoderB
             End If
 
+
+            'check for joystick being operated
+            'we will define a dead band at the centre of the joystick
+            Dim JoyDB As Byte = 8 'deadband of joystick
+            'If JoyX < (128 - JoyDB) Or JoyX > (128 + JoyDB) Or JoyY < (128 - JoyDB) Or JoyY > (128 + JoyDB) Or JoyZ < (128 - JoyDB) Or JoyZ > (128 + JoyDB) Then
+
+            Dim xpos As Integer, ypos As Integer, zpos As Integer, zoom As Boolean = False
+            If PTZLive = False Then ad = addr Else ad = liveaddr
+            If (CamOverride > 0) Then ad = CamOverride 'override the selected camera from the buttons
+            If (ad < 5) Or ad = 7 Then
+                xpos = 255 - JoyX
+                ypos = JoyY
+                zpos = JoyZ
+                'If (xpos > 128 - JoyDB) And (xpos < 128 + JoyDB) Then
+                'xpos = 128
+                'Else
+                'If (xpos < 128 - JoyDB) Then
+                'xpos = xpos + JoyDB
+                'Else
+                'xpos = xpos - JoyDB
+                'End If
+                'End If
+                'If (ypos > 128 - JoyDB) And (ypos < 128 + JoyDB) Then
+                'ypos = 128
+                'Else
+                'If (ypos < 128 - JoyDB) Then
+                '    ypos = ypos + JoyDB
+                'Else
+                'ypos = ypos - JoyDB
+                'End If
+                'End If
+                'If (zpos > 128 - JoyDB) And (zpos < 128 + JoyDB) Then
+                'zpos = 128
+                'Else
+                'If (zpos < 128 - JoyDB) Then
+                'zpos = zpos + JoyDB
+                'Else
+                'zpos = zpos - JoyDB
+                'End If
+                'End If
+                If Globals.CamInvert(ad) Then xpos = 255 - xpos : ypos = 255 - ypos
+                'JoyZ = zpos - JoyDB : JoyX = xpos - JoyDB : JoyY = ypos - JoyDB
+                'JoyZ = 1 + Int(JoyZ * 99 / (255 - JoyDB * 2))
+                If (zpos >= 128) Then JoyZ = 100 - zoomconvert(255 - zpos) Else JoyZ = zoomconvert(zpos)
+                If (JoyZ <> PrevJoyZ) Then
+                    If (alreadysending = False) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
+                        op = Format(JoyZ, "00")
+                        alreadysending = True
+                        SendCamCmdAddr(ad, "Z" & op)
+                        PrevJoyZ = JoyZ 'only store the prev value if we actually send the new value
+                        alreadysending = False
+                    End If
+                End If
+                'JoyX = 1 + Int(JoyX * 99 / (255 - JoyDB * 2)) : JoyY = 1 + Int(JoyY * 99 / (255 - JoyDB * 2))
+                If (xpos >= 128) Then JoyX = 100 - joyconvert(255 - xpos) Else JoyX = joyconvert(xpos)
+                If (ypos >= 128) Then JoyY = 100 - joyconvert(255 - ypos) Else JoyY = joyconvert(ypos)
+                If (JoyX <> PrevJoyX) Or (JoyY <> PrevJoyY) Then
+                    If alreadysending = False Then
+                        op = Format(JoyX, "00") & Format(JoyY, "00")
+                        alreadysending = True
+                        SendCamCmdAddr(ad, "PTS" & op)
+                        PrevJoyX = JoyX : PrevJoyY = JoyY
+                        alreadysending = False
+                    End If
+                End If
+
+            End If
         End If
 
 
@@ -3259,7 +3336,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         Select Case EncoderAllocation(enc)
-            Case 0 : SetFocus(ad, v + CamIris(ad))
+            Case 0 : SetFocus(ad, v + CamFocus(ad))
             Case 1 : SetIris(ad, v + CamIris(ad))
             Case 2 : SetAGC(ad, v + CamAgc(ad))
             Case 3 : SetAGCLimit(ad, v + CamAGCLimit(ad))
@@ -3380,8 +3457,8 @@ Public Class MainForm
         SaveSetting("Atemswitcher", "Set", "Caminvert2", CheckBoxInvert2.Checked)
         SaveSetting("Atemswitcher", "Set", "Caminvert3", CheckBoxInvert3.Checked)
         SaveSetting("Atemswitcher", "Set", "Caminvert4", CheckBoxInvert4.Checked)
-        SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBoxAgc.Text)
-        SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBoxAeShift.Text)
+        SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBoxPresetFilename.Text)
+        SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBoxPresetFolder.Text)
 
         SaveSetting("Atemswitcher", "Set", "Cam1Dis", CheckBoxCam1Dis.Checked)
         SaveSetting("Atemswitcher", "Set", "Cam2Dis", CheckBoxCam2Dis.Checked)
