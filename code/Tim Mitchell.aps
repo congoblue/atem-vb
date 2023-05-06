@@ -1,64 +1,64 @@
-﻿Lectern Close,7F9D,8147,D0E,1,2,-1,0,True
-Lectern  Tall,7F80,810B,C75,1,3,-1,0,True
-Lectern  Short,7FD9,81A7,CB7,0,0,0,0,True
-Stage,7FC3,8284,80D,1,6,-1,0,True
-Singer L,8CE8,80CB,F00,5,1,-1,0,True
-Singer M,8B0B,80F1,E6D,5,1,-1,0,True
-Singer R,88F7,807F,EA7,5,1,-1,0,True
-Singers,8A2A,8117,D18,5,3,-1,0,True
-Whole  Band,9103,8367,7DE,2,5,-1,0,True
-Guitar,914F,82F9,CD6,2,1,-1,0,True
-Lectern Left,828E,818A,C75,0,0,0,0,True
-elec guit,8E85,84A4,F10,2,2,-1,0,True
-Comm-  union   Table,7C1B,817B,C0C,0,0,0,0,True
-flute,8CCA,82F9,E87,0,0,0,0,True
-Flowers,844C,81AA,EA6,1,4,-1,0,True
-random,975A,848F,555,0,0,0,0,True
-Singer L,8CFC,80ED,ED2,5,1,-1,0,True
-Singer M,8C13,80C9,FAB,5,1,-1,0,True
-Singer R,8A75,809C,F56,5,1,-1,0,True
-Singers,8B5F,80FE,DA6,5,2,-1,0,True
-Lectern Short,84A4,812D,DB4,0,0,0,0,True
-Lectern,8488,80FA,E06,1,2,-1,0,True
-Lectern Wide,8554,819F,BA2,0,0,0,0,True
-Full Wide,856C,822D,555,4,6,-1,0,True
-North Aisle,7406,8384,555,0,0,0,0,True
-Sermon,85E3,81AC,B6A,0,5,0,0,True
-Solo,8AC5,830E,E43,0,0,0,0,True
-Stage Wide,873B,81BF,8F1,1,5,-1,0,True
-Wide - North,7AA9,81C7,5A6,0,0,0,0,True
-Guitars,8E46,830B,D6B,0,0,0,0,True
-Flowers,8794,8151,F37,0,0,0,0,True
-Bass big close up,8F6C,829E,FF4,0,0,0,0,True
-Drums,9925,8897,8DE,2,3,-1,0,True
-Piano,8BEE,87F7,895,2,3,-1,0,True
-Piano Over Shoulder,8BD0,8698,F7B,2,1,-1,0,True
-Congas,9722,8E38,788,2,2,0,0,True
-Drums Close,99C7,8921,CDE,2,1,-1,0,True
-Singer Side,9508,7FAF,D31,5,1,-1,0,True
-bass,939F,8462,DDC,0,0,0,0,True
-Hihat really close,9864,887A,F36,2,1,-1,0,True
-Lectern,9356,7FC6,E04,0,0,0,0,True
-Band,9287,87D8,617,2,3,-1,0,True
-Guitar big close,9260,83F2,F3F,2,2,-1,0,True
-Singers side really close,9542,7F8C,F59,5,1,-1,0,True
-foldback mon,8225,7D93,ECD,0,0,0,0,True
-Bible,77CA,878C,FCA,0,0,0,0,True
-Communion Altar,48C3,807B,B1C,0,0,0,0,True
-Cong Wide,87EA,82E5,55C,3,6,-1,0,True
-Wide,7C9D,8850,555,4,0,-1,0,True
-Middle low,7DEC,878C,716,3,5,-1,0,True
-Middle high,7F22,84BC,555,3,5,-1,0,True
-Band,78E7,8456,CC0,2,4,-1,0,True
-Lectern,7690,84FD,DB6,1,2,0,0,True
-Horn,7902,8500,F86,2,2,0,0,True
-Piano,7ACC,83A0,EEF,2,2,-1,0,True
-Solo,7718,838C,F0B,2,2,0,0,True
-Guitar,7938,8460,EE5,0,2,-1,0,True
-Band close,7838,848A,C90,2,0,-1,0,True
-Flute,795F,848F,F25,0,0,0,0,True
-Singers,7718,838C,F0B,5,2,-1,0,True
-13,8000,8000,555,0,0,0,0,True
-Flowers,75C9,84B9,FFF,0,0,0,0,True
-Communion Shot,76C1,85E8,E12,0,0,0,0,True
-Altar,7F51,812A,DDD,0,0,0,0,True
+﻿piano,47FF,7F8F,650,0,0,0,0,True
+2,8000,8000,555,0,0,0,0,False
+3,8000,8000,555,0,0,0,0,False
+4,8000,8000,555,0,0,0,0,False
+5,8000,8000,555,0,0,0,0,False
+6,8000,8000,555,0,0,0,0,False
+7,8000,8000,555,0,0,0,0,False
+8,8000,8000,555,0,0,0,0,False
+9,8000,8000,555,0,0,0,0,False
+10,8000,8000,555,0,0,0,0,False
+11,8000,8000,555,0,0,0,0,False
+12,8000,8000,555,0,0,0,0,False
+13,8000,8000,555,0,0,0,0,False
+14,8000,8000,555,0,0,0,0,False
+15,8000,8000,555,0,0,0,0,False
+16,8000,8000,555,0,0,0,0,False
+1,8000,8000,555,0,0,0,0,False
+2,8000,8000,555,0,0,0,0,False
+3,8000,8000,555,0,0,0,0,False
+4,8000,8000,555,0,0,0,0,False
+5,8000,8000,555,0,0,0,0,False
+6,8000,8000,555,0,0,0,0,False
+7,8000,8000,555,0,0,0,0,False
+8,8000,8000,555,0,0,0,0,False
+9,8000,8000,555,0,0,0,0,False
+10,8000,8000,555,0,0,0,0,False
+11,8000,8000,555,0,0,0,0,False
+12,8000,8000,555,0,0,0,0,False
+13,8000,8000,555,0,0,0,0,False
+14,8000,8000,555,0,0,0,0,False
+15,8000,8000,555,0,0,0,0,False
+16,8000,8000,555,0,0,0,0,False
+1,8000,8000,555,0,0,0,0,False
+2,8000,8000,555,0,0,0,0,False
+3,8000,8000,555,0,0,0,0,False
+4,8000,8000,555,0,0,0,0,False
+5,8000,8000,555,0,0,0,0,False
+6,8000,8000,555,0,0,0,0,False
+7,8000,8000,555,0,0,0,0,False
+8,8000,8000,555,0,0,0,0,False
+9,8000,8000,555,0,0,0,0,False
+10,8000,8000,555,0,0,0,0,False
+11,8000,8000,555,0,0,0,0,False
+12,8000,8000,555,0,0,0,0,False
+13,8000,8000,555,0,0,0,0,False
+14,8000,8000,555,0,0,0,0,False
+15,8000,8000,555,0,0,0,0,False
+16,8000,8000,555,0,0,0,0,False
+1,8000,8000,555,0,0,0,0,False
+2,8000,8000,555,0,0,0,0,False
+3,8000,8000,555,0,0,0,0,False
+4,8000,8000,555,0,0,0,0,False
+5,8000,8000,555,0,0,0,0,False
+6,8000,8000,555,0,0,0,0,False
+7,8000,8000,555,0,0,0,0,False
+8,8000,8000,555,0,0,0,0,False
+9,8000,8000,555,0,0,0,0,False
+10,8000,8000,555,0,0,0,0,False
+11,8000,8000,555,0,0,0,0,False
+12,8000,8000,555,0,0,0,0,False
+13,8000,8000,555,0,0,0,0,False
+14,8000,8000,555,0,0,0,0,False
+15,8000,8000,555,0,0,0,0,False
+16,8000,8000,555,0,0,0,0,False

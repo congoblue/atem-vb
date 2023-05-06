@@ -263,6 +263,7 @@ Public Class MainForm
         SetDefaultPresets()
         'ReadPresetFile()
         ShowMode(1)
+        EncoderAllocation(1) = 0 : EncoderAllocation(2) = 4
         ShowEncoderAllocations()
 
         'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
@@ -277,7 +278,7 @@ Public Class MainForm
 
     '---Select preset file to load (touch friendly)
     Sub SelectPresetFile()
-        Exit Sub
+        'Exit Sub
         Dim aryFi As IO.FileInfo()
         Try
             Dim di As New IO.DirectoryInfo(Globals.PresetFilePath)
@@ -352,7 +353,7 @@ Public Class MainForm
             Dim pi As Integer
             If PresetLoadStart + 11 <= PresetLoadFileCount Then ct = 11
             For i = PresetLoadStart To PresetLoadStart + ct - 1
-                Dim btn As Button = Me.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
+                Dim btn As Button = PresetLoadPanel.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
                 pi = i - PresetLoadStart
                 If pi < 6 Then
                     btn.Location = New Point(40, pi * 70 + 60)
@@ -362,7 +363,7 @@ Public Class MainForm
             Next
         Else
             For i = 0 To PresetLoadFileCount - 1
-                Dim btn As Button = CType(Me.Controls("BtnPresetFile" + i.ToString()), Button)
+                Dim btn As Button = PresetLoadPanel.Controls.Find("BtnPresetFile" + i.ToString(), True)(0)
                 If i < 6 Then
                     btn.Location = New Point(40, i * 70 + 60)
                 Else
@@ -371,6 +372,9 @@ Public Class MainForm
             Next
         End If
         PresetLoadPanel.Refresh()
+    End Sub
+    Private Sub PresetLoadClose_Click(sender As Object, e As EventArgs) Handles PresetLoadClose.Click
+        PresetLoadPanel.Visible = False
     End Sub
     Sub PresetLoadHandler_Click(ByVal sender As Object, ByVal e As EventArgs)
         If TypeOf sender Is Button Then
@@ -407,6 +411,7 @@ Public Class MainForm
         MsgboxClose.Left = MsgBoxPanel.Width - 25
         MsgBoxPanel.BringToFront()
         MsgBoxPanel.Visible = True
+        MsgBoxPanel.Refresh()
     End Sub
     Private Sub MsgboxClose_Click(sender As Object, e As EventArgs) Handles MsgBoxPanel.Click, MsgboxClose.Click
         MsgBoxPanel.Visible = False
@@ -445,6 +450,7 @@ Public Class MainForm
     End Sub
 
     Private Function GetWebRequest(url As String)
+        Debug.Print(url)
         Dim request As WebRequest = WebRequest.Create(url)
         request.Timeout = 200
         Dim resp As WebResponse = request.GetResponse()
@@ -616,7 +622,7 @@ Public Class MainForm
             Try
                 CurrentRow = TextFileReader.ReadFields()
                 If Not CurrentRow Is Nothing Then
-                    If UBound(CurrentRow) = 4 Then
+                    If UBound(CurrentRow) >= 4 Then 'preset data
                         PresetCaption(i) = CurrentRow(0).ToString
                         PresetXPos(i) = CurrentRow(1).ToString
                         PresetYPos(i) = CurrentRow(2).ToString
@@ -640,8 +646,15 @@ Public Class MainForm
                             PresetFocus(i) = 0
                             PresetFocusAuto(i) = True
                         End If
+                        i = i + 1
+                    Else  'short row - other data
+                        a = CurrentRow(0).ToString
+                        If a = "Encoder" Then
+                            EncoderAllocation(1) = Convert.ToInt32(CurrentRow(1).ToString)
+                            EncoderAllocation(2) = Convert.ToInt32(CurrentRow(2).ToString)
+                        End If
                     End If
-                    i = i + 1
+
                 End If
             Catch ex As  _
             Microsoft.VisualBasic.FileIO.MalformedLineException
@@ -676,7 +689,13 @@ Public Class MainForm
                 file.WriteLine(ln)
             Next i
         Next j
+
+        'other settings
+        ln = "Encoder" & "," & EncoderAllocation(1) & "," & EncoderAllocation(2)
+        file.WriteLine(ln)
+
         file.Close()
+
 
         'also save cam5 legends to registry
         For i = 0 To 15
@@ -725,10 +744,11 @@ Public Class MainForm
         TextBoxPresetEdit.Focus()
     End Sub
     Sub EndEditPresetDetails()
-        TextBoxPresetEdit.Visible = False
-        PresetCaption((addr - 1) * 16 + PresetLegendMode - 1) = TextBoxPresetEdit.Text
+        If TextBoxPresetEdit.Visible = False Then Exit Sub 'another action may have already run this routine
+        If (PresetLegendMode <> 999) And (PresetLegendMode <> 0) Then PresetCaption((addr - 1) * 16 + PresetLegendMode - 1) = TextBoxPresetEdit.Text
         PresetLegendMode = 0
         BtnEditPreset.BackColor = Color.White
+        TextBoxPresetEdit.Visible = False
         WritePresetFile()
         setactive()
     End Sub
@@ -739,12 +759,12 @@ Public Class MainForm
         If PresetLegendMode <> 0 Then EndEditPresetDetails() 'user clicks on the panel
     End Sub
     Private Sub TextBoxPresetEdit_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBoxPresetEdit.KeyDown
-        If e.KeyCode = Keys.Enter And e.Modifiers = 0 Then EndEditPresetDetails()
+        If e.KeyCode = Keys.Enter And e.Modifiers = 0 Then EndEditPresetDetails() 'user presses enter after typing
     End Sub
 
 
     '--------------------------------------------------------------------------------------------------------------
-    'Click on a preset button
+    'Click on a preset button (may be recall, save or edit)
     '--------------------------------------------------------------------------------------------------------------
     Private Sub BtnPreset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnPreset1.Click, BtnPreset2.Click, BtnPreset3.Click, BtnPreset4.Click, BtnPreset5.Click, BtnPreset6.Click, BtnPreset7.Click, BtnPreset8.Click, BtnPreset9.Click, BtnPreset10.Click, BtnPreset11.Click, BtnPreset12.Click, BtnPreset13.Click, BtnPreset14.Click, BtnPreset15.Click, BtnPreset16.Click
         Dim op As String
@@ -943,6 +963,7 @@ Public Class MainForm
                 op = Mid(op, 3)
                 If (op = "0") Then PresetFocusAuto((addr - 1) * 16 + index - 1) = False Else PresetFocusAuto((addr - 1) * 16 + index - 1) = True
                 If PresetCaption((addr - 1) * 16 + index - 1) = Convert.ToString(index) Then 'automatically ask for legend if the legend is just the initial number
+                    PresetLegendMode = index
                     StartEditPresetDetails(index)
                 End If
                 presetstate(addr) = 2 ^ (index - 1)
@@ -1044,8 +1065,6 @@ Public Class MainForm
         For i = 1 To 10
             SetControllerLedState(i)
         Next
-        'set encoder status caption
-        If (addr < 6) Then LabelEncStatus.Text = "CAM" & addr
         'tally
         If Globals.TallyMode Then
             SendCamCmdAddr(nextpreview, "DA0")
@@ -2530,7 +2549,7 @@ Public Class MainForm
             End If
         End While
 
-        If newserial = 1 Then
+        If newserial = 1 And startuptimer > 50 Then
             ControlKeyState = SerialInBuf(0) + (SerialInBuf(1) * 128) + (SerialInBuf(2) * 512)
             EncoderA = SerialInBuf(3) + (SerialInBuf(4) * 128) + (SerialInBuf(5) * 512)
             If EncoderA > 32767 Then EncoderA = EncoderA - 65536
@@ -2539,8 +2558,10 @@ Public Class MainForm
             If EncoderB > 32767 Then EncoderB = EncoderB - 65536
             If EncoderB = 0 Then EncoderBReset = 0
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
+            If (JoyX > 208) Then JoyX = 208
             JoyX = JoyX * 255 / 208
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
+            If (JoyY > 202) Then JoyY = 202
             JoyY = JoyY * 255 / 202
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
             JoyZ = JoyZ * 255 / 194
@@ -3299,6 +3320,9 @@ Public Class MainForm
         End Select
     End Sub
     Sub ShowEncoderValues()
+        Dim ad
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        If (ad < 6) Then LabelEncStatus.Text = "CAM" & ad Else LabelEncStatus.Text = "---"
         Select Case EncoderAllocation(1)
             Case 0 : TextEncAStatus.Text = TextBoxFocus.Text
             Case 1 : TextEncAStatus.Text = TextBoxIris.Text
@@ -3313,6 +3337,8 @@ Public Class MainForm
             Case 3 : TextEncBStatus.Text = TextBoxAgcLimit.Text
             Case 4 : TextEncBStatus.Text = TextBoxAeShift.Text
         End Select
+        If TextEncAStatus.Text = "Auto" Then ControllerLedState(14) = ControllerLedState(14) Or 1 Else ControllerLedState(14) = ControllerLedState(14) And 254
+        If TextEncBStatus.Text = "Auto" Then ControllerLedState(14) = ControllerLedState(14) Or 2 Else ControllerLedState(14) = ControllerLedState(14) And 253
     End Sub
     Sub SetEncoderAllocation(num)
         PanelEncSelect.Left = 740 'move onto the screen
@@ -3484,7 +3510,8 @@ Public Class MainForm
     '----update when control loses focus
     Sub SetupLostFocus() Handles TextBoxIPCam1.LostFocus, TextBoxIPCam2.LostFocus, TextBoxIPCam3.LostFocus, TextBoxIPCam4.LostFocus, _
         TextBoxIPCam5.LostFocus, CheckBoxCam1Dis.Click, CheckBoxCam2Dis.Click, CheckBoxCam3Dis.Click, CheckBoxCam4Dis.Click, CheckBoxCam5Dis.Click, _
-        CheckBoxTally.Click, CheckBoxAutoSwap.Click, CheckBoxStandby.Click, CheckBoxProfile.Click, CheckBoxInvert1.Click, CheckBoxInvert2.Click, CheckBoxInvert3.Click, CheckBoxInvert4.Click
+        CheckBoxTally.Click, CheckBoxAutoSwap.Click, CheckBoxStandby.Click, CheckBoxProfile.Click, CheckBoxInvert1.Click, CheckBoxInvert2.Click, CheckBoxInvert3.Click, CheckBoxInvert4.Click, _
+        TextBoxPresetFilename.LostFocus, TextBoxPresetFolder.LostFocus
 
         StoreSetupScreen()
     End Sub
@@ -3494,24 +3521,29 @@ Public Class MainForm
     End Sub
 
     '----Camera OSD buttons
+    Sub SendOsdCmd(cmd As String)
+        Dim ad
+        If PTZLive = False Then ad = addr Else ad = liveaddr
+        SendCamQueryNoResponse(ad, "aw_cam?cmd=" & cmd & "&res=1")
+    End Sub
     Private Sub ButtonOsdMenu_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupMenu.Click
-        SendCamQueryNoResponse(7, "aw_cam?cmd=DPG")
+        SendOsdCmd("DUS:0")
     End Sub
 
     Private Sub ButtonOSD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupOsd.Click
-        SendCamQueryNoResponse(7, "aw_cam?cmd=DUS:1")
+        SendOsdCmd("DUS:1")
     End Sub
 
     Private Sub ButtonOsdEnter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupEnter.Click
-        SendCamQueryNoResponse(7, "aw_cam?cmd=DIT")
+        SendOsdCmd("DIT")
     End Sub
 
     Private Sub ButtonOsdUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupUp.Click
-        SendCamQueryNoResponse(7, "aw_cam?cmd=DUP")
+        SendOsdCmd("DUP")
     End Sub
 
     Private Sub ButtonOsdDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSetupDown.Click
-        SendCamQueryNoResponse(7, "aw_cam?cmd=DDW")
+        SendOsdCmd("DDW")
     End Sub
 
     '----Setup file folder select

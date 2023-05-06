@@ -2272,7 +2272,7 @@ Partial Class MainForm
         Me.BtnSetupOsd.Name = "BtnSetupOsd"
         Me.BtnSetupOsd.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupOsd.TabIndex = 252
-        Me.BtnSetupOsd.Text = "osd"
+        Me.BtnSetupOsd.Text = "osd on"
         Me.BtnSetupOsd.UseVisualStyleBackColor = True
         '
         'BtnSetupDown
@@ -2308,7 +2308,7 @@ Partial Class MainForm
         Me.BtnSetupMenu.Name = "BtnSetupMenu"
         Me.BtnSetupMenu.Size = New System.Drawing.Size(60, 50)
         Me.BtnSetupMenu.TabIndex = 248
-        Me.BtnSetupMenu.Text = "menu"
+        Me.BtnSetupMenu.Text = "osd off"
         Me.BtnSetupMenu.UseVisualStyleBackColor = True
         '
         'LblCamStatus5
