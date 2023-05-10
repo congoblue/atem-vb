@@ -2558,13 +2558,16 @@ Public Class MainForm
             If EncoderB > 32767 Then EncoderB = EncoderB - 65536
             If EncoderB = 0 Then EncoderBReset = 0
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
-            If (JoyX > 208) Then JoyX = 208
-            JoyX = JoyX * 255 / 208
+            TextLeaderName.Text = JoyX
+            'If (JoyX > 208) Then JoyX = 208
+            'JoyX = JoyX * 255 / 208
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
-            If (JoyY > 202) Then JoyY = 202
-            JoyY = JoyY * 255 / 202
+            TextPreacherName.Text = JoyY
+            'If (JoyY > 202) Then JoyY = 202
+            'JoyY = JoyY * 255 / 202
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
-            JoyZ = JoyZ * 255 / 194
+            TextCaptionOther.Text = JoyZ
+            'JoyZ = JoyZ * 255 / 194
             SendSerial() 'send back the button illumination info
 
             If (ControlKeyState <> PrevControlKeyState) Then
