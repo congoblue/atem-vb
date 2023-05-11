@@ -620,8 +620,9 @@ Public Class MainForm
         i = 0
         While Not TextFileReader.EndOfData
             Try
-                CurrentRow = TextFileReader.ReadFields()
+                CurrentRow = TextFileReader.ReadFields() 'fields:0=name,1=x,2=y,3=z,4=Focus,5=Iris,6=AEshift
                 If Not CurrentRow Is Nothing Then
+                    i = UBound(CurrentRow)
                     If UBound(CurrentRow) >= 4 Then 'preset data
                         PresetCaption(i) = CurrentRow(0).ToString
                         PresetXPos(i) = CurrentRow(1).ToString
@@ -649,9 +650,15 @@ Public Class MainForm
                         i = i + 1
                     Else  'short row - other data
                         a = CurrentRow(0).ToString
-                        If a = "Encoder" Then
+                        If a = "Encoder" And UBound(CurrentRow) >= 2 Then
                             EncoderAllocation(1) = Convert.ToInt32(CurrentRow(1).ToString)
                             EncoderAllocation(2) = Convert.ToInt32(CurrentRow(2).ToString)
+                            ShowEncoderAllocations()
+                        End If
+                        If a = "CamSettingStore" And UBound(CurrentRow) >= 3 Then
+                            If (CurrentRow(1) = "True") Then CheckBoxSaveFocus.Checked = True Else CheckBoxSaveFocus.Checked = False
+                            If (CurrentRow(2) = "True") Then CheckBoxSaveIris.Checked = True Else CheckBoxSaveIris.Checked = False
+                            If (CurrentRow(3) = "True") Then CheckBoxSaveAE.Checked = True Else CheckBoxSaveAE.Checked = False
                         End If
                     End If
 
@@ -692,6 +699,9 @@ Public Class MainForm
 
         'other settings
         ln = "Encoder" & "," & EncoderAllocation(1) & "," & EncoderAllocation(2)
+        file.WriteLine(ln)
+
+        ln = "CamSettingStore" & "," & CheckBoxSaveFocus.Checked & "," & CheckBoxSaveIris.Checked & "," & CheckBoxSaveAE.Checked
         file.WriteLine(ln)
 
         file.Close()
@@ -782,9 +792,9 @@ Public Class MainForm
             If MovePresetMode = 1 Then 'select preset to move
                 MovePresetFrom = index
                 MovePresetMode = 2
-                CType(Me.Controls.Find("BtnPreset" & MovePresetFrom, False)(0), AtemController.MyButton).BackColor = Color.Orange
+                CType(PresetPanel.Controls.Find("BtnPreset" & MovePresetFrom, False)(0), AtemController.MyButton).BackColor = Color.Orange
                 For i = 1 To 16
-                    If i <> index Then CType(Me.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Red
+                    If i <> index Then CType(PresetPanel.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Red
                 Next
                 Exit Sub
             End If
@@ -805,7 +815,7 @@ Public Class MainForm
                 MovePresetMode = 0
                 BtnMovePreset.ForeColor = Color.Black
                 For i = 1 To 16
-                    CType(Me.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Black
+                    CType(PresetPanel.Controls.Find("BtnPreset" & i, False)(0), AtemController.MyButton).ForeColor = Color.Black
                 Next
                 UpdatePresets()
                 Exit Sub
@@ -3413,6 +3423,7 @@ Public Class MainForm
         End Select
         ShowEncoderAllocations()
         ShowEncoderValues()
+        WritePresetFile()
     End Sub
 
     '----------------------------------------------------------
@@ -3462,6 +3473,10 @@ Public Class MainForm
         If GetSetting("Atemswitcher", "Set", "Cam4Dis", False) = True Then CheckBoxCam4Dis.Checked = True Else CheckBoxCam4Dis.Checked = False
         If GetSetting("Atemswitcher", "Set", "Cam5Dis", False) = True Then CheckBoxCam5Dis.Checked = True Else CheckBoxCam5Dis.Checked = False
 
+        If GetSetting("Atemswitcher", "Set", "SaveFocus", False) = True Then CheckBoxSaveFocus.Checked = True Else CheckBoxSaveFocus.Checked = False
+        If GetSetting("Atemswitcher", "Set", "SaveIris", False) = True Then CheckBoxSaveIris.Checked = True Else CheckBoxSaveIris.Checked = False
+        If GetSetting("Atemswitcher", "Set", "SaveAE", False) = True Then CheckBoxSaveAE.Checked = True Else CheckBoxSaveAE.Checked = False
+
         If Globals.CamInvert(1) Then CheckBoxInvert1.Checked = True
         If Globals.CamInvert(2) Then CheckBoxInvert2.Checked = True
         If Globals.CamInvert(3) Then CheckBoxInvert3.Checked = True
@@ -3489,6 +3504,10 @@ Public Class MainForm
         SaveSetting("Atemswitcher", "Set", "PresetsFile", TextBoxPresetFilename.Text)
         SaveSetting("Atemswitcher", "Set", "PresetsPath", TextBoxPresetFolder.Text)
 
+        SaveSetting("Atemswitcher", "Set", "SaveFocus", CheckBoxSaveFocus.Checked)
+        SaveSetting("Atemswitcher", "Set", "SaveIris", CheckBoxSaveIris.Checked)
+        SaveSetting("Atemswitcher", "Set", "SaveAE", CheckBoxSaveAE.Checked)
+
         SaveSetting("Atemswitcher", "Set", "Cam1Dis", CheckBoxCam1Dis.Checked)
         SaveSetting("Atemswitcher", "Set", "Cam2Dis", CheckBoxCam2Dis.Checked)
         SaveSetting("Atemswitcher", "Set", "Cam3Dis", CheckBoxCam3Dis.Checked)
@@ -3514,7 +3533,7 @@ Public Class MainForm
     Sub SetupLostFocus() Handles TextBoxIPCam1.LostFocus, TextBoxIPCam2.LostFocus, TextBoxIPCam3.LostFocus, TextBoxIPCam4.LostFocus, _
         TextBoxIPCam5.LostFocus, CheckBoxCam1Dis.Click, CheckBoxCam2Dis.Click, CheckBoxCam3Dis.Click, CheckBoxCam4Dis.Click, CheckBoxCam5Dis.Click, _
         CheckBoxTally.Click, CheckBoxAutoSwap.Click, CheckBoxStandby.Click, CheckBoxProfile.Click, CheckBoxInvert1.Click, CheckBoxInvert2.Click, CheckBoxInvert3.Click, CheckBoxInvert4.Click, _
-        TextBoxPresetFilename.LostFocus, TextBoxPresetFolder.LostFocus
+        CheckBoxSaveFocus.Click, CheckBoxSaveIris.Click, CheckBoxSaveAE.Click, TextBoxPresetFilename.LostFocus, TextBoxPresetFolder.LostFocus
 
         StoreSetupScreen()
     End Sub

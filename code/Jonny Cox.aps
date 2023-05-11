@@ -26,8 +26,8 @@ Singers L M,8C19,80BE,E78,0,0,0,0,True
 Singer M R,8AC7,80AE,EA3,0,5,0,0,True
 Solo,8ED7,8293,DBE,2,2,-1,0,True
 Stage Wide,87D2,8267,8CA,1,5,-1,0,True
-Keyboard,9584,83B3,EF6,0,0,0,0,False
 Guitars,9199,829D,D6D,0,0,0,0,True
+Keyboard,9584,83B3,EF6,0,0,0,0,False
 Brass + Singers,8CED,815B,C6E,0,0,0,0,True
 Sermon,840A,8213,B93,0,0,0,0,True
 Drums,9956,8889,84C,2,3,-1,0,True
@@ -62,3 +62,5 @@ Window,7F50,7F30,D40,0,0,0,0,True
 Chancle Table,7F50,8128,DDD,0,0,0,0,True
 Communion Shot,76C1,85E8,E12,0,0,0,0,True
 Stage wide,764E,8744,9A8,0,0,0,0,True
+Encoder,1,4
+CamSettingStore,True,True,True
