@@ -144,7 +144,8 @@ Public Class MainForm
     Dim joyconvert() As Byte = {1, 5, 8, 9, 10, 12, 13, 14, 15, 15, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 44, 44, 44, 44, 44, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 47, 48, 48, 48, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50}
     Dim zoomconvert() As Byte = {1, 7, 11, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
 
-    Dim alreadysending As Boolean
+    Dim alreadysending As Integer
+
     Dim PreloadPreset As Integer
     Dim LiveMoveSpeed As Integer = 0
     Dim ClipRemainTime As Integer
@@ -622,7 +623,7 @@ Public Class MainForm
             Try
                 CurrentRow = TextFileReader.ReadFields() 'fields:0=name,1=x,2=y,3=z,4=Focus,5=Iris,6=AEshift
                 If Not CurrentRow Is Nothing Then
-                    i = UBound(CurrentRow)
+                    'i = UBound(CurrentRow)
                     If UBound(CurrentRow) >= 4 Then 'preset data
                         PresetCaption(i) = CurrentRow(0).ToString
                         PresetXPos(i) = CurrentRow(1).ToString
@@ -1462,7 +1463,7 @@ Public Class MainForm
     Private Sub BtnInp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnInp1.Click, BtnInp2.Click, BtnInp3.Click, BtnInp4.Click, BtnInp5.Click
         If sender.name = "BtnInp1" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,1 )") ' BLACK
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
             addr = 5
         End If
         If sender.name = "BtnInp2" Then
@@ -1472,17 +1473,17 @@ Public Class MainForm
         End If
         If sender.name = "BtnInp3" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,4 )") ' Overlay (inp 3)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Mediaplayer1"",""message-id"":""TEST1""}")
             addr = 7
         End If
         If sender.name = "BtnInp4" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & Globals.AtemChannel(5) & " )") ' Cam 5 (inp 4)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Mediaplayer1"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Pip"",""message-id"":""TEST1""}")
             addr = 8
         End If
         If sender.name = "BtnInp5" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,10 )") ' Stage (Inp 9)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Stage"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
             addr = 9
         End If
         setactive()
@@ -2568,15 +2569,15 @@ Public Class MainForm
             If EncoderB > 32767 Then EncoderB = EncoderB - 65536
             If EncoderB = 0 Then EncoderBReset = 0
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
-            TextLeaderName.Text = JoyX
+            'TextLeaderName.Text = JoyX
             'If (JoyX > 208) Then JoyX = 208
             'JoyX = JoyX * 255 / 208
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
-            TextPreacherName.Text = JoyY
+            'TextPreacherName.Text = JoyY
             'If (JoyY > 202) Then JoyY = 202
             'JoyY = JoyY * 255 / 202
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
-            TextCaptionOther.Text = JoyZ
+            'TextCaptionOther.Text = JoyZ
             'JoyZ = JoyZ * 255 / 194
             SendSerial() 'send back the button illumination info
 
@@ -2599,8 +2600,8 @@ Public Class MainForm
                     If LastKey = 6 Then BtnInp2.PerformClick()
                     If LastKey = 7 Then BtnInp3.PerformClick()
                     If LastKey = 8 Then BtnInp4.PerformClick()
-                    If LastKey = 9 Then BtnInp5.PerformClick()
-                    If LastKey = 10 Then BtnCam2.PerformClick()
+                    If LastKey = 9 Then BtnInp4.PerformClick()
+                    If LastKey = 10 Then BtnInp5.PerformClick()
 
                     If LastKey = 11 Then BtnOverlay.PerformClick()
                     If LastKey = 12 Then BtnMediaOverlay.PerformClick()
@@ -2669,24 +2670,24 @@ Public Class MainForm
                 'JoyZ = 1 + Int(JoyZ * 99 / (255 - JoyDB * 2))
                 If (zpos >= 128) Then JoyZ = 100 - zoomconvert(255 - zpos) Else JoyZ = zoomconvert(zpos)
                 If (JoyZ <> PrevJoyZ) Then
-                    If (alreadysending = False) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
+                    If (alreadysending = 0) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
                         op = Format(JoyZ, "00")
-                        alreadysending = True
+                        alreadysending = 2
                         SendCamCmdAddr(ad, "Z" & op)
                         PrevJoyZ = JoyZ 'only store the prev value if we actually send the new value
-                        alreadysending = False
+                        'alreadysending = False
                     End If
                 End If
                 'JoyX = 1 + Int(JoyX * 99 / (255 - JoyDB * 2)) : JoyY = 1 + Int(JoyY * 99 / (255 - JoyDB * 2))
                 If (xpos >= 128) Then JoyX = 100 - joyconvert(255 - xpos) Else JoyX = joyconvert(xpos)
                 If (ypos >= 128) Then JoyY = 100 - joyconvert(255 - ypos) Else JoyY = joyconvert(ypos)
                 If (JoyX <> PrevJoyX) Or (JoyY <> PrevJoyY) Then
-                    If alreadysending = False Then
+                    If alreadysending = 0 Then
                         op = Format(JoyX, "00") & Format(JoyY, "00")
-                        alreadysending = True
+                        alreadysending = 2
                         SendCamCmdAddr(ad, "PTS" & op)
                         PrevJoyX = JoyX : PrevJoyY = JoyY
-                        alreadysending = False
+                        'alreadysending = False
                     End If
                 End If
 
@@ -2885,6 +2886,8 @@ Public Class MainForm
 
         'timer to wait for camera serial bytes
         If (gotrx > 0) Then gotrx = gotrx - 1
+
+        If (alreadysending > 0) Then alreadysending = alreadysending - 1
 
         'timer to autoconnect on startup
         If (startuptimer < 100) Then startuptimer = startuptimer + 1
