@@ -141,8 +141,8 @@ Public Class MainForm
     Dim prevmdir As Integer
     Dim prevxspeed As Integer
     Dim prevyspeed As Integer
-    Dim joyconvert() As Byte = {1, 5, 8, 9, 10, 12, 13, 14, 15, 15, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 44, 44, 44, 44, 44, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 47, 48, 48, 48, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50}
-    Dim zoomconvert() As Byte = {1, 7, 11, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
+    Dim joyconvert() As Byte = {1, 5, 8, 9, 10, 12, 13, 14, 15, 15, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 44, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 48, 48, 48, 48, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
+    Dim zoomconvert() As Byte = {1, 7, 11, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
 
     Dim alreadysending As Integer
 
@@ -1426,9 +1426,9 @@ Public Class MainForm
             UpdatePresets()
         Else
             If LiveMoveSpeed = 0 Then
-                SendCamCmdAddr(liveaddr, "PTS5200")
+                SendCamCmdAddr(liveaddr, "PTS4800")
             Else
-                SendCamCmdAddr(liveaddr, "PTS5500")
+                SendCamCmdAddr(liveaddr, "PTS4500")
             End If
             BtnLive.BackColor = Color.White
             PresetLive = False
@@ -1449,9 +1449,9 @@ Public Class MainForm
             UpdatePresets()
         Else
             If LiveMoveSpeed = 0 Then
-                SendCamCmdAddr(liveaddr, "PTS4800")
+                SendCamCmdAddr(liveaddr, "PTS5200")
             Else
-                SendCamCmdAddr(liveaddr, "PTS4500")
+                SendCamCmdAddr(liveaddr, "PTS5500")
             End If
             BtnLive.BackColor = Color.White
             PresetLive = False
@@ -2355,7 +2355,7 @@ Public Class MainForm
 
 
 
-    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSBroadcast.Click
         'Dim ct As Integer
         'OBSResponse = ""
         'websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
@@ -2380,7 +2380,7 @@ Public Class MainForm
         While OBSResponse = "" And ct < 1000000 : ct = ct + 1 : End While
 
     End Sub
-    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSRecord.Click
         'websocket.Send("{""request-type"":""StartRecording"",""message-id"":""TEST1""}")
         'Dim ct As Integer
         'OBSResponse = ""
@@ -2615,14 +2615,20 @@ Public Class MainForm
             End If
 
             If EncoderA <> PrevEncoderA And EncoderAReset = 0 Then
-                SetEncoderValue(1, EncoderA - PrevEncoderA)
-                'TextEncAStatus.Text = EncoderA
-                PrevEncoderA = EncoderA
+                If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
+                    SetEncoderValue(1, EncoderA - PrevEncoderA)
+                    'TextEncAStatus.Text = EncoderA
+                    PrevEncoderA = EncoderA 'only send prev value when we actually send
+                    alreadysending = 2 'in 100ms sets how long we wait before sending another
+                End If
             End If
 
             If EncoderB <> PrevEncoderB And EncoderBReset = 0 Then
-                SetEncoderValue(2, EncoderB - PrevEncoderB)
-                PrevEncoderB = EncoderB
+                If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
+                    SetEncoderValue(2, EncoderB - PrevEncoderB)
+                    PrevEncoderB = EncoderB
+                    alreadysending = 2
+                End If
             End If
 
 
