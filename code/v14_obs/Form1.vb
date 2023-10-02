@@ -106,6 +106,7 @@ Public Class MainForm
     Dim PresetLoadStart As Integer = 0
     Dim PresetLoadFileCount As Integer = 0
     Dim EncoderAllocation(2) As Integer
+    Dim WebsocketTimeout As Boolean = False
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -431,6 +432,12 @@ Public Class MainForm
         If oaddr = 3 Then ObsSourceName = "Cam3"
         If oaddr = 4 Then ObsSourceName = "Cam4"
         If oaddr = 5 Then ObsSourceName = "Cam5"
+        If oaddr = 6 Then ObsSourceName = "Words"
+        If oaddr = 7 Then ObsSourceName = "Mediaplayer1"
+        If oaddr = 8 Then ObsSourceName = "Aux"
+        If oaddr = 9 Then ObsSourceName = "Pip"
+        If oaddr = 10 Then ObsSourceName = "Black"
+
     End Function
 
     Private Sub OpenWebSocket()
@@ -446,11 +453,18 @@ Public Class MainForm
     End Sub
 
     Private Sub WebsocketSendAndWait(ByVal msg As String)
+        If WebsocketTimeout = True Then Exit Sub
+        Dim t As Integer = Now.TimeOfDay.TotalSeconds
         msg = Replace(msg, "TEST1", "WS" & WebsocketID)
         Websocketwait = True
         websocket.Send(msg)
         While Websocketwait
             Application.DoEvents()
+            If (Now.TimeOfDay.TotalSeconds - t) > 5 Then
+                ShowMsgBox("Can't connect to OBS")
+                WebsocketTimeout = True
+                Exit Sub
+            End If
         End While
     End Sub
 
@@ -764,10 +778,17 @@ Public Class MainForm
         TextBoxPresetEdit.Focus()
     End Sub
     Sub EndEditPresetDetails()
-        If TextBoxPresetEdit.Visible = False Then Exit Sub 'another action may have already run this routine
-        If (PresetLegendMode <> 999) And (PresetLegendMode <> 0) Then PresetCaption((addr - 1) * 16 + PresetLegendMode - 1) = TextBoxPresetEdit.Text
-        PresetLegendMode = 0
+        If PresetLegendMode = 999 Then 'we were waiting for a preset button to be selected. Just exit edit mode
+            BtnEditPreset.BackColor = Color.White
+            PresetLegendMode = 0
+            Exit Sub
+        End If
+        If TextBoxPresetEdit.Visible = False Then
+            Exit Sub 'another action may have already run this routine
+        End If
+        If (PresetLegendMode <> 0) Then PresetCaption((addr - 1) * 16 + PresetLegendMode - 1) = TextBoxPresetEdit.Text
         BtnEditPreset.BackColor = Color.White
+        PresetLegendMode = 0
         TextBoxPresetEdit.Visible = False
         WritePresetFile()
         setactive()
@@ -1054,6 +1075,7 @@ Public Class MainForm
         BtnCam2.BackColor = Color.White
         BtnCam3.BackColor = Color.White
         BtnCam4.BackColor = Color.White
+        BtnCam5.BackColor = Color.White
         BtnInp1.BackColor = Color.White
         BtnInp2.BackColor = Color.White
         BtnInp3.BackColor = Color.White
@@ -1064,30 +1086,33 @@ Public Class MainForm
             If addr = 2 Then BtnCam2.BackColor = Color.Yellow
             If addr = 3 Then BtnCam3.BackColor = Color.Yellow
             If addr = 4 Then BtnCam4.BackColor = Color.Yellow
-            If addr = 5 Then BtnInp1.BackColor = Color.Yellow
-            If addr = 6 Then BtnInp2.BackColor = Color.Yellow
-            If addr = 7 Then BtnInp3.BackColor = Color.Yellow
-            If addr = 8 Then BtnInp4.BackColor = Color.Yellow
-            If addr = 9 Then BtnInp5.BackColor = Color.Yellow
+            If addr = 5 Then BtnCam5.BackColor = Color.Yellow
+            If addr = 6 Then BtnInp1.BackColor = Color.Yellow
+            If addr = 7 Then BtnInp2.BackColor = Color.Yellow
+            If addr = 8 Then BtnInp3.BackColor = Color.Yellow
+            If addr = 9 Then BtnInp4.BackColor = Color.Yellow
+            If addr = 10 Then BtnInp5.BackColor = Color.Yellow
         Else
             If addr = 1 Then BtnCam1.BackColor = Color.Green
             If addr = 2 Then BtnCam2.BackColor = Color.Green
             If addr = 3 Then BtnCam3.BackColor = Color.Green
             If addr = 4 Then BtnCam4.BackColor = Color.Green
-            If addr = 5 Then BtnInp1.BackColor = Color.Green
-            If addr = 6 Then BtnInp2.BackColor = Color.Green
-            If addr = 7 Then BtnInp3.BackColor = Color.Green
-            If addr = 8 Then BtnInp4.BackColor = Color.Green
-            If addr = 9 Then BtnInp5.BackColor = Color.Green
+            If addr = 5 Then BtnCam5.BackColor = Color.Green
+            If addr = 6 Then BtnInp1.BackColor = Color.Green
+            If addr = 7 Then BtnInp2.BackColor = Color.Green
+            If addr = 8 Then BtnInp3.BackColor = Color.Green
+            If addr = 9 Then BtnInp4.BackColor = Color.Green
+            If addr = 10 Then BtnInp5.BackColor = Color.Green
             If liveaddr = 1 Then BtnCam1.BackColor = Color.Red
             If liveaddr = 2 Then BtnCam2.BackColor = Color.Red
             If liveaddr = 3 Then BtnCam3.BackColor = Color.Red
             If liveaddr = 4 Then BtnCam4.BackColor = Color.Red
-            If liveaddr = 5 Then BtnInp1.BackColor = Color.Red
-            If liveaddr = 6 Then BtnInp2.BackColor = Color.Red
-            If liveaddr = 7 Then BtnInp3.BackColor = Color.Red
-            If liveaddr = 8 Then BtnInp4.BackColor = Color.Red
-            If liveaddr = 9 Then BtnInp5.BackColor = Color.Red
+            If liveaddr = 5 Then BtnCam5.BackColor = Color.Red
+            If liveaddr = 6 Then BtnInp1.BackColor = Color.Red
+            If liveaddr = 7 Then BtnInp2.BackColor = Color.Red
+            If liveaddr = 8 Then BtnInp3.BackColor = Color.Red
+            If liveaddr = 9 Then BtnInp4.BackColor = Color.Red
+            If liveaddr = 10 Then BtnInp5.BackColor = Color.Red
         End If
         'controller button LEDs
         For i = 1 To 10
@@ -1109,6 +1134,7 @@ Public Class MainForm
             If addr = 2 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam2"",""message-id"":""TEST1""}")
             If addr = 3 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam3"",""message-id"":""TEST1""}")
             If addr = 4 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam4"",""message-id"":""TEST1""}")
+            If addr = 5 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
         End If
 
         'cam settings
@@ -1218,51 +1244,11 @@ Public Class MainForm
             If PreloadPreset = 16 Then BtnPreset16.BackColor = Color.Orange
         End If
 
-
-        If AutoSongMode = True Or AutoSpeechMode = True Then
-            If PresetAuto(16 * (ad - 1) + 0) Then BtnPreset1.AccessibleDescription = "A" Else BtnPreset1.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 1) Then BtnPreset2.AccessibleDescription = "A" Else BtnPreset2.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 2) Then BtnPreset3.AccessibleDescription = "A" Else BtnPreset3.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 3) Then BtnPreset4.AccessibleDescription = "A" Else BtnPreset4.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 4) Then BtnPreset5.AccessibleDescription = "A" Else BtnPreset5.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 5) Then BtnPreset6.AccessibleDescription = "A" Else BtnPreset6.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 6) Then BtnPreset7.AccessibleDescription = "A" Else BtnPreset7.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 7) Then BtnPreset8.AccessibleDescription = "A" Else BtnPreset8.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 8) Then BtnPreset9.AccessibleDescription = "A" Else BtnPreset9.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 9) Then BtnPreset10.AccessibleDescription = "A" Else BtnPreset10.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 10) Then BtnPreset11.AccessibleDescription = "A" Else BtnPreset11.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 11) Then BtnPreset12.AccessibleDescription = "A" Else BtnPreset12.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 12) Then BtnPreset13.AccessibleDescription = "A" Else BtnPreset13.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 13) Then BtnPreset14.AccessibleDescription = "A" Else BtnPreset14.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 14) Then BtnPreset15.AccessibleDescription = "A" Else BtnPreset15.AccessibleDescription = ""
-            If PresetAuto(16 * (ad - 1) + 15) Then BtnPreset16.AccessibleDescription = "A" Else BtnPreset16.AccessibleDescription = ""
-        Else
-            BtnPreset1.AccessibleDescription = ""
-            BtnPreset2.AccessibleDescription = ""
-            BtnPreset3.AccessibleDescription = ""
-            BtnPreset4.AccessibleDescription = ""
-            BtnPreset5.AccessibleDescription = ""
-            BtnPreset6.AccessibleDescription = ""
-            BtnPreset7.AccessibleDescription = ""
-            BtnPreset8.AccessibleDescription = ""
-            BtnPreset9.AccessibleDescription = ""
-            BtnPreset10.AccessibleDescription = ""
-            BtnPreset11.AccessibleDescription = ""
-            BtnPreset12.AccessibleDescription = ""
-            BtnPreset13.AccessibleDescription = ""
-            BtnPreset14.AccessibleDescription = ""
-            BtnPreset15.AccessibleDescription = ""
-            BtnPreset16.AccessibleDescription = ""
-        End If
-
-
-
     End Sub
 
-    Private Sub BtnCam1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnCam1.Click, BtnCam2.Click, BtnCam3.Click, BtnCam4.Click, BtnInp3.Click
+    Private Sub BtnCam1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnCam1.Click, BtnCam2.Click, BtnCam3.Click, BtnCam4.Click, BtnCam5.Click
         Dim index As Integer
         index = Val(Mid(sender.name, 7))
-        If sender.name = "BtnInp3" Then index = 5
 
         'If _serialPort.IsOpen Then _serialPort.Write(buffer, 0, 7)
 
@@ -1276,10 +1262,6 @@ Public Class MainForm
         BtnLive.BackColor = Color.White : PresetLive = False
         BtnLivePTZ.BackColor = Color.White : PTZLive = False
         setactive()
-
-        If (BtnPip.BackColor = Color.Red) Then
-            If PipLive = False Then PipLive = True Else PipLive = False
-        End If
 
     End Sub
 
@@ -1315,9 +1297,6 @@ Public Class MainForm
         CutLockoutTimer = 8
         DelayStop = 8
         AutoPreset = 0
-        If (BtnPip.BackColor = Color.Red) Then
-            If PipLive = False Then PipLive = True Else PipLive = False
-        End If
 
     End Sub
 
@@ -1476,34 +1455,11 @@ Public Class MainForm
     End Sub
 
 
-
     Private Sub BtnInp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnInp1.Click, BtnInp2.Click, BtnInp3.Click, BtnInp4.Click, BtnInp5.Click
-        Dim btn As Button = CType(sender, Button)
-        If btn.Name = "BtnInp1" Then
-            'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,1 )") ' BLACK
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
-            addr = 5
-        End If
-        If btn.Name = "BtnInp2" Then
-            'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,2 )") ' Words (inp1)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Words"",""message-id"":""TEST1""}")
-            addr = 6
-        End If
-        If btn.Name = "BtnInp3" Then
-            'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,4 )") ' Overlay (inp 3)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Mediaplayer1"",""message-id"":""TEST1""}")
-            addr = 7
-        End If
-        If btn.Name = "BtnInp4" Then
-            'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & Globals.AtemChannel(5) & " )") ' Cam 5 (inp 4)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Pip"",""message-id"":""TEST1""}")
-            addr = 8
-        End If
-        If btn.Name = "BtnInp5" Then
-            'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,10 )") ' Stage (Inp 9)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
-            addr = 9
-        End If
+        Dim index = Val(Mid(sender.name, 7))
+        Dim obssource = ObsSourceName(index)
+        addr = index + 5
+        websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
         setactive()
     End Sub
 
@@ -1689,7 +1645,7 @@ Public Class MainForm
         If CaptionIndex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
     End Sub
 
-    Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMPrev.Click
         'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Mixer output"",""message-id"":""TEST1""}")
         If ListBoxMedia.Items.Count = 0 Then Exit Sub
         If MediaItem > 0 Then
@@ -1700,7 +1656,7 @@ Public Class MainForm
             ListBoxMedia.Items.Item(MediaItem) = ListBoxMedia.Items.Item(MediaItem) & "*"
         End If
     End Sub
-    Private Sub BtnMNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnMNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMNext.Click
         'websocket.Send("{""request-type"":""SetCurrentScene"",""scene-name"":""Loop"",""message-id"":""TEST1""}")
         If ListBoxMedia.Items.Count = 0 Then Exit Sub
         If MediaItem < ListBoxMedia.Items.Count - 1 Then
@@ -2566,7 +2522,7 @@ Public Class MainForm
                 SerialInBufPtr = 0
             ElseIf (x = 3) Then
                 newserial = 1
-                serialtimeout = 20
+                SerialTimeout = 20
                 Exit While
             ElseIf (x = &H57) Then
                 'TextBox2.Text = "ACK!"
@@ -2614,12 +2570,13 @@ Public Class MainForm
                     If LastKey = 2 Then BtnCam2.PerformClick()
                     If LastKey = 3 Then BtnCam3.PerformClick()
                     If LastKey = 4 Then BtnCam4.PerformClick()
-                    If LastKey = 5 Then BtnInp1.PerformClick()
-                    If LastKey = 6 Then BtnInp2.PerformClick()
-                    If LastKey = 7 Then BtnInp3.PerformClick()
-                    If LastKey = 8 Then BtnInp4.PerformClick()
-                    If LastKey = 9 Then BtnInp4.PerformClick()
-                    If LastKey = 10 Then BtnInp5.PerformClick()
+                    If LastKey = 5 Then BtnCam5.PerformClick() 'cam5
+
+                    If LastKey = 6 Then BtnInp1.PerformClick() 'words
+                    If LastKey = 7 Then BtnInp2.PerformClick() 'media
+                    If LastKey = 8 Then BtnInp3.PerformClick() 'aux
+                    If LastKey = 9 Then BtnInp4.PerformClick() 'pip
+                    If LastKey = 10 Then BtnInp5.PerformClick() 'black
 
                     If LastKey = 11 Then BtnOverlay.PerformClick()
                     If LastKey = 12 Then BtnMediaOverlay.PerformClick()
@@ -3020,7 +2977,7 @@ Public Class MainForm
             ComCheckTimer = 0
             If Globals.Cam1Dis Then 'user disabled
                 CamIgnore(1) = True
-                BtnCam1.Enabled = False 'lock out the button
+                'BtnCam1.Enabled = False 'lock out the button
                 BtnCam1.Text = "CAM1 Disabled"
             Else 'not user disabled but check for comm loss
                 If CamIgnore(1) Then BtnCam1.Text = "CAM1 com-fail" Else BtnCam1.Text = "CAM1"
@@ -3028,7 +2985,7 @@ Public Class MainForm
 
             If Globals.Cam2Dis Then 'user disabled
                 CamIgnore(2) = True
-                BtnCam2.Enabled = False 'lock out the button
+                'BtnCam2.Enabled = False 'lock out the button
                 BtnCam2.Text = "CAM2 Disabled"
             Else 'not user disabled but check for comm loss
                 If CamIgnore(2) Then BtnCam2.Text = "CAM2 com-fail" Else BtnCam2.Text = "CAM2"
@@ -3036,7 +2993,7 @@ Public Class MainForm
 
             If Globals.Cam3Dis Then 'user disabled
                 CamIgnore(3) = True
-                BtnCam3.Enabled = False 'lock out the button
+                'BtnCam3.Enabled = False 'lock out the button
                 BtnCam3.Text = "CAM3 Disabled"
             Else 'not user disabled but check for comm loss
                 If CamIgnore(3) Then BtnCam3.Text = "CAM3 com-fail" Else BtnCam3.Text = "CAM3"
@@ -3044,7 +3001,7 @@ Public Class MainForm
 
             If Globals.Cam4Dis Then 'user disabled
                 CamIgnore(4) = True
-                BtnCam4.Enabled = False 'lock out the button
+                'BtnCam4.Enabled = False 'lock out the button
                 BtnCam4.Text = "CAM4 Disabled"
             Else 'not user disabled but check for comm loss
                 If CamIgnore(4) Then BtnCam4.Text = "CAM4 com-fail" Else BtnCam4.Text = "CAM4"
@@ -3052,10 +3009,10 @@ Public Class MainForm
 
             If Globals.Cam5Dis Then 'user disabled
                 CamIgnore(5) = True
-                BtnInp3.Enabled = False 'lock out the button
-                BtnInp3.Text = "CAM5 Disabled"
+                'BtnCam5.Enabled = False 'lock out the button
+                BtnCam5.Text = "CAM5 Disabled"
             Else 'not user disabled but check for comm loss
-                If CamIgnore(5) Then BtnInp3.Text = "CAM5 com-fail" Else BtnInp3.Text = "CAM5"
+                If CamIgnore(5) Then BtnCam5.Text = "CAM5 com-fail" Else BtnCam5.Text = "CAM5"
             End If
         End If
 
@@ -3401,6 +3358,7 @@ Public Class MainForm
     Sub SetEncoderValue(enc As Integer, v As Integer)
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         Select Case EncoderAllocation(enc)
             Case 0 : SetFocus(ad, v + CamFocus(ad))
             Case 1 : SetIris(ad, v + CamIris(ad))
@@ -3412,6 +3370,7 @@ Public Class MainForm
     Sub EncoderClick(enc As Integer)
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         Select Case EncoderAllocation(enc)
             Case 0 : If (BtnFocusAuto.BackColor = Color.White) Then BtnFocusAuto.PerformClick() Else BtnFocusLock.PerformClick()
             Case 1 : If (MyButtonAutoIris.BackColor = Color.White) Then MyButtonAutoIris.PerformClick() Else SetIris(ad, CamIris(ad))
@@ -3655,8 +3614,10 @@ Public Class MainForm
         UpdateCameraLinkStatus()
     End Sub
 
+
     Private Sub ButtonRetryOBS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRetryOBS.Click
         websocket.Close()   'try reconnecting to OBS
+        WebsocketTimeout = False
         OpenWebSocket()
         While WebsocketReinitTimer > 0
             Application.DoEvents()
