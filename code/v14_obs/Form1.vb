@@ -162,6 +162,9 @@ Public Class MainForm
     Dim PresetAuto(128) As Integer
     Dim PresetFocusAuto(64) As Boolean
     Dim PresetFocus(64) As Integer
+    Dim PresetIris(64) As Integer
+    Dim PresetAE(64) As Integer
+
 
     Dim StreamStartTime, RecStartTime As Integer
 
@@ -622,12 +625,16 @@ Public Class MainForm
             Try
                 CurrentRow = TextFileReader.ReadFields() 'fields:0=name,1=x,2=y,3=z,4=Focus,5=Iris,6=AEshift
                 If Not CurrentRow Is Nothing Then
-                    i = UBound(CurrentRow)
                     If UBound(CurrentRow) >= 4 Then 'preset data
                         PresetCaption(i) = CurrentRow(0).ToString
                         PresetXPos(i) = CurrentRow(1).ToString
                         PresetYPos(i) = CurrentRow(2).ToString
                         PresetZPos(i) = CurrentRow(3).ToString
+                        If UBound(CurrentRow) = 6 Then 'new format preset data
+                            PresetFocus(i) = Convert.ToInt32(CurrentRow(4).ToString)
+                            PresetIris(i) = Convert.ToInt32(CurrentRow(5).ToString)
+                            PresetAE(i) = Convert.ToInt32(CurrentRow(4).ToString)
+                        End If
                         If CurrentRow.GetUpperBound(0) > 3 Then 'check if we have these params or not
                             PresetContent(i) = Convert.ToInt32(CurrentRow(4).ToString)
                             PresetSize(i) = Convert.ToInt32(CurrentRow(5).ToString)
@@ -691,8 +698,9 @@ Public Class MainForm
         For j = 0 To 3
             For i = 0 To 15
                 ln = PresetCaption(i + j * 16) & "," & PresetXPos(i + j * 16) & "," & PresetYPos(i + j * 16) & "," & PresetZPos(i + j * 16)
-                ln = ln & "," & PresetContent(i + j * 16) & "," & PresetSize(i + j * 16) & "," & PresetAuto(i + j * 16)
-                ln = ln & "," & PresetFocus(i + j * 16) & "," & PresetFocusAuto(i + j * 16)
+                ln = ln & "," & PresetFocus(i + j * 16) & "," & PresetIris(i + j * 16) & "," & PresetAE(i + j * 16)
+                'ln = ln & "," & PresetContent(i + j * 16) & "," & PresetSize(i + j * 16) & "," & PresetAuto(i + j * 16)
+                'ln = ln & "," & PresetFocus(i + j * 16) & "," & PresetFocusAuto(i + j * 16)
                 file.WriteLine(ln)
             Next i
         Next j
@@ -966,12 +974,20 @@ Public Class MainForm
                 op = Mid(op, 4)
                 PresetXPos((addr - 1) * 16 + index - 1) = Mid(op, 1, 4)
                 PresetYPos((addr - 1) * 16 + index - 1) = Mid(op, 5, 4)
-                op = SendCamCmd("GF") 'get current focus position
-                op = Mid(op, 3)
-                'PresetFocus((addr - 1) * 16 + index - 1) = op
                 op = SendCamCmd("D1") 'get current autofocus state
                 op = Mid(op, 3)
-                If (op = "0") Then PresetFocusAuto((addr - 1) * 16 + index - 1) = False Else PresetFocusAuto((addr - 1) * 16 + index - 1) = True
+                If (op = "0") Then
+                    op = SendCamCmd("GF") 'get current focus position
+                    op = Mid(op, 3)
+                    PresetFocus((addr - 1) * 16 + index - 1) = op
+                Else
+                    PresetFocus((addr - 1) * 16 + index - 1) = 9999
+                End If
+                op = SendCamCmdAddrNoHash(addr, "QSD:48", "aw_cam") 'get "contrast" setting
+                PresetAE((addr - 1) * 16 + index - 1) = (Val(Mid(op, 8)) - 32) * 20 / 64
+                op = SendCamCmdAddrNoHash(addr, "QRV", "aw_cam") 'get iris setting
+                PresetIris((addr - 1) * 16 + index - 1) = Val("&H" & Mid(op, 5))
+
                 If PresetCaption((addr - 1) * 16 + index - 1) = Convert.ToString(index) Then 'automatically ask for legend if the legend is just the initial number
                     PresetLegendMode = index
                     StartEditPresetDetails(index)
@@ -992,7 +1008,7 @@ Public Class MainForm
             WritePresetFile()
             BtnPresetSave.BackColor = Color.White
 
-        End If
+            End If
         'If _serialPort.IsOpen Then _serialPort.Write(buffer, 0, 7)
     End Sub
 
