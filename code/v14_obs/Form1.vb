@@ -34,7 +34,7 @@ Public Class MainForm
     Dim camconnect As Boolean
     Dim overlayactive As Boolean
     Dim mediaoverlayactive As Boolean
-    Dim mediaindex As Integer = 0
+    Dim CaptionIndex As Integer = 1
     Dim VISMacrosConnection As New System.Net.Sockets.TcpClient()
     Dim ServerNetworkStream As NetworkStream
     Dim websocket As WebSocket4Net.WebSocket
@@ -141,10 +141,11 @@ Public Class MainForm
     Dim prevmdir As Integer
     Dim prevxspeed As Integer
     Dim prevyspeed As Integer
-    Dim joyconvert() As Byte = {1, 5, 8, 9, 10, 12, 13, 14, 15, 15, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 44, 44, 44, 44, 44, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 47, 48, 48, 48, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50}
-    Dim zoomconvert() As Byte = {1, 7, 11, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
+    Dim joyconvert() As Byte = {1, 5, 8, 9, 10, 12, 13, 14, 15, 15, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 34, 34, 35, 35, 36, 36, 36, 36, 36, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 42, 42, 42, 42, 43, 43, 43, 44, 44, 44, 44, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 47, 47, 48, 48, 48, 48, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
+    Dim zoomconvert() As Byte = {1, 7, 11, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 37, 38, 38, 38, 38, 39, 39, 39, 39, 40, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50}
 
-    Dim alreadysending As Boolean
+    Dim alreadysending As Integer
+
     Dim PreloadPreset As Integer
     Dim LiveMoveSpeed As Integer = 0
     Dim ClipRemainTime As Integer
@@ -268,6 +269,7 @@ Public Class MainForm
         ShowMode(1)
         EncoderAllocation(1) = 0 : EncoderAllocation(2) = 4
         ShowEncoderAllocations()
+        SetCaptionText()
 
         'Process.Start("C:\atem_vb\VideoMessage\VideoMessage\bin\Debug\videomessage.exe")
 
@@ -376,7 +378,7 @@ Public Class MainForm
         End If
         PresetLoadPanel.Refresh()
     End Sub
-    Private Sub PresetLoadClose_Click(sender As Object, e As EventArgs) Handles PresetLoadClose.Click
+    Private Sub PresetLoadClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles PresetLoadClose.Click
         PresetLoadPanel.Visible = False
     End Sub
     Sub PresetLoadHandler_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -405,7 +407,7 @@ Public Class MainForm
     End Sub
 
     '---my message box
-    Sub ShowMsgBox(label As String)
+    Sub ShowMsgBox(ByVal label As String)
         MsgBoxPanel.Left = 20
         MsgBoxLabel.Text = MsgBoxLabel.Text & vbCrLf & label 'add new text to existing string, if open
         MsgBoxPanel.Height = MsgBoxLabel.Height + 50
@@ -416,13 +418,13 @@ Public Class MainForm
         MsgBoxPanel.Visible = True
         MsgBoxPanel.Refresh()
     End Sub
-    Private Sub MsgboxClose_Click(sender As Object, e As EventArgs) Handles MsgBoxPanel.Click, MsgboxClose.Click
+    Private Sub MsgboxClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles MsgBoxPanel.Click, MsgboxClose.Click
         MsgBoxPanel.Visible = False
         MsgBoxLabel.Text = "" 'clear the text when closed/hidden
     End Sub
 
     '---Make OBS scene name from addr
-    Function ObsSourceName(oaddr As Integer) As String
+    Function ObsSourceName(ByVal oaddr As Integer) As String
         ObsSourceName = ""
         If oaddr = 1 Then ObsSourceName = "Cam1"
         If oaddr = 2 Then ObsSourceName = "Cam2"
@@ -452,7 +454,7 @@ Public Class MainForm
         End While
     End Sub
 
-    Private Function GetWebRequest(url As String)
+    Private Function GetWebRequest(ByVal url As String)
         Debug.Print(url)
         Dim request As WebRequest = WebRequest.Create(url)
         request.Timeout = 200
@@ -770,13 +772,13 @@ Public Class MainForm
         WritePresetFile()
         setactive()
     End Sub
-    Private Sub TextBoxPresetEdit_Leave(sender As Object, e As EventArgs) Handles TextBoxPresetEdit.Leave
+    Private Sub TextBoxPresetEdit_Leave(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxPresetEdit.Leave
         EndEditPresetDetails() 'user clicks on another control
     End Sub
-    Private Sub PresetPanel_Click(sender As Object, e As EventArgs) Handles PresetPanel.Click
+    Private Sub PresetPanel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles PresetPanel.Click
         If PresetLegendMode <> 0 Then EndEditPresetDetails() 'user clicks on the panel
     End Sub
-    Private Sub TextBoxPresetEdit_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBoxPresetEdit.KeyDown
+    Private Sub TextBoxPresetEdit_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TextBoxPresetEdit.KeyDown
         If e.KeyCode = Keys.Enter And e.Modifiers = 0 Then EndEditPresetDetails() 'user presses enter after typing
     End Sub
 
@@ -1038,7 +1040,7 @@ Public Class MainForm
     ' Set Leds on controller buttons
     ' ControllerLedState(0..13) sets colour bit0=red bit1=green bit2=blue
     '-----------------------------------------------------
-    Sub SetControllerLedState(op)
+    Sub SetControllerLedState(ByVal op)
         ControllerLedState(op - 1) = 0
         If addr = op Then ControllerLedState(op - 1) = ControllerLedState(op - 1) + 2 'green
         If liveaddr = op Then ControllerLedState(op - 1) = ControllerLedState(op - 1) + 1 'red
@@ -1358,7 +1360,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub BtnMovePreset_Click(sender As Object, e As EventArgs) Handles BtnMovePreset.Click
+    Private Sub BtnMovePreset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnMovePreset.Click
         If (MovePresetMode = 0) Then
             MovePresetMode = 1
             BtnMovePreset.BackColor = Color.Red
@@ -1427,33 +1429,10 @@ Public Class MainForm
             PresetLive = False
         End If
     End Sub
-    Private Sub BtnSlowPanL_Click(sender As Object, e As EventArgs) Handles BtnSlowPanL.Click
+    Private Sub BtnSlowPanL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSlowPanL.Click
         If PresetLive = False Then
             cdir = cdir Xor &H2
             If (cdir And &H2) Then cdir = cdir And Not &H4 'cancel zoom out if zoom in set
-            SetLiveMoveIndicators()
-            If cdir <> 0 Then
-                BtnPreload.BackColor = Color.Orange : PreloadPreset = 99
-            Else
-                BtnPreload.BackColor = Color.White : PreloadPreset = 0
-            End If
-            'PreloadPreset = 0 'if we set fixed zoom, cancel preset preload
-            UpdatePresets()
-        Else
-            If LiveMoveSpeed = 0 Then
-                SendCamCmdAddr(liveaddr, "PTS5200")
-            Else
-                SendCamCmdAddr(liveaddr, "PTS5500")
-            End If
-            BtnLive.BackColor = Color.White
-            PresetLive = False
-        End If
-    End Sub
-
-    Private Sub BtnSlowPanR_Click(sender As Object, e As EventArgs) Handles BtnSlowPanR.Click
-        If PresetLive = False Then
-            cdir = cdir Xor &H4
-            If (cdir And &H4) Then cdir = cdir And Not &H2 'cancel zoom out if zoom in set
             SetLiveMoveIndicators()
             If cdir <> 0 Then
                 BtnPreload.BackColor = Color.Orange : PreloadPreset = 99
@@ -1473,32 +1452,56 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub BtnSlowPanR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSlowPanR.Click
+        If PresetLive = False Then
+            cdir = cdir Xor &H4
+            If (cdir And &H4) Then cdir = cdir And Not &H2 'cancel zoom out if zoom in set
+            SetLiveMoveIndicators()
+            If cdir <> 0 Then
+                BtnPreload.BackColor = Color.Orange : PreloadPreset = 99
+            Else
+                BtnPreload.BackColor = Color.White : PreloadPreset = 0
+            End If
+            'PreloadPreset = 0 'if we set fixed zoom, cancel preset preload
+            UpdatePresets()
+        Else
+            If LiveMoveSpeed = 0 Then
+                SendCamCmdAddr(liveaddr, "PTS5200")
+            Else
+                SendCamCmdAddr(liveaddr, "PTS5500")
+            End If
+            BtnLive.BackColor = Color.White
+            PresetLive = False
+        End If
+    End Sub
+
 
 
     Private Sub BtnInp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnInp1.Click, BtnInp2.Click, BtnInp3.Click, BtnInp4.Click, BtnInp5.Click
-        If sender.name = "BtnInp1" Then
+        Dim btn As Button = CType(sender, Button)
+        If btn.Name = "BtnInp1" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,1 )") ' BLACK
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
             addr = 5
         End If
-        If sender.name = "BtnInp2" Then
+        If btn.Name = "BtnInp2" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,2 )") ' Words (inp1)
             websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Words"",""message-id"":""TEST1""}")
             addr = 6
         End If
-        If sender.name = "BtnInp3" Then
+        If btn.Name = "BtnInp3" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,4 )") ' Overlay (inp 3)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Mediaplayer1"",""message-id"":""TEST1""}")
             addr = 7
         End If
-        If sender.name = "BtnInp4" Then
+        If btn.Name = "BtnInp4" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & Globals.AtemChannel(5) & " )") ' Cam 5 (inp 4)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Mediaplayer1"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Pip"",""message-id"":""TEST1""}")
             addr = 8
         End If
-        If sender.name = "BtnInp5" Then
+        If btn.Name = "BtnInp5" Then
             'ExecuteLua("ATEMMixerMESetPreviewInput( 1,1,10 )") ' Stage (Inp 9)
-            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Stage"",""message-id"":""TEST1""}")
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Black"",""message-id"":""TEST1""}")
             addr = 9
         End If
         setactive()
@@ -1636,7 +1639,7 @@ Public Class MainForm
         If (mediaoverlayactive = True) Then BtnMediaOverlay.BackColor = Color.Red Else BtnMediaOverlay.BackColor = Color.White
         If (mediaoverlayactive = True) Then ControllerLedState(11) = 1 Else ControllerLedState(11) = 0
     End Sub
-    Sub CapRectangle(tb As Object)
+    Sub CapRectangle(ByVal tb As Object)
         Dim l = tb.Left - 2 : Dim r = tb.Left + tb.Width + 2
         Dim t = tb.Top - 2 : Dim b = tb.Top + tb.Height + 2
         LineShapeCapL.X1 = l : LineShapeCapL.X2 = l : LineShapeCapT.X1 = l : LineShapeCapB.X1 = l
@@ -1645,18 +1648,18 @@ Public Class MainForm
         LineShapeCapL.Y2 = b : LineShapeCapR.Y2 = b : LineShapeCapB.Y1 = b : LineShapeCapB.Y2 = b
     End Sub
     Private Sub SetCaptionText()
-        If mediaindex = 1 Then
+        If CaptionIndex = 1 Then
             CapRectangle(TextLeaderName)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Leader"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""" & TextLeaderName.Text & """,""message-id"":""TEST1""}")
         End If
-        If mediaindex = 2 Then
+        If CaptionIndex = 2 Then
             CapRectangle(TextPreacherName)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Preacher"",""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""   " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
 
         End If
-        If mediaindex = 3 Then
+        If CaptionIndex = 3 Then
             CapRectangle(TextCaptionOther)
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""" & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
             WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":"""",""message-id"":""TEST1""}")
@@ -1665,25 +1668,25 @@ Public Class MainForm
     End Sub
 
     Private Sub BtnCapPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCPrev.Click
-        If (mediaindex > 1) Then mediaindex = mediaindex - 1
+        If (CaptionIndex > 1) Then CaptionIndex = CaptionIndex - 1
         SetCaptionText()
-        'ExecuteLua("ATEMMixerMPSetMediaIndex(1,2," & mediaindex & ")")
+        'ExecuteLua("ATEMMixerMPSetCaptionIndex(1,2," & CaptionIndex & ")")
     End Sub
 
     Private Sub BtnCapNxt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCNxt.Click
-        If (mediaindex < 3) Then mediaindex = mediaindex + 1
+        If (CaptionIndex < 3) Then CaptionIndex = CaptionIndex + 1
         SetCaptionText()
-        'ExecuteLua("ATEMMixerMPSetMediaIndex(1,2," & mediaindex & ")")
+        'ExecuteLua("ATEMMixerMPSetCaptionIndex(1,2," & CaptionIndex & ")")
     End Sub
 
     Private Sub TextLeaderName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If mediaindex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+        If CaptionIndex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
     End Sub
     Private Sub TextPreacherName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If mediaindex = 2 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+        If CaptionIndex = 2 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
     End Sub
     Private Sub TextCaptionOther_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If mediaindex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
+        If CaptionIndex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
     End Sub
 
     Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -2370,7 +2373,7 @@ Public Class MainForm
 
 
 
-    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnOBSBroadcast_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSBroadcast.Click
         'Dim ct As Integer
         'OBSResponse = ""
         'websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
@@ -2395,7 +2398,7 @@ Public Class MainForm
         While OBSResponse = "" And ct < 1000000 : ct = ct + 1 : End While
 
     End Sub
-    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub BtnOBSRecord_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOBSRecord.Click
         'websocket.Send("{""request-type"":""StartRecording"",""message-id"":""TEST1""}")
         'Dim ct As Integer
         'OBSResponse = ""
@@ -2584,15 +2587,15 @@ Public Class MainForm
             If EncoderB > 32767 Then EncoderB = EncoderB - 65536
             If EncoderB = 0 Then EncoderBReset = 0
             JoyX = SerialInBuf(9) + (SerialInBuf(12) And 64) * 2
-            TextLeaderName.Text = JoyX
+            'TextLeaderName.Text = JoyX
             'If (JoyX > 208) Then JoyX = 208
             'JoyX = JoyX * 255 / 208
             JoyY = SerialInBuf(10) + (SerialInBuf(12) And 32) * 4
-            TextPreacherName.Text = JoyY
+            'TextPreacherName.Text = JoyY
             'If (JoyY > 202) Then JoyY = 202
             'JoyY = JoyY * 255 / 202
             JoyZ = SerialInBuf(11) + (SerialInBuf(12) And 16) * 8
-            TextCaptionOther.Text = JoyZ
+            'TextCaptionOther.Text = JoyZ
             'JoyZ = JoyZ * 255 / 194
             SendSerial() 'send back the button illumination info
 
@@ -2615,8 +2618,8 @@ Public Class MainForm
                     If LastKey = 6 Then BtnInp2.PerformClick()
                     If LastKey = 7 Then BtnInp3.PerformClick()
                     If LastKey = 8 Then BtnInp4.PerformClick()
-                    If LastKey = 9 Then BtnInp5.PerformClick()
-                    If LastKey = 10 Then BtnCam2.PerformClick()
+                    If LastKey = 9 Then BtnInp4.PerformClick()
+                    If LastKey = 10 Then BtnInp5.PerformClick()
 
                     If LastKey = 11 Then BtnOverlay.PerformClick()
                     If LastKey = 12 Then BtnMediaOverlay.PerformClick()
@@ -2630,14 +2633,20 @@ Public Class MainForm
             End If
 
             If EncoderA <> PrevEncoderA And EncoderAReset = 0 Then
-                SetEncoderValue(1, EncoderA - PrevEncoderA)
-                'TextEncAStatus.Text = EncoderA
-                PrevEncoderA = EncoderA
+                If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
+                    SetEncoderValue(1, EncoderA - PrevEncoderA)
+                    'TextEncAStatus.Text = EncoderA
+                    PrevEncoderA = EncoderA 'only send prev value when we actually send
+                    alreadysending = 2 'in 100ms sets how long we wait before sending another
+                End If
             End If
 
             If EncoderB <> PrevEncoderB And EncoderBReset = 0 Then
-                SetEncoderValue(2, EncoderB - PrevEncoderB)
-                PrevEncoderB = EncoderB
+                If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
+                    SetEncoderValue(2, EncoderB - PrevEncoderB)
+                    PrevEncoderB = EncoderB
+                    alreadysending = 2
+                End If
             End If
 
 
@@ -2685,24 +2694,24 @@ Public Class MainForm
                 'JoyZ = 1 + Int(JoyZ * 99 / (255 - JoyDB * 2))
                 If (zpos >= 128) Then JoyZ = 100 - zoomconvert(255 - zpos) Else JoyZ = zoomconvert(zpos)
                 If (JoyZ <> PrevJoyZ) Then
-                    If (alreadysending = False) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
+                    If (alreadysending = 0) Then 'this function is reentrant. We need to make sure we are not already sending something from a previous command.
                         op = Format(JoyZ, "00")
-                        alreadysending = True
+                        alreadysending = 2
                         SendCamCmdAddr(ad, "Z" & op)
                         PrevJoyZ = JoyZ 'only store the prev value if we actually send the new value
-                        alreadysending = False
+                        'alreadysending = False
                     End If
                 End If
                 'JoyX = 1 + Int(JoyX * 99 / (255 - JoyDB * 2)) : JoyY = 1 + Int(JoyY * 99 / (255 - JoyDB * 2))
                 If (xpos >= 128) Then JoyX = 100 - joyconvert(255 - xpos) Else JoyX = joyconvert(xpos)
                 If (ypos >= 128) Then JoyY = 100 - joyconvert(255 - ypos) Else JoyY = joyconvert(ypos)
                 If (JoyX <> PrevJoyX) Or (JoyY <> PrevJoyY) Then
-                    If alreadysending = False Then
+                    If alreadysending = 0 Then
                         op = Format(JoyX, "00") & Format(JoyY, "00")
-                        alreadysending = True
+                        alreadysending = 2
                         SendCamCmdAddr(ad, "PTS" & op)
                         PrevJoyX = JoyX : PrevJoyY = JoyY
-                        alreadysending = False
+                        'alreadysending = False
                     End If
                 End If
 
@@ -2901,6 +2910,8 @@ Public Class MainForm
 
         'timer to wait for camera serial bytes
         If (gotrx > 0) Then gotrx = gotrx - 1
+
+        If (alreadysending > 0) Then alreadysending = alreadysending - 1
 
         'timer to autoconnect on startup
         If (startuptimer < 100) Then startuptimer = startuptimer + 1
@@ -3217,7 +3228,7 @@ Public Class MainForm
         'check for serial port full buffer - if this happens the serial int will stop firing
         If (SerialTimeout > 0) Then
             SerialTimeout = SerialTimeout - 1
-            If SerialTimeout = 0 Then
+            If SerialTimeout = 0 And SerialPort1.IsOpen Then
                 SerialPort1.DiscardInBuffer()
             End If
         End If
@@ -3402,9 +3413,9 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         Select Case EncoderAllocation(enc)
-            Case 0 : BtnFocusAuto.PerformClick()
-            Case 1 : MyButtonAutoIris.PerformClick()
-            Case 2 : MyButtonAutoAgc.PerformClick()
+            Case 0 : If (BtnFocusAuto.BackColor = Color.White) Then BtnFocusAuto.PerformClick() Else BtnFocusLock.PerformClick()
+            Case 1 : If (MyButtonAutoIris.BackColor = Color.White) Then MyButtonAutoIris.PerformClick() Else SetIris(ad, CamIris(ad))
+            Case 2 : If (MyButtonAutoAgc.BackColor = Color.White) Then MyButtonAutoAgc.PerformClick() Else SetAGC(ad, CamAgc(ad))
             Case 3 : SetAGCLimit(ad, 1)
             Case 4 : SetAEShift(ad, 0)
         End Select
@@ -3652,5 +3663,6 @@ Public Class MainForm
         End While
         ReadMediaSources()
     End Sub
+
 
 End Class
