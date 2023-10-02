@@ -3642,6 +3642,9 @@ Public Class MainForm
         UpdateCameraLinkStatus()
     End Sub
 
+    Private Sub ButtonTouchscreen_Click(sender As Object, e As EventArgs) Handles ButtonTouchscreen.Click
+        Shell("explorer.exe shell:::{80F3F1D5-FECA-45F3-BC32-752C152E456E}")
+    End Sub
 
     Private Sub ButtonRetryOBS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRetryOBS.Click
         websocket.Close()   'try reconnecting to OBS

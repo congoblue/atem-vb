@@ -12,7 +12,6 @@ C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemContr
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.exe
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.xml
 C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.pdb
-C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.vbprojResolveAssemblyReference.cache
 C:\Users\User\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.exe
 C:\Users\User\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.xml
 C:\Users\User\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.pdb
