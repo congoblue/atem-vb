@@ -857,7 +857,7 @@ Partial Class MainForm
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Webdings", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.Button1.Location = New System.Drawing.Point(1228, 19)
+        Me.Button1.Location = New System.Drawing.Point(731, 21)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(30, 30)
         Me.Button1.TabIndex = 214
@@ -873,7 +873,7 @@ Partial Class MainForm
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(35, 16)
         Me.Label13.TabIndex = 215
-        Me.Label13.Text = "v14.2"
+        Me.Label13.Text = "v14.3"
         '
         'LabelProfile
         '
@@ -1450,6 +1450,7 @@ Partial Class MainForm
         Me.SettingsPanel.Controls.Add(Me.Label31)
         Me.SettingsPanel.Controls.Add(Me.BtnSetupFilenameBrowse)
         Me.SettingsPanel.Controls.Add(Me.Label32)
+        Me.SettingsPanel.Controls.Add(Me.Button1)
         Me.SettingsPanel.Controls.Add(Me.TextBoxPresetFilename)
         Me.SettingsPanel.Controls.Add(Me.TextBoxIPCam4)
         Me.SettingsPanel.Controls.Add(Me.Label33)
@@ -3551,7 +3552,6 @@ Partial Class MainForm
         Me.Controls.Add(Me.Auxsel3)
         Me.Controls.Add(Me.Auxsel2)
         Me.Controls.Add(Me.Auxsel1)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label16)

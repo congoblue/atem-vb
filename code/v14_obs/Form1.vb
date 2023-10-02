@@ -107,6 +107,7 @@ Public Class MainForm
     Dim PresetLoadFileCount As Integer = 0
     Dim EncoderAllocation(2) As Integer
     Dim WebsocketTimeout As Boolean = False
+    Dim ScreenCount As Integer
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -199,7 +200,8 @@ Public Class MainForm
 
         'attempt to open app on the 1024x600 usb touch screen. If not found, open on the main screen as a sizeable window
         Dim scrfound = False
-        If Screen.AllScreens.Count > 1 Then
+        ScreenCount = Screen.AllScreens.Count 'remember the screens setup in case we lose contact with the controller
+        If ScreenCount > 1 Then
             For Each scr In Screen.AllScreens
                 If scr.Bounds.Width = 1024 And scr.Bounds.Height = 600 Then Me.Bounds = scr.WorkingArea : scrfound = True
             Next
@@ -3237,6 +3239,28 @@ Public Class MainForm
         If CamRec(3) Or CamRecStatusTimer = 60 Then TextBoxCam3Rec.Text = CamRecStatus(SendCamQuery(3, "get_state"), 3)
         If CamRec(4) Or CamRecStatusTimer = 60 Then TextBoxCam4Rec.Text = CamRecStatus(SendCamQuery(4, "get_state"), 4)
 
+        'check for change of screens / loss of connection to controller
+        If Screen.AllScreens.Count <> ScreenCount Then
+            ScreenCount = Screen.AllScreens.Count
+            Dim scrfound = False
+            If Screen.AllScreens.Count > 1 Then
+                For Each scr In Screen.AllScreens
+                    If scr.Bounds.Width = 1024 And scr.Bounds.Height = 600 Then
+                        Me.FormBorderStyle = FormBorderStyle.None
+                        Me.Bounds = scr.WorkingArea
+                        scrfound = True
+                    End If
+                Next
+                'Me.Bounds = (From scr In Screen.AllScreens Where Not scr.Primary)(0).WorkingArea 'open on 2nd monitor
+                'Windows.Forms.Cursor.Hide()
+                Me.Cursor = Cursors.Cross
+            End If
+            If scrfound = False Then
+                Me.Height = 600 : Me.Width = 1024 'size the same as it would be on the mini touch screen
+                Me.FormBorderStyle = FormBorderStyle.Sizable 'if no 2nd monitor, open sizeable on main monitor
+            End If
+        End If
+
 
     End Sub
 
@@ -3598,6 +3622,10 @@ Public Class MainForm
         CamIgnore(2) = False
         CamIgnore(3) = False
         CamIgnore(4) = False
+        Dim ta As Integer
+        For ta = 1 To 4
+            SendCamCmdAddr(ta, "O1") 'power on command
+        Next
         UpdateCameraLinkStatus()
         CamCmdPending = False
         If Globals.Cam1Dis = False Then ReadbackCameraStates(1)
