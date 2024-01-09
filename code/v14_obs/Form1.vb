@@ -3269,6 +3269,20 @@ Public Class MainForm
             End If
         End If
 
+        'checking if touch is allocated to the right screen...
+        'https://stackoverflow.com/questions/29215016/how-to-tell-touchscreens-from-regular-ones
+        'Dim tabletDevicen As System.Windows.Input.Tablet.TabletDeviceCollection
+        'For Each tabletDevice In System.Windows.Input.Tablet.TabletDevices
+        'Only detect if it Is a touch Screen 
+        'If (tabletDevice.Type == TabletDeviceType.Touch) Then
+        'Return True;
+        'Next
+
+        'setting touch on the right screen
+        'search->control panel
+        'tablet pc settings
+        'setup
+
 
     End Sub
 
@@ -3391,14 +3405,15 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad > 5 Then Exit Sub
+        'Label30.Text = sp & ">" & v
         If (EncoderAllocation(enc) < 2) Then 'for focus and iris, use the speed of the encoder to jump larger amounts for higher speeds
-            If (sp <= 1) Then
-                v = v * 1
-            ElseIf (sp <= 3) Then
-                v = v * 1
+            If (sp <= 1) Then 'fastest
+                If (v < 4) Then v = v * 5 : Else v = v * 10
+            ElseIf (sp = 2) Then
+                v = v * 2
             End If
         End If
-        Label30.Text = sp
+        'Label30.Text = Label30.Text & " = " & v
         Select Case EncoderAllocation(enc)
             Case 0 : SetFocus(ad, v + CamFocus(ad))
             Case 1 : SetIris(ad, v + CamIris(ad))
