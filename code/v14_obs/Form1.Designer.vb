@@ -178,6 +178,7 @@ Partial Class MainForm
         Me.MyButtonCamUL = New AtemController.MyButton()
         Me.OverrideBtn = New AtemController.MyButton()
         Me.SettingsPanel = New System.Windows.Forms.Panel()
+        Me.ButtonTouchscreen = New System.Windows.Forms.Button()
         Me.CheckBoxSaveAE = New System.Windows.Forms.CheckBox()
         Me.CheckBoxSaveIris = New System.Windows.Forms.CheckBox()
         Me.CheckBoxSaveFocus = New System.Windows.Forms.CheckBox()
@@ -298,7 +299,7 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
-        Me.ButtonTouchscreen = New System.Windows.Forms.Button()
+        Me.Label30 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.PresetPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -2137,6 +2138,16 @@ Partial Class MainForm
         Me.SettingsPanel.Size = New System.Drawing.Size(784, 600)
         Me.SettingsPanel.TabIndex = 323
         '
+        'ButtonTouchscreen
+        '
+        Me.ButtonTouchscreen.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonTouchscreen.Location = New System.Drawing.Point(545, 204)
+        Me.ButtonTouchscreen.Name = "ButtonTouchscreen"
+        Me.ButtonTouchscreen.Size = New System.Drawing.Size(80, 50)
+        Me.ButtonTouchscreen.TabIndex = 319
+        Me.ButtonTouchscreen.Text = "Touch Screen Setup"
+        Me.ButtonTouchscreen.UseVisualStyleBackColor = True
+        '
         'CheckBoxSaveAE
         '
         Me.CheckBoxSaveAE.AutoSize = True
@@ -2725,6 +2736,7 @@ Partial Class MainForm
         '
         'StatPanel
         '
+        Me.StatPanel.Controls.Add(Me.Label30)
         Me.StatPanel.Controls.Add(Me.TextBoxOBSRecTime)
         Me.StatPanel.Controls.Add(Me.BtnOBSRecord)
         Me.StatPanel.Controls.Add(Me.BtnOBSBroadcast)
@@ -3512,15 +3524,14 @@ Partial Class MainForm
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
         '
-        'ButtonTouchscreen
+        'Label30
         '
-        Me.ButtonTouchscreen.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonTouchscreen.Location = New System.Drawing.Point(545, 204)
-        Me.ButtonTouchscreen.Name = "ButtonTouchscreen"
-        Me.ButtonTouchscreen.Size = New System.Drawing.Size(80, 50)
-        Me.ButtonTouchscreen.TabIndex = 319
-        Me.ButtonTouchscreen.Text = "Touch Screen Setup"
-        Me.ButtonTouchscreen.UseVisualStyleBackColor = True
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(29, 209)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(45, 13)
+        Me.Label30.TabIndex = 301
+        Me.Label30.Text = "Label30"
         '
         'MainForm
         '
@@ -3896,4 +3907,5 @@ Partial Class MainForm
     Friend WithEvents CheckBoxSaveFocus As System.Windows.Forms.CheckBox
     Friend WithEvents BtnInp1 As MyButton
     Friend WithEvents ButtonTouchscreen As Button
+    Friend WithEvents Label30 As Label
 End Class

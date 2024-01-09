@@ -129,6 +129,8 @@ Public Class MainForm
     Dim serialcount As Byte = 0
     Dim EncoderAReset As Integer
     Dim EncoderBReset As Integer
+    Dim EncoderATime As Integer
+    Dim EncoderBTime As Integer
 
     Dim SerialInBuf(32) As Byte
     Dim ControllerLedState(16) As Byte
@@ -2593,19 +2595,21 @@ Public Class MainForm
 
             If EncoderA <> PrevEncoderA And EncoderAReset = 0 Then
                 If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
-                    SetEncoderValue(1, EncoderA - PrevEncoderA)
+                    SetEncoderValue(1, EncoderA - PrevEncoderA, EncoderATime)
                     'TextEncAStatus.Text = EncoderA
                     PrevEncoderA = EncoderA 'only send prev value when we actually send
                     alreadysending = 2 'in 100ms sets how long we wait before sending another
                 End If
+                EncoderATime = 0  'reset the change timer
             End If
 
             If EncoderB <> PrevEncoderB And EncoderBReset = 0 Then
                 If (alreadysending = 0) Then 'this stops us sending a bunch of commands too quickly
-                    SetEncoderValue(2, EncoderB - PrevEncoderB)
+                    SetEncoderValue(2, EncoderB - PrevEncoderB, EncoderBTime)
                     PrevEncoderB = EncoderB
                     alreadysending = 2
                 End If
+                EncoderBTime = 0  'reset the change timer
             End If
 
 
@@ -3192,6 +3196,10 @@ Public Class MainForm
             End If
         End If
 
+        'rotary encoder speed timers
+        If EncoderATime < 100 Then EncoderATime = EncoderATime + 1
+        If EncoderBTime < 100 Then EncoderBTime = EncoderBTime + 1
+
         'program close safety timer
         If (ProgCloseTimer > 0) Then
             ProgCloseTimer = ProgCloseTimer - 1
@@ -3379,10 +3387,18 @@ Public Class MainForm
         End Select
         LabelEnc.Text = num
     End Sub
-    Sub SetEncoderValue(enc As Integer, v As Integer)
+    Sub SetEncoderValue(enc As Integer, v As Integer, sp As Integer)
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad > 5 Then Exit Sub
+        If (EncoderAllocation(enc) < 2) Then 'for focus and iris, use the speed of the encoder to jump larger amounts for higher speeds
+            If (sp <= 1) Then
+                v = v * 1
+            ElseIf (sp <= 3) Then
+                v = v * 1
+            End If
+        End If
+        Label30.Text = sp
         Select Case EncoderAllocation(enc)
             Case 0 : SetFocus(ad, v + CamFocus(ad))
             Case 1 : SetIris(ad, v + CamIris(ad))
