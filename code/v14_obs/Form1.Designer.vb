@@ -232,6 +232,7 @@ Partial Class MainForm
         Me.ComboBoxSetupComport = New System.Windows.Forms.ComboBox()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.StatPanel = New System.Windows.Forms.Panel()
+        Me.Label30 = New System.Windows.Forms.Label()
         Me.TextBoxOBSRecTime = New System.Windows.Forms.TextBox()
         Me.BtnOBSRecord = New AtemController.MyButton()
         Me.BtnOBSBroadcast = New AtemController.MyButton()
@@ -299,7 +300,6 @@ Partial Class MainForm
         Me.Aux3Btn4 = New AtemController.MyButton()
         Me.Aux3Btn5 = New AtemController.MyButton()
         Me.Aux3Btn6 = New AtemController.MyButton()
-        Me.Label30 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.PresetPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -2754,6 +2754,15 @@ Partial Class MainForm
         Me.StatPanel.Size = New System.Drawing.Size(120, 600)
         Me.StatPanel.TabIndex = 324
         '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(29, 209)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(45, 13)
+        Me.Label30.TabIndex = 301
+        Me.Label30.Text = "Label30"
+        '
         'TextBoxOBSRecTime
         '
         Me.TextBoxOBSRecTime.BackColor = System.Drawing.Color.Black
@@ -3523,15 +3532,6 @@ Partial Class MainForm
         Me.Aux3Btn6.Text = "CAM2"
         Me.Aux3Btn6.UseVisualStyleBackColor = True
         Me.Aux3Btn6.Visible = False
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(29, 209)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(45, 13)
-        Me.Label30.TabIndex = 301
-        Me.Label30.Text = "Label30"
         '
         'MainForm
         '

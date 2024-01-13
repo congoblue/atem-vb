@@ -13,6 +13,7 @@ Imports WebSocket4Net
 
 Public Class MainForm
 
+    Dim VMixMode As Boolean = True
     Const BUFSIZE As Integer = 256
     Dim _serialPort As New SerialPort
     Dim buffer(BUFSIZE) As Byte
@@ -108,6 +109,8 @@ Public Class MainForm
     Dim EncoderAllocation(2) As Integer
     Dim WebsocketTimeout As Boolean = False
     Dim ScreenCount As Integer
+    Dim StreamPending As Boolean = False
+    Dim StreamPendingTime As Integer
 
     Dim JoyX As Byte
     Dim JoyY As Byte
@@ -441,6 +444,9 @@ Public Class MainForm
         If oaddr = 8 Then ObsSourceName = "Aux"
         If oaddr = 9 Then ObsSourceName = "Pip"
         If oaddr = 10 Then ObsSourceName = "Black"
+        If oaddr = 21 Then ObsSourceName = "LeaderCaption"
+        If oaddr = 22 Then ObsSourceName = "PreacherCaption"
+        If oaddr = 23 Then ObsSourceName = "OtherCaption"
 
     End Function
 
@@ -488,7 +494,17 @@ Public Class MainForm
         ListBoxMedia.Items.Clear()
         websocket.Send("{""request-type"":""GetSceneList"",""message-id"":""GETSCENE""}")
     End Sub
-
+    Private Function SendVmixCmd(ByVal cmd As String)
+        Dim url As String, result As String
+        url = "http://127.0.0.1:8088/api/" & cmd
+        result = ""
+        Try
+            result = GetWebRequest(url)
+        Catch ex As System.Net.WebException
+            ShowMsgBox("VMix error")
+        End Try
+        Return result
+    End Function
 
     Private Function SendCamCmd(ByVal cmd As String)
         'Dim webClient As New System.Net.WebClient
@@ -1134,15 +1150,20 @@ Public Class MainForm
         'If addr = 4 Then ExecuteLua("ATEMMixerMESetPreviewInput( 1,1," & Globals.AtemChannel(4) & " )") ' SDI4
         'obs
         If transitionwait = 0 Then
-            If addr = 1 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam1"",""message-id"":""TEST1""}")
-            If addr = 2 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam2"",""message-id"":""TEST1""}")
-            If addr = 3 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam3"",""message-id"":""TEST1""}")
-            If addr = 4 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam4"",""message-id"":""TEST1""}")
-            If addr = 5 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                If addr = 1 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam1"",""message-id"":""TEST1""}")
+                If addr = 2 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam2"",""message-id"":""TEST1""}")
+                If addr = 3 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam3"",""message-id"":""TEST1""}")
+                If addr = 4 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam4"",""message-id"":""TEST1""}")
+                If addr = 5 Then websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""Cam5"",""message-id"":""TEST1""}")
+            Else
+                If addr <= 5 Then SendVmixCmd("?Function=PreviewInput&Input=" & ObsSourceName(addr))
+            End If
+
         End If
 
-        'cam settings
-        If (addr <= 5) Then
+            'cam settings
+            If (addr <= 5) Then
             ShowCamValues()
             'load preset button captions
             UpdatePresets()
@@ -1281,17 +1302,22 @@ Public Class MainForm
         nextpreview = liveaddr
         'If addr <> nextpreview Then addr = nextpreview
         liveaddr = addr
-        If (ObsSourceName(addr) <> "") Then
+        If (ObsSourceName(addr) <> "") And Not VMixMode Then
             If (overlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(addr) & """,""source"":""OpenLP"",""render"":true,""message-id"":""TEST1""}")
             If (mediaoverlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(addr) & """,""source"":""Caption"",""render"":true,""message-id"":""TEST1""}")
         End If
         StartLiveMove()
         'ExecuteLua("ATEMMixerMECut( 1,1 )")
-        websocket.Send("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Cut"" } ,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            websocket.Send("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Cut"" } ,""message-id"":""TEST1""}")
+        Else
+            SendVmixCmd("?Function=Fade&Duration=10")
+        End If
+
         'If Globals.AutoSwap Then addr = nextpreview
         If Globals.AutoSwap Then transitionwait = 5
 
-        If (ObsSourceName(nextpreview) <> "") Then
+        If (ObsSourceName(nextpreview) <> "") And Not VMixMode Then
             If (overlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(nextpreview) & """,""source"":""OpenLP"",""render"":false,""message-id"":""TEST1""}")
             If (mediaoverlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(nextpreview) & """,""source"":""Caption"",""render"":false,""message-id"":""TEST1""}")
         End If
@@ -1310,7 +1336,7 @@ Public Class MainForm
         If liveaddr = 8 Then MediaPlayerWasActive = True 'if cutting to mediaplayer then remember we were on it
         nextpreview = liveaddr
         liveaddr = addr
-        If (ObsSourceName(addr) <> "") Then
+        If (ObsSourceName(addr) <> "") And Not VMixMode Then
             If (overlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(addr) & """,""source"":""OpenLP"",""render"":true,""message-id"":""TEST1""}")
             If (mediaoverlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(addr) & """,""source"":""Caption"",""render"":true,""message-id"":""TEST1""}")
         End If
@@ -1318,10 +1344,14 @@ Public Class MainForm
         'ExecuteLua("ATEMMixerMEAutoTransition( 1,1 )")
         Dim ft As Double
         Double.TryParse(TextBox1.Text, ft)
-        websocket.Send("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            websocket.Send("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+        Else
+            SendVmixCmd("?Function=Fade&Duration=500")
+        End If
         If Globals.AutoSwap Then transitionwait = 5 + Val(TextBox1.Text) * 10
 
-        If (ObsSourceName(nextpreview) <> "") Then
+        If (ObsSourceName(nextpreview) <> "") And Not VMixMode Then
             If (overlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(nextpreview) & """,""source"":""OpenLP"",""render"":false,""message-id"":""TEST1""}")
             If (mediaoverlayactive) Then websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(nextpreview) & """,""source"":""Caption"",""render"":false,""message-id"":""TEST1""}")
         End If
@@ -1463,7 +1493,11 @@ Public Class MainForm
         Dim index = Val(Mid(sender.name, 7))
         Dim obssource = ObsSourceName(index)
         addr = index + 5
-        websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            websocket.Send("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+        Else
+            SendVmixCmd("?Function=PreviewInput&Input=" & ObsSourceName(addr))
+        End If
         setactive()
     End Sub
 
@@ -1545,22 +1579,30 @@ Public Class MainForm
         'At end of fade set preview back to user preview
         If overlayactive = False Then
             overlayactive = True
-            If ObsSourceName(liveaddr) <> "" Then
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""OpenLP"",""render"":true,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                If ObsSourceName(liveaddr) <> "" Then
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""OpenLP"",""render"":true,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+                End If
+            Else
+                SendVmixCmd("?Function=OverlayInput1In&Input=OpenLP")
             End If
         Else
-            If ObsSourceName(liveaddr) <> "" Then
-                overlayactive = False
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""OpenLP"",""render"":false,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+            overlayactive = False
+            If Not VMixMode Then
+                If ObsSourceName(liveaddr) <> "" Then
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""OpenLP"",""render"":false,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+                End If
+            Else
+                SendVmixCmd("?Function=OverlayInput1Out&Input=OpenLP")
             End If
         End If
-        If (overlayactive = True) Then BtnOverlay.BackColor = Color.Red Else BtnOverlay.BackColor = Color.White
+            If (overlayactive = True) Then BtnOverlay.BackColor = Color.Red Else BtnOverlay.BackColor = Color.White
         If (overlayactive = True) Then ControllerLedState(10) = 1 Else ControllerLedState(10) = 0
     End Sub
 
@@ -1572,22 +1614,30 @@ Public Class MainForm
         If mediaoverlayactive = False Then
             'media overlay was not previously active
             'swap preview source to current source and add the overlay
-            If ObsSourceName(liveaddr) <> "" Then
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""Caption"",""render"":true,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                If ObsSourceName(liveaddr) <> "" Then
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""Caption"",""render"":true,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+                End If
+            Else
+                SendVmixCmd("?Function=OverlayInput2In&Input=" & ObsSourceName(CaptionIndex + 20))
             End If
 
             ' websocket.Send("{""request-type"":""SetSourceFilterVisibility"",""sourceName"":""Caption"",""filterName"":""Color Correction"",""filterEnabled"":false,""message-id"":""TEST1""}")
             'websocket.Send("{""request-type"":""SetSourceRender"",""source"":""Caption"",""render"":true,""message-id"":""TEST1""}")
             mediaoverlayactive = True
         Else
-            If ObsSourceName(liveaddr) <> "" Then
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""Caption"",""render"":false,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
-                WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                If ObsSourceName(liveaddr) <> "" Then
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetSceneItemRender"",""scene-name"":""" & ObsSourceName(liveaddr) & """,""source"":""Caption"",""render"":false,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""TransitionToProgram"",""with-transition"": { ""name"":""Fade"", ""duration"":" & ft * 800 & " } ,""message-id"":""TEST1""}")
+                    WebsocketSendAndWait("{""request-type"":""SetPreviewScene"",""scene-name"":""" & ObsSourceName(addr) & """,""message-id"":""TEST1""}")
+                End If
+            Else
+                SendVmixCmd("?Function=OverlayInput2Out&Input=" & ObsSourceName(CaptionIndex + 20))
             End If
 
             'websocket.Send("{""request-type"":""SetSourceFilterVisibility"",""sourceName"":""Caption"",""filterName"":""Color Correction"",""filterEnabled"":true,""message-id"":""TEST1""}")
@@ -1610,20 +1660,33 @@ Public Class MainForm
     Private Sub SetCaptionText()
         If CaptionIndex = 1 Then
             CapRectangle(TextLeaderName)
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Leader"",""message-id"":""TEST1""}")
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""" & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Leader"",""message-id"":""TEST1""}")
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""" & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+            End If
         End If
         If CaptionIndex = 2 Then
             CapRectangle(TextPreacherName)
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Preacher"",""message-id"":""TEST1""}")
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""   " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+            If Not VMixMode Then
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""Preacher"",""message-id"":""TEST1""}")
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""   " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+            End If
 
         End If
         If CaptionIndex = 3 Then
             CapRectangle(TextCaptionOther)
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""" & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
-            WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":"""",""message-id"":""TEST1""}")
-
+            If Not VMixMode Then
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leader"",""text"":""" & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
+                WebsocketSendAndWait("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":"""",""message-id"":""TEST1""}")
+            End If
+        End If
+        If VMixMode Then
+            Dim cap = WebUtility.HtmlEncode(TextLeaderName.Text)
+            SendVmixCmd("?Function=SetText&Input=LeaderCaption&SelectedName=Description.Text&Value=" & cap)
+            cap = WebUtility.HtmlEncode(TextPreacherName.Text)
+            SendVmixCmd("?Function=SetText&Input=PreacherCaption&SelectedName=Description.Text&Value=" & cap)
+            cap = WebUtility.HtmlEncode(TextCaptionOther.Text)
+            SendVmixCmd("?Function=SetText&Input=OtherCaption&SelectedName=Description.Text&Value=" & cap)
         End If
     End Sub
 
@@ -1640,13 +1703,25 @@ Public Class MainForm
     End Sub
 
     Private Sub TextLeaderName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If CaptionIndex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            If CaptionIndex = 1 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextLeaderName.Text & """,""message-id"":""TEST1""}")
+        Else
+            SetCaptionText()
+        End If
     End Sub
     Private Sub TextPreacherName_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If CaptionIndex = 2 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            If CaptionIndex = 2 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextPreacherName.Text & """,""message-id"":""TEST1""}")
+        Else
+        SetCaptionText()
+        End If
     End Sub
     Private Sub TextCaptionOther_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
-        If CaptionIndex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
+        If Not VMixMode Then
+            If CaptionIndex = 3 Then websocket.Send("{""request-type"":""SetTextGDIPlusProperties"",""source"":""Leadername"",""text"":""    " & TextCaptionOther.Text & """,""message-id"":""TEST1""}")
+        Else
+        SetCaptionText()
+        End If
     End Sub
 
     Private Sub BtnMPrev_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnMPrev.Click
@@ -2339,15 +2414,22 @@ Public Class MainForm
         'websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
         'ct = 0
         'While OBSResponse = "" And ct < 1000000 : ct = ct + 1 : End While
-        If OBSStreamState = False Then
-            'BtnOBSBroadcast.BackColor = Color.Red
-            websocket.Send("{""request-type"":""StartStopStreaming"",""message-id"":""OBSSET""}")
-            StreamStartTime = Now.TimeOfDay.TotalSeconds
+        If Not VMixMode Then
+            If OBSStreamState = False Then
+                'BtnOBSBroadcast.BackColor = Color.Red
+                websocket.Send("{""request-type"":""StartStopStreaming"",""message-id"":""OBSSET""}")
+                StreamStartTime = Now.TimeOfDay.TotalSeconds
+            Else
+                'BtnOBSBroadcast.BackColor = Color.White
+                websocket.Send("{""request-type"":""StartStopStreaming"",""message-id"":""OBSSET""}")
+            End If
+            websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
         Else
-            'BtnOBSBroadcast.BackColor = Color.White
-            websocket.Send("{""request-type"":""StartStopStreaming"",""message-id"":""OBSSET""}")
+            If StreamPending = False Then 'don't allow button click while pending
+                If OBSStreamState = False Then StreamStartTime = Now.TimeOfDay.TotalSeconds : StreamPending = True : StreamPendingTime = 0 : BtnOBSBroadcast.BackColor = Color.Orange
+                SendVmixCmd("?Function=StartStopStreaming")
+            End If
         End If
-        websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
 
     End Sub
     Sub GetOBSState()
@@ -2365,17 +2447,22 @@ Public Class MainForm
         'websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
         'ct = 0
         'While OBSResponse = "" And ct < 1000000 : ct = ct + 1 : End While
-        If OBSRecState = False Then
-            'BtnOBSRecord.BackColor = Color.Red
-            websocket.Send("{""request-type"":""StartStopRecording"",""message-id"":""OBSSET""}")
-            RecStartTime = Now.TimeOfDay.TotalSeconds
+        If Not VMixMode Then
+            If OBSRecState = False Then
+                'BtnOBSRecord.BackColor = Color.Red
+                websocket.Send("{""request-type"":""StartStopRecording"",""message-id"":""OBSSET""}")
+                RecStartTime = Now.TimeOfDay.TotalSeconds
+            Else
+                'BtnOBSRecord.BackColor = Color.White
+                websocket.Send("{""request-type"":""StartStopRecording"",""message-id"":""OBSSET""}")
+            End If
+            websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
+            'websocket.Send("{""request-type"":""SetHeartbeat"",""message-id"":""OBSHB""}")
+            'websocket.Send("{""request-type"":""StartRecording"",""message-id"":""TEST""}")
         Else
-            'BtnOBSRecord.BackColor = Color.White
-            websocket.Send("{""request-type"":""StartStopRecording"",""message-id"":""OBSSET""}")
+            If OBSRecState = False Then RecStartTime = Now.TimeOfDay.TotalSeconds
+            SendVmixCmd("?Function=StartStopRecording")
         End If
-        websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
-        'websocket.Send("{""request-type"":""SetHeartbeat"",""message-id"":""OBSHB""}")
-        'websocket.Send("{""request-type"":""StartRecording"",""message-id"":""TEST""}")
     End Sub
 
 
@@ -2410,37 +2497,101 @@ Public Class MainForm
         jsonValue = Mid(json, 1, p - 1)
     End Function
 
+    Function xmlValue(xml As String, name As String)
+        Dim p As Integer, v As String
+        xmlValue = ""
+        p = InStr(xml, "<" & name)
+        If p = 0 Then Exit Function
+        xml = Mid(xml, p + Len(name))
+        v = Mid(xml, InStr(xml, ">") + 1)
+        xmlValue = Strings.Left(v, InStr(v, "<") - 1)
+    End Function
 
-    Sub socketMessage(ByVal s As Object, ByVal e As WebSocket4Net.MessageReceivedEventArgs)
+    Sub ProcessStatus(OBSResponse As String)
         Dim RecState As String = ""
         Dim StreamState As String = ""
         Dim SceneState As String = ""
         Dim litem As String
         Dim p As Integer, q As Integer, ct As Integer
-        OBSResponse = e.Message
 
-        If InStr(OBSResponse, "OBSSTATE") <> 0 Then 'if this is a response to obs rec/stream status message
-            RecState = jsonValue(OBSResponse, """recording""")
+        If Not VMixMode Then
+            If InStr(OBSResponse, "OBSSTATE") <> 0 Then 'if this is a response to obs rec/stream status message
+                RecState = jsonValue(OBSResponse, """recording""")
+                If RecState = "" Or RecState = "false" Then OBSRecState = False Else OBSRecState = True
+                If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
+                If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
+                StreamState = jsonValue(OBSResponse, """streaming""")
+                If StreamState = "" Or StreamState = "false" Then OBSStreamState = False Else OBSStreamState = True
+                If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
+                If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
+                If jsonValue(OBSResponse, """stream-timecode""") <> "" Then
+                    'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
+                    Dim t As Integer = Now.TimeOfDay.TotalSeconds - StreamStartTime
+                    Dim hr As Integer = Math.Floor(t / 3600)
+                    Dim min As Integer = (Math.Floor(t / 60)) Mod 60
+                    Dim sec As Integer = t Mod 60
+                    OBSStreamTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
+                Else
+                    OBSStreamTime = "..."
+                End If
+                TextBoxOBSBroadcastTime.Text = OBSStreamTime
+                If jsonValue(OBSResponse, """rec-timecode""") <> "" Then
+                    'OBSRecTime = Mid(OBSResponse, InStr(OBSResponse, "rec-timecode") + 16, 8)
+                    Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
+                    Dim hr As Integer = Math.Floor(t / 3600)
+                    Dim min As Integer = (Math.Floor(t / 60)) Mod 60
+                    Dim sec As Integer = t Mod 60
+                    OBSRecTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
+                Else
+                    OBSRecTime = "..."
+                End If
+                TextBoxOBSRecTime.Text = OBSRecTime
+                'End If
+            ElseIf jsonValue(OBSResponse, """OBSSCENE""") <> "" Then 'response as we are playing a clip. Watch out for it ending.
+                If jsonValue(OBSResponse, """name""") <> "" Then
+                    SceneState = jsonValue(OBSResponse, """name""")
+                End If
+            ElseIf InStr(OBSResponse, "PreviewSceneChanged") Then 'user has changed the preview scene on OBS
+                'Dim scenename As String
+                'scenename = Mid(OBSResponse, InStr(OBSResponse, "scene-name") + 14)
+                'scenename = Mid(scenename, 1, InStr(scenename, """") - 1)
+                'If (scenename = "Cam1") Then addr = 1 : setactive()
+                'If (scenename = "Cam2") Then addr = 2 : setactive()
+                'If (scenename = "Cam3") Then addr = 3 : setactive()
+            ElseIf jsonValue(OBSResponse, """GETSCENE""") <> "" Then 'response to get scene list, used to populate media list
+                SceneState = Mid(OBSResponse, InStr(OBSResponse, "Mediaplayer1"))
+                SceneState = Mid(SceneState, InStr(SceneState, """sources"":") + 10)
+                If InStr(SceneState, """sources"":") <> 0 Then SceneState = Mid(SceneState, 1, InStr(SceneState, """sources"":") - 40) 'if other scenes after this one, remove them
+                Debug.Print(SceneState)
+                p = 1 : ct = 0
+                While p <> 0
+                    p = InStr(SceneState, """name""")
+                    If p <> 0 Then
+                        litem = jsonValue(SceneState, """name""") 'Mid(SceneState, p + 9, q - p - 9)
+                        litem = Replace(litem, """", "")
+                        SceneState = Mid(SceneState, p + 9)
+                        If ct = 0 Then
+                            websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":true,""message-id"":""TEST1""}")
+                            litem = litem & "*"
+                        Else
+                            websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":false,""message-id"":""TEST1""}")
+                        End If
+                        ListBoxMedia.Invoke(Sub() ListBoxMedia.Items.Add(litem))
+                        ct = ct + 1
+                    End If
+                End While
+            ElseIf jsonValue(OBSResponse, """WS" & WebsocketID & """") <> "" Then
+                Websocketwait = False
+                WebsocketID = WebsocketID + 1
+            Else
+                Debug.Print(OBSResponse)
+            End If
+        Else 'vmixmode
+            RecState = xmlValue(OBSResponse, "recording")
             If RecState = "" Or RecState = "false" Then OBSRecState = False Else OBSRecState = True
             If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
             If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
-            StreamState = jsonValue(OBSResponse, """streaming""")
-            If StreamState = "" Or StreamState = "false" Then OBSStreamState = False Else OBSStreamState = True
-            If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
-            If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
-            If jsonValue(OBSResponse, """stream-timecode""") <> "" Then
-                'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
-                Dim t As Integer = Now.TimeOfDay.TotalSeconds - StreamStartTime
-                Dim hr As Integer = Math.Floor(t / 3600)
-                Dim min As Integer = (Math.Floor(t / 60)) Mod 60
-                Dim sec As Integer = t Mod 60
-                OBSStreamTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
-            Else
-                OBSStreamTime = "..."
-            End If
-            TextBoxOBSBroadcastTime.Text = OBSStreamTime
-            If jsonValue(OBSResponse, """rec-timecode""") <> "" Then
-                'OBSRecTime = Mid(OBSResponse, InStr(OBSResponse, "rec-timecode") + 16, 8)
+            If OBSRecState = True Then
                 Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
                 Dim hr As Integer = Math.Floor(t / 3600)
                 Dim min As Integer = (Math.Floor(t / 60)) Mod 60
@@ -2450,46 +2601,35 @@ Public Class MainForm
                 OBSRecTime = "..."
             End If
             TextBoxOBSRecTime.Text = OBSRecTime
-            'End If
-        ElseIf jsonValue(OBSResponse, """OBSSCENE""") <> "" Then 'response as we are playing a clip. Watch out for it ending.
-            If jsonValue(OBSResponse, """name""") <> "" Then
-                SceneState = jsonValue(OBSResponse, """name""")
-            End If
-        ElseIf InStr(OBSResponse, "PreviewSceneChanged") Then 'user has changed the preview scene on OBS
-            'Dim scenename As String
-            'scenename = Mid(OBSResponse, InStr(OBSResponse, "scene-name") + 14)
-            'scenename = Mid(scenename, 1, InStr(scenename, """") - 1)
-            'If (scenename = "Cam1") Then addr = 1 : setactive()
-            'If (scenename = "Cam2") Then addr = 2 : setactive()
-            'If (scenename = "Cam3") Then addr = 3 : setactive()
-        ElseIf jsonValue(OBSResponse, """GETSCENE""") <> "" Then 'response to get scene list, used to populate media list
-            SceneState = Mid(OBSResponse, InStr(OBSResponse, "Mediaplayer1"))
-            SceneState = Mid(SceneState, InStr(SceneState, """sources"":") + 10)
-            If InStr(SceneState, """sources"":") <> 0 Then SceneState = Mid(SceneState, 1, InStr(SceneState, """sources"":") - 40) 'if other scenes after this one, remove them
-            Debug.Print(SceneState)
-            p = 1 : ct = 0
-            While p <> 0
-                p = InStr(SceneState, """name""")
-                If p <> 0 Then
-                    litem = jsonValue(SceneState, """name""") 'Mid(SceneState, p + 9, q - p - 9)
-                    litem = Replace(litem, """", "")
-                    SceneState = Mid(SceneState, p + 9)
-                    If ct = 0 Then
-                        websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":true,""message-id"":""TEST1""}")
-                        litem = litem & "*"
-                    Else
-                        websocket.Send("{""request-type"":""SetSceneItemRender"",""scene-name"":""Mediaplayer1"",""source"":""" & litem & """,""render"":false,""message-id"":""TEST1""}")
-                    End If
-                    ListBoxMedia.Invoke(Sub() ListBoxMedia.Items.Add(litem))
-                    ct = ct + 1
+            StreamState = xmlValue(OBSResponse, "streaming")
+            If StreamState = "" Or StreamState = "false" Then
+                OBSStreamState = False
+            Else
+                If OBSStreamState = False Then 'previously not streaming - just starting. Clear the streampending flag
+                    If StreamPending Then StreamPending = False : StreamStartTime = Now.TimeOfDay.TotalSeconds
                 End If
-            End While
-        ElseIf jsonValue(OBSResponse, """WS" & WebsocketID & """") <> "" Then
-            Websocketwait = False
-            WebsocketID = WebsocketID + 1
-        Else
-            Debug.Print(OBSResponse)
+                OBSStreamState = True
+            End If
+            If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
+            If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
+            If StreamState = True Then
+                'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
+                Dim t As Integer
+                t = Now.TimeOfDay.TotalSeconds - StreamStartTime
+                Dim hr As Integer = Math.Floor(t / 3600)
+                Dim min As Integer = (Math.Floor(t / 60)) Mod 60
+                Dim sec As Integer = t Mod 60
+                OBSStreamTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
+            Else
+                If Not StreamPending Then OBSStreamTime = "..." Else OBSStreamTime = "Starting..."
+            End If
+            TextBoxOBSBroadcastTime.Text = OBSStreamTime
         End If
+
+    End Sub
+
+    Sub socketMessage(ByVal s As Object, ByVal e As WebSocket4Net.MessageReceivedEventArgs)
+        ProcessStatus(e.Message)
         'MsgBox(e.Message)
     End Sub
 
@@ -3237,7 +3377,17 @@ Public Class MainForm
     Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
         'ticks every 1 sec
         'check OBS status (returns in websocket handler routine elsewhere)
-        websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
+        If Not VMixMode Then
+            websocket.Send("{""request-type"":""GetStreamingStatus"",""message-id"":""OBSSTATE""}")
+        Else
+            Dim stat = SendVmixCmd("")
+            ProcessStatus(stat)
+
+            If StreamPending Then
+                StreamPendingTime = StreamPendingTime + 1
+                If (StreamPendingTime > 15) Then StreamPending = False : BtnOBSBroadcast.BackColor = Color.White
+            End If
+        End If
 
         'check if cameras recording
         CamRecStatusTimer = CamRecStatusTimer + 1
@@ -3282,6 +3432,7 @@ Public Class MainForm
         'search->control panel
         'tablet pc settings
         'setup
+        ' or: rundll32.exe shell32.dll,Control_RunDLL tabletpc.cpl @1
 
 
     End Sub
@@ -3676,6 +3827,7 @@ Public Class MainForm
     Private Sub ButtonTouchscreen_Click(sender As Object, e As EventArgs) Handles ButtonTouchscreen.Click
         Shell("explorer.exe shell:::{80F3F1D5-FECA-45F3-BC32-752C152E456E}")
     End Sub
+
 
     Private Sub ButtonRetryOBS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRetryOBS.Click
         websocket.Close()   'try reconnecting to OBS
