@@ -1682,11 +1682,11 @@ Public Class MainForm
         End If
         If VMixMode Then
             Dim cap = WebUtility.HtmlEncode(TextLeaderName.Text)
-            SendVmixCmd("?Function=SetText&Input=LeaderCaption&SelectedName=Description.Text&Value=" & cap)
+            SendVmixCmd("?Function=SetText&Input=LeaderCaption&SelectedName=Name.Text&Value=" & cap)
             cap = WebUtility.HtmlEncode(TextPreacherName.Text)
-            SendVmixCmd("?Function=SetText&Input=PreacherCaption&SelectedName=Description.Text&Value=" & cap)
+            SendVmixCmd("?Function=SetText&Input=PreacherCaption&SelectedName=Name.Text&Value=" & cap)
             cap = WebUtility.HtmlEncode(TextCaptionOther.Text)
-            SendVmixCmd("?Function=SetText&Input=OtherCaption&SelectedName=Description.Text&Value=" & cap)
+            SendVmixCmd("?Function=SetText&Input=OtherCaption&SelectedName=Name.Text&Value=" & cap)
         End If
     End Sub
 
@@ -2587,44 +2587,46 @@ Public Class MainForm
                 Debug.Print(OBSResponse)
             End If
         Else 'vmixmode
-            RecState = xmlValue(OBSResponse, "recording")
-            If RecState = "" Or RecState = "false" Then OBSRecState = False Else OBSRecState = True
-            If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
-            If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
-            If OBSRecState = True Then
-                Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
-                Dim hr As Integer = Math.Floor(t / 3600)
-                Dim min As Integer = (Math.Floor(t / 60)) Mod 60
-                Dim sec As Integer = t Mod 60
-                OBSRecTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
-            Else
-                OBSRecTime = "..."
-            End If
-            TextBoxOBSRecTime.Text = OBSRecTime
-            StreamState = xmlValue(OBSResponse, "streaming")
-            If StreamState = "" Or StreamState = "false" Then
-                OBSStreamState = False
-            Else
-                If OBSStreamState = False Then 'previously not streaming - just starting. Clear the streampending flag
-                    If StreamPending Then StreamPending = False : StreamStartTime = Now.TimeOfDay.TotalSeconds
+            If (Len(OBSResponse) > 20) Then
+                RecState = xmlValue(OBSResponse, "recording")
+                If RecState = "" Or RecState = "false" Then OBSRecState = False Else OBSRecState = True
+                If OBSRecState = True And BtnOBSRecord.BackColor <> Color.Red Then BtnOBSRecord.BackColor = Color.Red
+                If OBSRecState = False And BtnOBSRecord.BackColor = Color.Red Then BtnOBSRecord.BackColor = Color.White
+                If OBSRecState = True Then
+                    Dim t As Integer = Now.TimeOfDay.TotalSeconds - RecStartTime
+                    Dim hr As Integer = Math.Floor(t / 3600)
+                    Dim min As Integer = (Math.Floor(t / 60)) Mod 60
+                    Dim sec As Integer = t Mod 60
+                    OBSRecTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
+                Else
+                    OBSRecTime = "..."
                 End If
-                OBSStreamState = True
+                TextBoxOBSRecTime.Text = OBSRecTime
+                StreamState = xmlValue(OBSResponse, "streaming")
+                If StreamState = "" Or StreamState = "false" Then
+                    OBSStreamState = False
+                Else
+                    If OBSStreamState = False Then 'previously not streaming - just starting. Clear the streampending flag
+                        If StreamPending Then StreamPending = False : StreamStartTime = Now.TimeOfDay.TotalSeconds
+                    End If
+                    OBSStreamState = True
+                End If
+                If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
+                If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
+                If StreamState = True Then
+                    'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
+                    Dim t As Integer
+                    t = Now.TimeOfDay.TotalSeconds - StreamStartTime
+                    Dim hr As Integer = Math.Floor(t / 3600)
+                    Dim min As Integer = (Math.Floor(t / 60)) Mod 60
+                    Dim sec As Integer = t Mod 60
+                    OBSStreamTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
+                Else
+                    If Not StreamPending Then OBSStreamTime = "..." Else OBSStreamTime = "Starting..."
+                End If
+                TextBoxOBSBroadcastTime.Text = OBSStreamTime
             End If
-            If OBSStreamState = True And BtnOBSBroadcast.BackColor <> Color.Red Then BtnOBSBroadcast.BackColor = Color.Red
-            If OBSStreamState = False And BtnOBSBroadcast.BackColor = Color.Red Then BtnOBSBroadcast.BackColor = Color.White
-            If StreamState = True Then
-                'OBSStreamTime = Mid(OBSResponse, InStr(OBSResponse, "stream-timecode") + 19, 8)
-                Dim t As Integer
-                t = Now.TimeOfDay.TotalSeconds - StreamStartTime
-                Dim hr As Integer = Math.Floor(t / 3600)
-                Dim min As Integer = (Math.Floor(t / 60)) Mod 60
-                Dim sec As Integer = t Mod 60
-                OBSStreamTime = hr.ToString("00") & ":" & min.ToString("00") & ":" & sec.ToString("00")
-            Else
-                If Not StreamPending Then OBSStreamTime = "..." Else OBSStreamTime = "Starting..."
             End If
-            TextBoxOBSBroadcastTime.Text = OBSStreamTime
-        End If
 
     End Sub
 
