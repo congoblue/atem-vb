@@ -1,66 +1,66 @@
-﻿Lectern Close,821D,81F9,C0D,1,2,-1,0,True
-Lectern  Tall,821B,80C4,B65,1,3,-1,0,True
-Lectern midshot,8250,8255,9D2,0,0,0,0,True
-Stage,821D,823A,555,1,6,-1,0,True
-Singer L,72AB,8036,D33,5,1,-1,0,True
-Singer M,7521,7E1B,D2A,5,1,-1,0,True
-Singer R,701B,8044,D33,5,1,-1,0,True
-Singers,72CD,805D,BA8,5,3,-1,0,True
-Whole  Band,73F1,8203,83F,2,5,-1,0,True
-Guitar,6D9D,8078,CA0,2,1,-1,0,True
-Lectern Left,828E,818A,C75,0,0,0,0,True
-elec guit,75D5,80D4,D05,2,2,-1,0,True
-Comm-  union   Table,8E7A,826A,A14,0,0,0,0,True
-flute,7A75,807D,E33,0,0,0,0,True
-Flowers,844C,81AA,EA6,1,4,-1,0,True
-random,82D7,82A2,C09,0,0,0,0,True
-Singer L,8302,8703,F4A,5,1,-1,0,True
-Singer M,7808,8605,F4B,5,1,-1,0,True
-Singer R,80E3,86F9,F49,5,1,-1,0,True
-Singers,81D2,8773,DA6,5,2,-1,0,True
-Lectern Short,887D,873D,D65,0,0,0,0,True
-Lectern,887D,873D,D65,1,2,-1,0,True
-Lectern Wide,887D,8748,B4C,0,0,0,0,True
-Full Wide,845B,874D,65D,4,6,-1,0,True
-band,8031,8762,B78,0,0,0,0,True
-Sermon,85E3,81AC,B6A,0,5,0,0,True
-Solo,7A73,850D,E76,0,0,0,0,True
-Acouts,7DAD,8713,E60,1,5,-1,0,True
-Drums,7F0C,8622,ED5,0,0,0,0,True
-Flute,83D1,865C,F13,0,0,0,0,True
-Bass,81FB,860D,F13,0,0,0,0,True
-Elec,80AF,867E,EF7,0,0,0,0,True
-Elec,696B,7FEB,A94,2,3,-1,0,True
-Piano,7C59,8904,89A,2,3,-1,0,True
-piano close,7A11,8A9A,BF5,2,1,-1,0,True
-acoustic,5B99,802F,754,2,2,0,0,True
-Drums Close,7859,8273,BB9,2,1,-1,0,True
-Singer Side,794D,7F68,93E,5,1,-1,0,True
-bass,66F0,7FB8,D00,0,0,0,0,True
-Hihat really close,9864,887A,F36,2,1,-1,0,True
-Lectern,9088,7FA6,B0A,0,0,0,0,True
-Band,825A,8666,555,2,3,-1,0,True
-Guitar big close,695F,8237,DA0,2,2,-1,0,True
-Singers side really close,9542,7F8C,F59,5,1,-1,0,True
-flute,7048,7FB8,D00,0,0,0,0,True
-Bible,77CA,878C,FCA,0,0,0,0,True
-Communion Altar,48C3,807B,B1C,0,0,0,0,True
-Cong Wide,95DF,8088,555,3,6,-1,0,True
-Wide,802A,88D0,5C6,4,0,-1,0,True
-Middle low,7DEC,878C,716,3,5,-1,0,True
-Middle high,7F22,84BC,555,3,5,-1,0,True
-Band,7A4B,8779,B07,2,4,-1,0,True
-Lectern,7AAF,890F,CAE,1,2,0,0,False
-Drums,7A8A,8659,F0A,2,2,0,0,True
-Piano,7202,87AA,DB9,2,2,-1,0,True
-Solo,7D72,86F1,F0A,2,2,0,0,True
-Guitar,7938,8460,EE5,0,2,-1,0,True
-Band close,7838,848A,C90,2,0,-1,0,True
-Flute,78E7,8715,EEE,0,0,0,0,True
-Singers,7964,87A3,DAC,5,2,-1,0,True
-lights,757A,83C5,FCE,0,0,0,0,False
-stage low,8106,8A25,7F8,0,0,0,0,True
-Communion Shot,76C1,85E8,E12,0,0,0,0,True
-Wide,8025,88AC,5C4,0,0,0,0,True
-Encoder,0,4
+﻿Lectern Close,821D,81F9,C0D,0,0,0
+Lectern  Tall,821B,80C4,B65,0,0,0
+Lectern midshot,8250,8255,9D2,0,0,0
+Stage,821D,823A,555,0,0,0
+Singer L,72AB,8036,D33,0,0,0
+Singer M,7521,7E1B,D2A,0,0,0
+Singer R,701B,8044,D33,0,0,0
+Singers,72CD,805D,BA8,0,0,0
+Whole  Band,73F1,8203,83F,0,0,0
+Guitar,6D9D,8078,CA0,0,0,0
+Lectern Left,828E,818A,C75,0,0,0
+elec guit,75D5,80D4,D05,0,0,0
+Comm-  union   Table,8E7A,826A,A14,0,0,0
+flute,7A75,807D,E33,0,0,0
+Flowers,844C,81AA,EA6,0,0,0
+random,82D7,82A2,C09,0,0,0
+Singer L,8302,8703,F4A,0,0,0
+Singer M,7808,8605,F4B,0,0,0
+Singer R,80E3,86F9,F49,0,0,0
+Singers,81D2,8773,DA6,0,0,0
+Lectern Short,887D,873D,D65,0,0,0
+Lectern,887D,873D,D65,0,0,0
+Lectern Wide,887D,8748,B4C,0,0,0
+Full Wide,845B,874D,65D,0,0,0
+band,8031,8762,B78,0,0,0
+Sermon,85E3,81AC,B6A,0,0,0
+Solo,7A73,850D,E76,0,0,0
+Acouts,7DAD,8713,E60,0,0,0
+Drums,7F0C,8622,ED5,0,0,0
+Flute,83D1,865C,F13,0,0,0
+Bass,81FB,860D,F13,0,0,0
+Elec,80AF,867E,EF7,0,0,0
+Elec,696B,7FEB,A94,0,0,0
+Piano,7C59,8904,89A,0,0,0
+piano close,7A11,8A9A,BF5,0,0,0
+acoustic,5B99,802F,754,0,0,0
+Drums Close,7859,8273,BB9,0,0,0
+Singer Side,794D,7F68,93E,0,0,0
+bass,66F0,7FB8,D00,0,0,0
+Hihat really close,9864,887A,F36,0,0,0
+Lectern,9088,7FA6,B0A,0,0,0
+Band,825A,8666,555,0,0,0
+Guitar big close,695F,8237,DA0,0,0,0
+Singers side really close,9542,7F8C,F59,0,0,0
+flute,7048,7FB8,D00,0,0,0
+Bible,77CA,878C,FCA,0,0,0
+Communion Altar,48C3,807B,B1C,0,0,0
+Cong Wide,95DF,8088,555,0,0,0
+Wide,802A,88D0,5C6,0,0,0
+Middle low,7DEC,878C,716,0,0,0
+Middle high,7F22,84BC,555,0,0,0
+Band,7A4B,8779,B07,0,0,0
+Lectern,7AAF,890F,CAE,0,0,0
+Drums,7A8A,8659,F0A,0,0,0
+Piano,7202,87AA,DB9,0,0,0
+Solo,7D72,86F1,F0A,0,0,0
+Guitar,7938,8460,EE5,0,0,0
+Band close,7838,848A,C90,0,0,0
+Flute,78E7,8715,EEE,0,0,0
+Singers,7964,87A3,DAC,0,0,0
+lights,757A,83C5,FCE,0,0,0
+stage low,8106,8A25,7F8,0,0,0
+Communion Shot,76C1,85E8,E12,0,0,0
+Wide,8025,88AC,5C4,0,0,0
+Encoder,0,3
 CamSettingStore,True,True,True

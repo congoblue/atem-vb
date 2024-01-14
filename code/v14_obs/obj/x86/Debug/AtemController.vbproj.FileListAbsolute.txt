@@ -29,4 +29,3 @@ F:\My Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form2.r
 F:\My Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Form4.resources
 F:\My Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.Resources.resources
 F:\My Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.vbproj.GenerateResource.Cache
-C:\Users\Boardroom\Documents\GitHub\atem-vb\code\v14_obs\obj\x86\Debug\AtemController.vbprojResolveAssemblyReference.cache

@@ -14,6 +14,7 @@ Imports WebSocket4Net
 Public Class MainForm
 
     Dim VMixMode As Boolean = True
+    Dim VMixError As Boolean = False
     Const BUFSIZE As Integer = 256
     Dim _serialPort As New SerialPort
     Dim buffer(BUFSIZE) As Byte
@@ -501,8 +502,12 @@ Public Class MainForm
         Try
             result = GetWebRequest(url)
         Catch ex As System.Net.WebException
-            ShowMsgBox("VMix error")
+            If VMixError = False Then
+                ShowMsgBox("VMix error")
+                VMixError = True
+            End If
         End Try
+        If result <> "" Then VMixError = False
         Return result
     End Function
 
@@ -1162,8 +1167,8 @@ Public Class MainForm
 
         End If
 
-            'cam settings
-            If (addr <= 5) Then
+        'cam settings
+        If (addr <= 5) Then
             ShowCamValues()
             'load preset button captions
             UpdatePresets()
@@ -1808,6 +1813,7 @@ Public Class MainForm
 
     Sub SetIris(ad As Integer, v As Integer)
         Dim op As String
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then op = SendCamCmdAddrNoHash(ad, "QRV", "aw_cam") 'get iris setting
 
         If v <> 9999 Then 'not auto mode
@@ -1851,6 +1857,7 @@ Public Class MainForm
     Private Sub BtnIrisDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisDown.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then
             CamIris(ad) = CamIris(ad) - 10
         Else
@@ -1862,6 +1869,7 @@ Public Class MainForm
     Private Sub BtnIrisUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnIrisUp.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then
             CamIris(ad) = CamIris(ad) + 10
         Else
@@ -1872,6 +1880,7 @@ Public Class MainForm
     Private Sub BtnIrisAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoIris.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If CamIris(ad) = 9999 Then 'iris was in auto mode
             SetIris(ad, 9998)
         Else
@@ -1880,6 +1889,7 @@ Public Class MainForm
     End Sub
     Sub SetAGC(ad As Integer, v As Integer)
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
 
         If v <> 9999 Then 'not auto mode
             If CamAgc(ad) = 128 Then 'if was auto previously
@@ -1907,6 +1917,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         'op = SendCamCmdAddrNoHash(ad, "QGU") 'get gain setting
         'mLog.Text = op
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
@@ -1918,6 +1929,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         'op = SendCamCmdAddrNoHash(ad, "QGU") 'get gain setting
         'mLog.Text = op
         'CamAgc(ad) = Val("&H" & Mid(op, 5))
@@ -1928,6 +1940,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         If CamAgc(ad) = 128 Then
             CamAgc(ad) = 16
             SetAGC(ad, CamAgc(ad))
@@ -1938,6 +1951,7 @@ Public Class MainForm
     End Sub
     Sub SetAGCLimit(ad As Integer, v As Integer)
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         If (v < 1) Then v = 1
         If (v > 8) Then v = 8
         CamAGCLimit(ad) = v
@@ -1949,6 +1963,7 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         CamAGCLimit(ad) = CamAGCLimit(ad) - 1
         SetAGCLimit(ad, CamAGCLimit(ad))
     End Sub
@@ -1957,11 +1972,13 @@ Public Class MainForm
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
         If ad = 5 Then Return 'not provided on this camera
+        If ad > 5 Then Exit Sub
         CamAGCLimit(ad) = CamAGCLimit(ad) + 1
         SetAGCLimit(ad, CamAGCLimit(ad))
     End Sub
 
     Sub SetAEShift(ad As Integer, v As Integer)
+        If ad > 5 Then Exit Sub
         If (v < -10) Then v = -10
         If (v > 10) Then v = 10
         CamAEShift(ad) = v
@@ -1972,6 +1989,7 @@ Public Class MainForm
     Private Sub BtnAEShiftDn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAEShiftDn.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         CamAEShift(ad) = CamAEShift(ad) - 1
         SetAEShift(ad, CamAEShift(ad))
     End Sub
@@ -1979,11 +1997,13 @@ Public Class MainForm
     Private Sub BtnAEShiftUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAEShiftUp.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         CamAEShift(ad) = CamAEShift(ad) + 1
         SetAEShift(ad, CamAEShift(ad))
     End Sub
 
     Sub SetWbDescription(ad As Integer, wb As Integer)
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then
             TextBoxWB.Text = 2400 + CamWBBlue(ad) * 100
         Else
@@ -2000,6 +2020,7 @@ Public Class MainForm
     Private Sub BtnWbBlueDn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueDn.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then
             mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
             If CamWBBlue(ad) > 0 Then CamWBBlue(ad) = CamWBBlue(ad) - 1
@@ -2015,6 +2036,7 @@ Public Class MainForm
     Private Sub BtnWbBlueUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnWbBlueUp.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If ad <> 5 Then
             mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
             If CamWBBlue(ad) < &H4B Then CamWBBlue(ad) = CamWBBlue(ad) + 1
@@ -2029,6 +2051,7 @@ Public Class MainForm
     Private Sub BtnWBAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonAutoWB.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If MyButtonAutoWB.BackColor = Color.Red Then
             If ad <> 5 Then
                 mLog.Text = SendCamCmdAddrNoHash(ad, "OAW:9", "aw_cam")
@@ -2045,6 +2068,7 @@ Public Class MainForm
         End If
     End Sub
     Sub SetFocus(ad As Integer, v As Integer)
+        If ad > 5 Then Exit Sub
         If (v < &H555) Then v = &H555
         If (v > &HFFF) Then v = &HFFF
         If CamFocusManual(ad) = 0 Then 'if was in auto mode set to manual
@@ -2061,6 +2085,7 @@ Public Class MainForm
     Private Sub BtnFocusAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFocusAuto.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
+        If ad > 5 Then Exit Sub
         SendCamCmdAddr(ad, "D11")
         CamFocusManual(ad) = 0
         TextBoxFocus.Text = "Auto"
@@ -2072,6 +2097,7 @@ Public Class MainForm
         Dim ad As Integer
         Dim op As String
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
+        If ad > 5 Then Exit Sub
         SendCamCmdAddr(ad, "D10")
         CamFocusManual(ad) = 1
         op = SendCamCmdAddr(ad, "GF")
@@ -2084,6 +2110,7 @@ Public Class MainForm
     Private Sub BtnFocusUp_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusUp.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
+        If ad > 5 Then Exit Sub
         CamFocus(ad) = CamFocus(ad) + 10
         SetFocus(ad, CamFocus(ad))
     End Sub
@@ -2091,6 +2118,7 @@ Public Class MainForm
     Private Sub BtnFocusDn_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles BtnFocusDn.Click
         Dim ad As Integer
         If (PTZLive = True) Then ad = liveaddr Else ad = addr
+        If ad > 5 Then Exit Sub
         CamFocus(ad) = CamFocus(ad) - 10
         SetFocus(ad, CamFocus(ad))
     End Sub
@@ -2108,12 +2136,14 @@ Public Class MainForm
     Private Sub CamFullTele_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonFullTele.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         mLog.Text = SendCamCmdAddr(ad, "Z99") 'max speed zoom tele
     End Sub
 
     Private Sub CamFullWide_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyButtonFullWide.Click
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         mLog.Text = SendCamCmdAddr(ad, "Z01") 'max speed zoom wide
     End Sub
 
@@ -2121,6 +2151,7 @@ Public Class MainForm
     Private Sub CamTele_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamTele.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If BtnFast.BackColor = Color.Green Then
             mLog.Text = SendCamCmdAddr(ad, "Z95") 'zoom med tele
         Else
@@ -2130,12 +2161,14 @@ Public Class MainForm
     Private Sub CamTele_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamTele.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
     End Sub
 
     Private Sub CamWide_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamWide.MouseDown
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         If BtnFast.BackColor = Color.Green Then
             mLog.Text = SendCamCmdAddr(ad, "Z05") 'zoom med wide
         Else
@@ -2145,6 +2178,7 @@ Public Class MainForm
     Private Sub CamWide_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamWide.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         mLog.Text = SendCamCmdAddr(ad, "Z50") 'zoom stop
     End Sub
 
@@ -2152,6 +2186,7 @@ Public Class MainForm
         Dim index As String
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         index = (Mid(sender.name, 12))
         Dim xsp As String, ysp As String, xpos As Integer, ypos As Integer, spd As Integer
         If index = "UL" Then xpos = -1 : ypos = -1
@@ -2177,6 +2212,7 @@ Public Class MainForm
     Private Sub MyButtonCamUL_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyButtonCamUL.MouseUp, MyButtonCamU.MouseUp, MyButtonCamUR.MouseUp, MyButtonCamL.MouseUp, MyButtonCamR.MouseUp, MyButtonCamDL.MouseUp, MyButtonCamD.MouseUp, MyButtonCamDR.MouseUp
         Dim ad As Integer
         If PTZLive = False Then ad = addr Else ad = liveaddr
+        If ad > 5 Then Exit Sub
         mLog.Text = SendCamCmdAddr(ad, "PTS5050") 'pt stop
     End Sub
 
@@ -3642,6 +3678,7 @@ Public Class MainForm
     '---Populate setup screen with current values
     Sub UpdateSetupScreen()
         Dim i As Integer
+        ComboBoxSetupComport.Items.Clear() 'make sure we don't add multiples of the same comport
         For Each s In SerialPort.GetPortNames()
             ComboBoxSetupComport.Items.Add(s)
         Next s
